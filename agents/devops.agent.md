@@ -130,7 +130,7 @@ cd ts && npm run test:devnet
 - `create-table` MUST be in the same tx as module deploy
 - Scoped signers CANNOT satisfy `enforce-keyset` — use unscoped for deploy
 - Total deploy gas well under 150k per individual tx
-- Namespace: `n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9` on devnet
+- Namespace: `<namespace-principal>` on devnet
 
 ## Release Management
 

@@ -10,7 +10,7 @@ description: "UX copy standards for Pact Community web — signing prompt clarit
 "Verify every field on your Ledger screen matches the screen above. If ANY field differs, reject on the device."
 
 **Domain verification banner** (all sensitive pages):
-"Verify your browser shows: smartpacts.io (or app/admin.smartpacts.io)"
+"Verify your browser shows: pact-community.org (or app/admin.pact-community.org)"
 
 No emoji anywhere in signing UI. Professional tone only.
 
@@ -20,7 +20,7 @@ Structure every error as:
 1. **What happened**: "Transaction failed"
 2. **Why**: "Network connection lost during signing"  
 3. **What to try**: "Check internet connection and retry"
-4. **Contact**: "Still stuck? Email support@smartpacts.io"
+4. **Contact**: "Still stuck? Email support@pact-community.org"
 
 Never blame the user. Never use technical jargon without definition.
 
@@ -65,10 +65,10 @@ Never blame the user. Never use technical jargon without definition.
 ## Phishing Resistance Patterns
 
 **URL verification prompts** (before sensitive actions):
-"You are on smartpacts.io — verify this URL matches your bookmark"
+"You are on pact-community.org — verify this URL matches your bookmark"
 
 **Domain warning** (if unusual referrer detected):
-"Opened from external link. Verify URL: app.smartpacts.io"
+"Opened from external link. Verify URL: app.pact-community.org"
 
 **Bookmark encouragement**:
 "Bookmark this page to avoid phishing. Always type the URL directly."

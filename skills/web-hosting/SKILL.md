@@ -1,24 +1,24 @@
 ---
 name: web-hosting
-description: "Hosting + DNS + CI/CD for smartpacts.io — Cloudflare Pages + Cloudflare Access + Cloudflare DNS, per-PR previews, three-origin deploy pipeline, HSTS preload, CAA, DNSSEC."
+description: "Hosting + DNS + CI/CD for pact-community.org — Cloudflare Pages + Cloudflare Access + Cloudflare DNS, per-PR previews, three-origin deploy pipeline, HSTS preload, CAA, DNSSEC."
 ---
 # Web Hosting
 
 ## Platform Architecture
 
 **Cloudflare Pages** for all three origins:
-- smartpacts.io (marketing site)
-- app.smartpacts.io (stakeholder SPA)  
-- admin.smartpacts.io (admin SPA)
+- pact-community.org (marketing site)
+- app.pact-community.org (stakeholder SPA)  
+- admin.pact-community.org (admin SPA)
 
 **Cloudflare DNS** with DNSSEC enabled.
 **Cloudflare Access** on admin origin only (IP allowlist + SSO).
 
 ## DNS Configuration
 
-**Primary domain**: smartpacts.io
-**Subdomains**: app.smartpacts.io, admin.smartpacts.io
-**Reserved**: api.smartpacts.io (future backend)
+**Primary domain**: pact-community.org
+**Subdomains**: app.pact-community.org, admin.pact-community.org
+**Reserved**: api.pact-community.org (future backend)
 
 **Security records**:
 - DNSSEC enabled on zone
@@ -28,9 +28,9 @@ description: "Hosting + DNS + CI/CD for smartpacts.io — Cloudflare Pages + Clo
 ## Defensive Domain Strategy
 
 **Register variants**: 
-- smartpacts.com, smartpacts.xyz, smartpacts.app
-- smart-pacts.io, smartpacts.co
-- Punycode at-risk: smartpačts.io, ѕmartpacts.io
+- pactcommunity.com, pactcommunity.xyz, pactcommunity.app
+- pact-community.io, pactcommunity.co
+- Punycode at-risk: pactcommunitý.io, раctcommunity.io
 
 **Monitor Certificate Transparency** via crt.sh feed for unauthorized certificates.
 
@@ -42,7 +42,7 @@ description: "Hosting + DNS + CI/CD for smartpacts.io — Cloudflare Pages + Clo
 - `.github/workflows/deploy-admin.yml` (trigger: `web-examples/apps/admin-app/**`)
 
 **Build order**:
-1. Core packages (`@smartpacts/ui`, `@smartpacts/pact-bindings`, `@smartpacts/web-config`)
+1. Core packages (`@pact-community/ui`, `@pact-community/pact-bindings`, `@pact-community/web-config`)
 2. App-specific builds
 3. Deploy to Cloudflare Pages
 
@@ -57,8 +57,8 @@ description: "Hosting + DNS + CI/CD for smartpacts.io — Cloudflare Pages + Clo
 
 **Network selection by hostname + localStorage override**:
 - localhost → devnet (port 8081)
-- staging-app.smartpacts.io → testnet06
-- app.smartpacts.io → mainnet01
+- staging-app.pact-community.org → testnet06
+- app.pact-community.org → mainnet01
 
 **Override** (hidden in production): localStorage key `NETWORK_OVERRIDE` with values `devnet|testnet|mainnet`.
 
@@ -93,12 +93,12 @@ description: "Hosting + DNS + CI/CD for smartpacts.io — Cloudflare Pages + Clo
 
 ## Access Control
 
-**Admin origin** (admin.smartpacts.io):
+**Admin origin** (admin.pact-community.org):
 - Cloudflare Access with IP allowlist for core team
 - Optional SSO integration (GitHub/Google) for contractors
 - Separate CSP policy (stricter than stakeholder app)
 
-**Stakeholder origin** (app.smartpacts.io):
+**Stakeholder origin** (app.pact-community.org):
 - Public access
 - Rate limiting via Cloudflare
 - Bot protection enabled

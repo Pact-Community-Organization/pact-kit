@@ -25,7 +25,7 @@ description: "Non-functional requirements specification for KDA-CE smart contrac
 ### Compatibility
 - Fungible-v2 interface compliance for tokens
 - Kadena client SDK compatibility
-- Ledger hardware wallet support (ledger-signer project)
+- Ledger hardware wallet support (hardware-signer project)
 
 ### Operability
 - Module upgradeable via governance keyset

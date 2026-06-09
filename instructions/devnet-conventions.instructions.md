@@ -52,4 +52,4 @@ applyTo: ["pact-examples/ts/tests/devnet/**", "pact-examples/docker-compose.*"]
 - Secret: `251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898`
 
 ## Principal Namespace
-- `n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9` (from sender00)
+- `<namespace-principal>` (from sender00)

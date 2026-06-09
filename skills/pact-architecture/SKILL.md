@@ -20,7 +20,7 @@ description: "Kadena-specific architecture patterns for Pact 5 on KDA-CE. Govern
 ## Namespace Management
 - Development: `free.` namespace
 - Production: principal namespace from admin keyset
-- Example: `n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9`
+- Example: `<namespace-principal>`
 
 ## Module Upgrade Pattern
 1. Deploy new module code with same module name

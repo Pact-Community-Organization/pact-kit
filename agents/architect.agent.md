@@ -75,7 +75,7 @@ You define *what* gets built and *how* it should be built. You are responsible f
 - 5 Pact modules: dao-types (interface), dao-token, dao-dividend, dao-voting, dao-gas-station
 - Key patterns: Live vote adjustment (ADR-001), accumulator dividends (ADR-002), vote tables in dao-token (ADR-004)
 - Deploy order: types → token → dividend/voting → gas-station
-- Principal namespace from sender00: `n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9`
+- Principal namespace from sender00: `<namespace-principal>`
 
 ### Ledger Signer Project
 - TypeScript monorepo: @smart-pacts/ledger-core, @smart-pacts/ledger-cli, @smart-pacts/ledger-web

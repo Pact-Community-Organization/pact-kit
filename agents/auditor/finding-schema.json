@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://smartpacts.com/schemas/audit-finding.json",
+  "$id": "https://pact-community.org/schemas/audit-finding.json",
   "title": "Pact Community Audit Finding",
   "description": "JSON schema for third-party audit findings in Pact Community projects",
   "type": "object",

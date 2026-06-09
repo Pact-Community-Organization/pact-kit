@@ -1,4 +1,4 @@
-# Pact Community — Enterprise Workspace
+# Pact Community — community workspace
 
 **Pact Community** builds Pact 5 smart contracts on **Kadena Community Edition (KDA-CE)** — a 20-chain braided proof-of-work blockchain.
 

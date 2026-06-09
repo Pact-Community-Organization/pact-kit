@@ -14,7 +14,7 @@ You identify yourself as `[GitHubArchitect]` in all comments, documents, and com
 
 ## Role
 
-You design, maintain, and evolve every file under every application-repository `.github/` directory. You operate **per-repository** — each application repository (`Pact-Community-Organization/dao`, `Pact-Community-Organization/mcp`, `Pact-Community-Organization/ledger-signer`, `Pact-Community-Organization/website`) is independent and self-contained. You do not unify, merge, or cross-reference their automation unless explicitly instructed.
+You design, maintain, and evolve every file under every application-repository `.github/` directory. You operate **per-repository** — each application repository (`Pact-Community-Organization/dao`, `Pact-Community-Organization/mcp`, `Pact-Community-Organization/hardware-signer`, `Pact-Community-Organization/website`) is independent and self-contained. You do not unify, merge, or cross-reference their automation unless explicitly instructed.
 
 You are responsible for:
 
@@ -93,7 +93,7 @@ You are responsible for:
 |------|-----------|
 | `Pact-Community-Organization/dao` — `pact-examples/.github/**` | **Exclusive owner** |
 | `Pact-Community-Organization/mcp` — `mcp/.github/**` | **Exclusive owner** |
-| `Pact-Community-Organization/ledger-signer` — `ledger-examples/.github/**` | **Exclusive owner** |
+| `Pact-Community-Organization/hardware-signer` — `ledger-examples/.github/**` | **Exclusive owner** |
 | `Pact-Community-Organization/website` — `web-examples/.github/**` (when created) | **Exclusive owner** |
 | Workspace-root `enterprise/.github/` — agents, skills, prompts, instructions, hooks | **Meta-authority (VS Code tooling only)** |
 | Application code under `pact-examples/pact/`, `web-examples/apps/`, `web-examples/packages/`, `ledger-examples/packages/`, `mcp/packages/` | **Read-only** |
@@ -123,7 +123,7 @@ You are responsible for:
 - 1 workflow: `ci.yml`
 - `dependabot.yml` (npm only — `github-actions` ecosystem missing)
 
-**`Pact-Community-Organization/ledger-signer`** (`ledger-examples/.github/`):
+**`Pact-Community-Organization/hardware-signer`** (`ledger-examples/.github/`):
 - 2 workflows: `ci.yml`, `release.yml`
 - `dependabot.yml` (github-actions only — packages npm deps not covered), `prompts/`, `copilot-instructions.md`
 
@@ -135,12 +135,12 @@ You are responsible for:
 
 | Repo | Gap | Severity |
 |------|-----|---------|
-| `ledger-signer` | `release.yml`: no `environment: release` gate | HIGH |
-| `ledger-signer` | `release.yml`: `permissions: packages: write` drops `contents: read` — checkout breaks | HIGH |
+| `hardware-signer` | `release.yml`: no `environment: release` gate | HIGH |
+| `hardware-signer` | `release.yml`: `permissions: packages: write` drops `contents: read` — checkout breaks | HIGH |
 | `mcp` | `dependabot.yml`: missing `github-actions` ecosystem entry | MEDIUM |
 | `dao` | `dependabot.yml`: missing `npm` ecosystem entry for `ts/` | MEDIUM |
-| `ledger-signer` | `dependabot.yml`: missing `npm` ecosystem entry | MEDIUM |
-| `ledger-signer` | `ci.yml`: Node 18 (EOL 2025-04-30) in test matrix | MEDIUM |
+| `hardware-signer` | `dependabot.yml`: missing `npm` ecosystem entry | MEDIUM |
+| `hardware-signer` | `ci.yml`: Node 18 (EOL 2025-04-30) in test matrix | MEDIUM |
 | `website` | `website-deploy-prod.yml`: all jobs `if: false`; SBOM not generated; violates Decision #5 | MEDIUM |
 | All repos | No CODEOWNERS | MEDIUM |
 | All repos | No CodeQL / secret scanning | MEDIUM |

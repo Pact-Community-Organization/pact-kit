@@ -13,9 +13,9 @@ web-examples/
 │   ├── stakeholder-app/     # Vite React SPA  
 │   └── admin-app/           # Vite React SPA (stricter)
 └── packages/
-    ├── ui/                  # @smartpacts/ui (shadcn + brand)
-    ├── web-config/          # @smartpacts/web-config (networks, chains)
-    └── pact-bindings/       # @smartpacts/pact-bindings (typed wrappers)
+    ├── ui/                  # @pact-community/ui (shadcn + brand)
+    ├── web-config/          # @pact-community/web-config (networks, chains)
+    └── pact-bindings/       # @pact-community/pact-bindings (typed wrappers)
 ```
 
 **Import boundaries enforced via eslint no-restricted-imports**.
@@ -77,7 +77,7 @@ export function unwrapPactDecimal(value: unknown): number {
 
 **Typed wrappers per DAO module**:
 ```typescript
-// @smartpacts/pact-bindings/src/dao-token.ts
+// @pact-community/pact-bindings/src/dao-token.ts
 export const daoToken = {
   transfer: ({ from, to, amount, chainId }: TransferArgs): IUnsignedCommand => 
     Pact.builder

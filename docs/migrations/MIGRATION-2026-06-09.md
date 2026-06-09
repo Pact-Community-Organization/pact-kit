@@ -11,8 +11,8 @@ Imported from local source:
 Sanitization performed:
 - Replaced Pact Community branding with neutral Pact Community language
 - Removed enterprise-local filesystem references
-- Rewrote internal coordination memory references to generic repository documentation references
-- Replaced internal project ownership/path assumptions (DAO/Ledger/Website enterprise-specific paths)
+- Rewrote internal project-memory references to generic repository documentation references
+- Replaced internal project ownership and path assumptions tied to enterprise-only repositories
 
 Excluded as enterprise-private or out of scope:
 - enterprise/.github/workflows

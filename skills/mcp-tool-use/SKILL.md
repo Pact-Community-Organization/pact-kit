@@ -41,18 +41,18 @@ flowchart TD
 
 ## Per-Tool Quick Reference
 
-### Pact Server (`@smartpacts/mcp-pact`)
+### Pact Server (`@pact-community/mcp-pact`)
 - `pact.repl_run` — Run single .repl file; returns stdout/stderr, exit status, gas measurements
 - `pact.module_scan` — Static analysis for Pact 5 critical traps; returns findings with line numbers
 
-### Chainweb Server (`@smartpacts/mcp-chainweb`)
+### Chainweb Server (`@pact-community/mcp-chainweb`)
 - `chainweb.info` — Fetch node info, validate network ID; returns chains list, version, network validation
 - `chainweb.chain_time` — Current chain time in seconds; returns timestamp, avoids "too far in future" errors
 - `chainweb.local` — Preflight simulation; returns result/error, gas cost, auto-unwraps Pact JSON types
 - `chainweb.send` — Submit signed transaction; requires prior preflight, returns request key
 - `chainweb.poll` — Poll for transaction completion; avoids nginx 504 timeout, returns final result
 
-### Coordination Server (`@smartpacts/mcp-coordination`)
+### Coordination Server (`@pact-community/mcp-coordination`)
 - `coord.task_create` — Create new task; requires title, assignee, dependencies
 - `coord.task_list` — List tasks with optional filters; returns task summaries
 - `coord.task_get` — Get specific task by ID; returns full task object
@@ -148,9 +148,9 @@ GitHub MCP server is hosted by GitHub at `https://api.githubcopilot.com/mcp/` an
   "params": {
     "name": "get_file_contents",
     "arguments": {
-      "owner": "smartpacts",
-      "repo": "dao",
-      "path": "pact/modules/dao-token.pact",
+      "owner": "pact-community-organization",
+      "repo": "contracts",
+      "path": "pact/modules/token.pact",
       "ref": "main"
     }
   }
@@ -162,7 +162,7 @@ Response:
   "encoding": "utf-8",
   "size": 15234,
   "sha": "abc123...",
-  "path": "pact/modules/dao-token.pact"
+  "path": "pact/modules/token.pact"
 }
 ```
 

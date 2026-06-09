@@ -6,9 +6,9 @@ description: "Web architecture patterns for Pact Community — three-origin spli
 
 ## Three-Origin Rule
 
-- **smartpacts.io**: Astro static site, marketing only, no wallet imports, Plausible analytics
-- **app.smartpacts.io**: Stakeholder SPA, Vite React, WebHID + Chainweaver copy/paste fallback
-- **admin.smartpacts.io**: Admin SPA, separate bundle, Ledger-only, Cloudflare Access gated, stricter CSP
+- **pact-community.org**: Astro static site, marketing only, no wallet imports, Plausible analytics
+- **app.pact-community.org**: Stakeholder SPA, Vite React, WebHID + Chainweaver copy/paste fallback
+- **admin.pact-community.org**: Admin SPA, separate bundle, Ledger-only, Cloudflare Access gated, stricter CSP
 
 Admin code MUST NOT appear in stakeholder bundle. Enforce via CI build-output audit.
 
@@ -22,7 +22,7 @@ Admin code MUST NOT appear in stakeholder bundle. Enforce via CI build-output au
 
 Layer violations = build error via eslint no-restricted-imports.
 
-## @smartpacts/pact-bindings Pattern
+## @pact-community/pact-bindings Pattern
 
 Typed wrappers per DAO module, single source of truth for Pact function signatures:
 ```typescript
