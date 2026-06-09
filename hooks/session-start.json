@@ -1,0 +1,9 @@
+{
+  "name": "session-start",
+  "description": "Performs basic startup checks for contributor sessions",
+  "steps": [
+    "Read repository README",
+    "Review open issues",
+    "Confirm local toolchain"
+  ]
+}

@@ -1,0 +1,17 @@
+name: pact-ci
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  repl-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Placeholder check
+        run: |
+          echo "This starter workflow is a template."
+          echo "Add Pact CLI install and test commands for your project."
