@@ -1,0 +1,384 @@
+{
+  "audit_checklist": {
+    "version": "1.0.0",
+    "description": "Machine-readable audit checklist for Pact Community third-party audits",
+    "phases": [
+      {
+        "id": "discovery",
+        "name": "Discovery & Scoping",
+        "description": "Scope clarification and context gathering",
+        "items": [
+          {
+            "id": "D-001",
+            "check": "Scope clarification Q&A completed (all 12 mandatory questions)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Q&A transcript with all answers documented"
+          },
+          {
+            "id": "D-002", 
+            "check": "All in-scope files identified and inventoried",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Complete file listing with scope boundaries"
+          },
+          {
+            "id": "D-003",
+            "check": "Architecture documentation reviewed (ADRs, ARCHITECTURE.md)",
+            "required": true,
+            "status": "pending", 
+            "evidence_required": "Architecture review notes with key insights"
+          },
+          {
+            "id": "D-004",
+            "check": "Deploy order verified against module dependency DAG",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Dependency graph analysis with deploy sequence"
+          },
+          {
+            "id": "D-005",
+            "check": "Previous audit reports reviewed (if any)",
+            "required": false,
+            "status": "pending",
+            "evidence_required": "Prior audit analysis or confirmation none exist"
+          },
+          {
+            "id": "D-006", 
+            "check": "Known issues list obtained and reviewed",
+            "required": false,
+            "status": "pending",
+            "evidence_required": "Known issues inventory or confirmation none reported"
+          }
+        ]
+      },
+      {
+        "id": "automated",
+        "name": "Automated Scanning",
+        "description": "Automated tools and pattern detection",
+        "items": [
+          {
+            "id": "A-001",
+            "check": "REPL tests executed — all pass",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "REPL test execution logs with pass/fail results"
+          },
+          {
+            "id": "A-002",
+            "check": "TypeScript typecheck passes",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "tsc --noEmit output with zero errors"
+          },
+          {
+            "id": "A-003",
+            "check": "Static pattern scan for Pact 5 traps (try DML, enforce read-only, binary +, pact-id guard)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "grep output for known Pact 5 anti-patterns"
+          },
+          {
+            "id": "A-004", 
+            "check": "Gas budget verification (all ops under 150k)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Gas measurement logs for all operations"
+          },
+          {
+            "id": "A-005",
+            "check": "Keyset naming convention check",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Keyset inventory with naming compliance verification"
+          },
+          {
+            "id": "A-006",
+            "check": "Built-in name collision scan (exp, abs, log, mod, round, ln, sqrt, floor, ceiling)",
+            "required": true,
+            "status": "pending", 
+            "evidence_required": "Variable binding scan results"
+          },
+          {
+            "id": "A-007",
+            "check": "with-default-read default completeness check",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Schema field analysis for default object completeness"
+          },
+          {
+            "id": "A-008",
+            "check": "Namespace parameterization verification", 
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Namespace usage analysis across all modules"
+          }
+        ]
+      },
+      {
+        "id": "manual_review",
+        "name": "Manual Code Review", 
+        "description": "Line-by-line review and analysis",
+        "items": [
+          {
+            "id": "M-001",
+            "check": "Line-by-line review of all .pact files",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Review notes for each .pact file with findings"
+          },
+          {
+            "id": "M-002",
+            "check": "Capability hierarchy mapped and verified",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Capability dependency graph with security analysis"
+          },
+          {
+            "id": "M-003", 
+            "check": "All write paths verified as guarded",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Database write operation inventory with guard verification"
+          },
+          {
+            "id": "M-004",
+            "check": "Cross-module trust boundaries verified",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Module interaction analysis with trust assumptions"
+          },
+          {
+            "id": "M-005",
+            "check": "Governance/upgrade path reviewed",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Governance model analysis with upgrade security review"
+          },
+          {
+            "id": "M-006",
+            "check": "Token invariants verified (supply conservation, precision)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Token mechanics analysis with invariant verification"
+          },
+          {
+            "id": "M-007",
+            "check": "Cross-chain defpact security reviewed",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "defpact step analysis with continuation security review"
+          },
+          {
+            "id": "M-008",
+            "check": "@managed capability scoping verified",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Managed capability analysis with scoping verification"
+          },
+          {
+            "id": "M-009",
+            "check": "install-capability placement verified (inside with-capability)",
+            "required": true,
+            "status": "pending", 
+            "evidence_required": "install-capability usage analysis with placement verification"
+          },
+          {
+            "id": "M-010",
+            "check": "enforce-guard usage verified (not manual key checks)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Guard verification pattern analysis"
+          },
+          {
+            "id": "M-011",
+            "check": "Event emission completeness verified", 
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Event capability analysis with completeness verification"
+          },
+          {
+            "id": "M-012",
+            "check": "Error message specificity verified (no empty strings)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Error message analysis with specificity verification"
+          }
+        ]
+      },
+      {
+        "id": "testing",
+        "name": "Independent Testing & Attack Simulation",
+        "description": "Threat modeling and exploit development",
+        "items": [
+          {
+            "id": "T-001",
+            "check": "STRIDE threat model completed for each module",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "STRIDE analysis per module with threat identification"
+          },
+          {
+            "id": "T-002",
+            "check": "Exploit PoC attempted for each CRITICAL/HIGH finding",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "PoC exploit code or explanation why exploit not possible"
+          },
+          {
+            "id": "T-003",
+            "check": "Devnet deployment and verification (port 8084)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Devnet deployment logs with verification results"
+          },
+          {
+            "id": "T-004",
+            "check": "Capability bypass attempts tested",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Capability bypass test results with attack scenarios"
+          },
+          {
+            "id": "T-005",
+            "check": "Gas exhaustion attacks tested",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Gas attack test results with DoS scenarios"
+          },
+          {
+            "id": "T-006", 
+            "check": "Cross-module interaction exploits tested",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Cross-module attack test results"
+          },
+          {
+            "id": "T-007",
+            "check": "Economic exploit scenarios tested (phantom claims, vote manipulation)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Economic attack test results with financial impact analysis"
+          },
+          {
+            "id": "T-008",
+            "check": "Formal property verification (if @model annotations exist)",
+            "required": false,
+            "status": "pending",
+            "evidence_required": "Formal verification results or confirmation no @model properties exist"
+          }
+        ]
+      },
+      {
+        "id": "reporting",
+        "name": "Report Generation",
+        "description": "Finding documentation and verdict determination",
+        "items": [
+          {
+            "id": "R-001",
+            "check": "Executive summary produced",
+            "required": true,
+            "status": "pending", 
+            "evidence_required": "Executive summary with scope, findings count, and verdict"
+          },
+          {
+            "id": "R-002",
+            "check": "All findings documented with evidence",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Complete findings list with file:line references and evidence"
+          },
+          {
+            "id": "R-003",
+            "check": "Findings table (Markdown) produced",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Markdown table with all findings and metadata"
+          },
+          {
+            "id": "R-004",
+            "check": "Findings JSON produced",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Machine-readable JSON findings file"
+          },
+          {
+            "id": "R-005",
+            "check": "Remediation checklist produced (prioritized)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Prioritized remediation steps with effort estimates"
+          },
+          {
+            "id": "R-006",
+            "check": "Verdict issued (PASS / CONDITIONAL PASS / FAIL)",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Final verdict with detailed justification"
+          }
+        ]
+      },
+      {
+        "id": "recheck",
+        "name": "Re-check Verification",
+        "description": "Post-remediation verification",
+        "items": [
+          {
+            "id": "RC-001",
+            "check": "Re-review all CRITICAL/HIGH fixes",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Re-review analysis for each CRITICAL/HIGH finding"
+          },
+          {
+            "id": "RC-002", 
+            "check": "Regression test after remediation",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Full regression test results post-remediation"
+          },
+          {
+            "id": "RC-003",
+            "check": "Devnet re-deployment and re-verification",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Re-deployment verification with exploit re-testing"
+          },
+          {
+            "id": "RC-004",
+            "check": "Updated verdict issued",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Final updated verdict with change rationale"
+          },
+          {
+            "id": "RC-005",
+            "check": "Final audit report published",
+            "required": true,
+            "status": "pending",
+            "evidence_required": "Complete final audit report with all phases documented"
+          }
+        ]
+      }
+    ],
+    "severity_levels": [
+      "CRITICAL",
+      "HIGH", 
+      "MEDIUM",
+      "LOW",
+      "INFORMATIONAL"
+    ],
+    "verdict_options": [
+      "PASS",
+      "CONDITIONAL PASS", 
+      "FAIL"
+    ],
+    "status_values": [
+      "pending",
+      "in_progress", 
+      "completed",
+      "blocked",
+      "not_applicable"
+    ]
+  }
+}

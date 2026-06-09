@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smartpacts.com/schemas/audit-finding.json",
+  "title": "Pact Community Audit Finding",
+  "description": "JSON schema for third-party audit findings in Pact Community projects",
+  "type": "object",
+  "required": [
+    "id",
+    "title", 
+    "severity",
+    "description",
+    "impact",
+    "likelihood",
+    "affected_files",
+    "status",
+    "auditor",
+    "audit_date"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^AUD-[0-9]{3}$",
+      "description": "Unique finding identifier following pattern AUD-001, AUD-002, etc."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 100,
+      "description": "Concise finding title describing the vulnerability or issue"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"],
+      "description": "Finding severity based on impact and likelihood matrix"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Capability Security",
+        "Access Control", 
+        "Economic Exploit",
+        "Gas Efficiency",
+        "Cross-Chain Security",
+        "Token Mechanics",
+        "Governance",
+        "Input Validation",
+        "State Management", 
+        "Code Quality",
+        "Documentation",
+        "Configuration",
+        "Denial of Service",
+        "Information Disclosure",
+        "Pact Language Trap",
+        "Architecture",
+        "Compliance",
+        "Formal Verification",
+        "Infrastructure"
+      ],
+      "description": "Functional category or STRIDE classification for the finding"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Clear explanation of what is wrong and why it's a security issue"
+    },
+    "impact": {
+      "type": "string",
+      "enum": ["High", "Medium", "Low"],
+      "description": "Potential damage if vulnerability is exploited"
+    },
+    "likelihood": {
+      "type": "string", 
+      "enum": ["High", "Medium", "Low"],
+      "description": "Probability of successful exploitation"
+    },
+    "impact_analysis": {
+      "type": "string",
+      "description": "Detailed explanation of potential consequences if exploited"
+    },
+    "exploit_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Step-by-step attack scenario to exploit the vulnerability"
+    },
+    "affected_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Relative path to affected file"
+          },
+          "line_number": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Specific line number where issue occurs"
+          },
+          "line_range": {
+            "type": "object",
+            "properties": {
+              "start": {"type": "integer", "minimum": 1},
+              "end": {"type": "integer", "minimum": 1}
+            },
+            "description": "Range of lines affected by the issue"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Name of function or capability containing the issue"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "List of files and locations affected by this finding"
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "code_snippet": {
+          "type": "string",
+          "description": "Relevant code excerpt demonstrating the vulnerability"
+        },
+        "repl_proof": {
+          "type": "string", 
+          "description": "REPL commands that demonstrate the exploit"
+        },
+        "devnet_proof": {
+          "type": "string",
+          "description": "Devnet transaction or test proving exploitability"
+        },
+        "static_analysis": {
+          "type": "string",
+          "description": "Static analysis output showing the issue"
+        }
+      },
+      "description": "Evidence supporting the finding (at least one type required)"
+    },
+    "remediation": {
+      "type": "object",
+      "required": ["recommendation"],
+      "properties": {
+        "recommendation": {
+          "type": "string",
+          "description": "Specific technical fix recommendations"
+        },
+        "effort_estimate": {
+          "type": "string",
+          "enum": ["Trivial", "Low", "Medium", "High", "Complex"],
+          "description": "Estimated effort required to remediate"
+        },
+        "code_example": {
+          "type": "string",
+          "description": "Example of recommended fix implementation"
+        },
+        "alternative_approaches": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Alternative remediation strategies if available"
+        }
+      },
+      "description": "Remediation guidance and recommendations"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["Open", "Acknowledged", "Fixed", "Verified", "Won't Fix", "Requires Evidence"],
+      "description": "Current status of finding remediation"
+    },
+    "auditor": {
+      "type": "string",
+      "description": "Auditor or firm name who identified this finding"
+    },
+    "audit_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when finding was identified (YYYY-MM-DD)"
+    },
+    "remediation_date": {
+      "type": "string",
+      "format": "date", 
+      "description": "Date when finding was remediated (if status is Fixed/Verified)"
+    },
+    "verification_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when fix was verified (if status is Verified)"
+    },
+    "cve_id": {
+      "type": "string",
+      "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$",
+      "description": "CVE identifier if publicly disclosed vulnerability"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "description"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "description": {"type": "string"}
+        }
+      },
+      "description": "External references related to this finding"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "pact-5-trap",
+          "kda-ce-specific",
+          "cross-chain",
+          "governance", 
+          "economic",
+          "gas-related",
+          "capability-bypass",
+          "admin-privilege",
+          "token-mechanics",
+          "formal-verification",
+          "compliance",
+          "infrastructure",
+          "regression",
+          "upgrade-risk"
+        ]
+      },
+      "description": "Categorical tags for filtering and analysis"
+    },
+    "recheck_needed": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this finding requires re-verification after remediation"
+    },
+    "blocks_deployment": {
+      "type": "boolean",
+      "description": "Whether this finding blocks production deployment"
+    },
+    "stakeholder_discussion": {
+      "type": "object",
+      "properties": {
+        "risk_accepted": {"type": "boolean"},
+        "acceptance_rationale": {"type": "string"},
+        "mitigations_planned": {"type": "array", "items": {"type": "string"}},
+        "acceptance_date": {"type": "string", "format": "date"}
+      },
+      "description": "Risk acceptance discussion if finding will not be fixed"
+    },
+    "audit_trail": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "action", "actor"],
+        "properties": {
+          "date": {"type": "string", "format": "date-time"},
+          "action": {"type": "string"},
+          "actor": {"type": "string"}, 
+          "details": {"type": "string"}
+        }
+      },
+      "description": "Audit trail of actions taken on this finding"
+    }
+  },
+  "examples": [
+    {
+      "id": "AUD-001", 
+      "title": "Unguarded Treasury Access in dao-dividend.pact",
+      "severity": "CRITICAL",
+      "category": "Access Control",
+      "description": "The claim-dividend function lacks proper capability guards, allowing any user to drain the treasury by specifying arbitrary amounts.",
+      "impact": "High",
+      "likelihood": "High",
+      "impact_analysis": "Complete treasury drain is possible with a single transaction. Estimated $500K+ at risk based on current treasury holdings.",
+      "exploit_steps": [
+        "Call dao-dividend.claim-dividend with attacker account",
+        "Specify amount larger than legitimate dividend claim",
+        "Transaction succeeds due to missing guard",
+        "Treasury funds transferred to attacker account"
+      ],
+      "affected_files": [
+        {
+          "path": "pact-examples/pact/modules/dao-dividend.pact",
+          "line_number": 89,
+          "function_name": "claim-dividend"
+        }
+      ],
+      "evidence": {
+        "code_snippet": "(coin.transfer-create treasury account guard amount)",
+        "repl_proof": "(dao-dividend.claim-dividend \"attacker\" 1000000.0)",
+        "devnet_proof": "Transaction txid:abc123... successfully drained 500K from treasury"
+      },
+      "remediation": {
+        "recommendation": "Add proper capability guard requiring CLAIM capability with amount validation",
+        "effort_estimate": "Low",
+        "code_example": "(with-capability (CLAIM account amount) (enforce (<= amount owed) \"Claim exceeds owed amount\") ...)"
+      },
+      "status": "Open",
+      "auditor": "Pact Community Auditor Agent",
+      "audit_date": "2026-04-15",
+      "tags": ["capability-bypass", "token-mechanics", "governance"],
+      "blocks_deployment": true,
+      "recheck_needed": true
+    }
+  ]
+}

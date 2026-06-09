@@ -1,9 +1,10 @@
 {
-  "name": "session-start",
-  "description": "Performs basic startup checks for contributor sessions",
-  "steps": [
-    "Read repository README",
-    "Review open issues",
-    "Confirm local toolchain"
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "echo 'MEMORY PROTOCOL: Before non-trivial tasks — (1) read docs/memory/INDEX.md  (2) read docs/memory/PROJECT-STATE.md  (3) check docs/status/dashboard.json'"
+      }
+    ]
+  }
 }
