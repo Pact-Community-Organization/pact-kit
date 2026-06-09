@@ -1,6 +1,6 @@
 ---
 description: "Use when writing Pact 5 smart contracts (.pact files), REPL tests (.repl files), or reviewing Pact code for KDA-CE. Critical language traps, patterns, and mandatory conventions."
-applyTo: ["**-community/*.pact", "**-community/*.repl"]
+applyTo: ["**/*.pact", "**/*.repl"]
 ---
 # Pact 5 Language Rules
 
@@ -10,7 +10,7 @@ applyTo: ["**-community/*.pact", "**-community/*.repl"]
 
 Most-violated corrections (read the canonical file for the full list + error strings):
 
-- **`enforce` -community/ `try`**: no DML inside the boolean arg -community/ block — **reads ARE allowed**. Binding reads to a `let` is style-community/gas, not correctness.
+- **`enforce` / `try`**: no DML inside the boolean arg / block — **reads ARE allowed**. Binding reads to a `let` is style/gas, not correctness.
 - **`with-default-read`**: the default object must contain every field you **BIND**, not every schema field.
 - **Native name shadowing** (`exp`, `abs`, `log`, `mod`, `round`, `ln`, `sqrt`, `floor`, `ceiling`, …): **load-time rejected** in Pact 5.1+ — `Variable X shadows native of the same name`.
 - **`pact-id`**: `(pact-id)` **throws outside a defpact** and proves nothing about identity inside one — gate with composed capabilities bound to identity.

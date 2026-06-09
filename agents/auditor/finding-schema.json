@@ -1,6 +1,6 @@
 {
-  "$schema": "https:-community/-community/json-schema.org-community/draft-community/2020-12-community/schema",
-  "$id": "https:-community/-community/pact-community.org-community/schemas-community/audit-finding.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pact-community.org/schemas/audit-finding.json",
   "title": "Pact Community Audit Finding",
   "description": "JSON schema for third-party audit findings in Pact Community projects",
   "type": "object",
@@ -181,7 +181,7 @@
     "remediation_date": {
       "type": "string",
       "format": "date", 
-      "description": "Date when finding was remediated (if status is Fixed-community/Verified)"
+      "description": "Date when finding was remediated (if status is Fixed/Verified)"
     },
     "verification_date": {
       "type": "string",
@@ -280,7 +280,7 @@
       ],
       "affected_files": [
         {
-          "path": "pact-examples-community/pact-community/modules-community/distribution-module.pact",
+          "path": "pact-examples/pact-community/modules/distribution-module.pact",
           "line_number": 89,
           "function_name": "claim-dividend"
         }

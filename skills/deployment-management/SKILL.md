@@ -18,17 +18,17 @@ description: "Pact smart contract deployment scripts and management on KDA-CE. D
 
 ## Deploy Script Pattern
 ```typescript
-import { Pact, createClient, createSignWithKeypair } from '@kadena-community/client';
+import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 
 async function deploy(modulePath: string, tables: string[]) {
   const code = readFileSync(modulePath, 'utf8');
   const tx = Pact.builder
     .execution(code)
-    .addSigner(adminPublicKey) -community/-community/ UNSCOPED for deploy
+    .addSigner(adminPublicKey) // UNSCOPED for deploy
     .setMeta({ chainId: '0', sender: 'sender00', gasLimit: 150000 })
     .setNetworkId(networkId)
     .createTransaction();
-  -community/-community/ Sign, submit, pollOne
+  // Sign, submit, pollOne
 }
 ```
 
@@ -36,7 +36,7 @@ async function deploy(modulePath: string, tables: string[]) {
 | Key | devnet | testnet | mainnet |
 |-----|--------|---------|---------|
 | networkId | development | testnet06 | mainnet01 |
-| host | localhost:{port} | api.chainweb-community.org | api.chainweb-community.org |
+| host | localhost:{port} | api.chainweb.org | api.chainweb.org |
 | gasPrice | 0.00000001 | 0.00000001 | market rate |
 
 ## Rollback

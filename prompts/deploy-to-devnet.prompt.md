@@ -9,7 +9,7 @@ description: "DevOps: Deploy Pact modules to a KDA-CE devnet instance. Step-by-s
 - Admin keypair available (sender00 for devnet)
 
 ## Deploy Steps
-1. Verify devnet health: `curl http:-community/-community/localhost:{port}-community/info`
+1. Verify devnet health: `curl http://localhost:{port}/info`
 2. Deploy modules in order:
    - governance-types (interface)
    - governance-token + tables
@@ -35,7 +35,7 @@ Status: {SUCCESS | PARTIAL | FAILED}
 |--------|--------|-----|---------|
 
 ### Verification
-- Config readable: {Yes-community/No}
-- Tables created: {Yes-community/No}
+- Config readable: {Yes/No}
+- Tables created: {Yes/No}
 - Total gas: {N}
 ```

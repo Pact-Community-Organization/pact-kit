@@ -1,6 +1,6 @@
 ---
 description: "Use when deploying Pact modules to devnet, testnet, or mainnet. Covers deploy order, gas budgets, signer requirements, and infrastructure rules."
-applyTo: ["pact-examples-community/pact-community/deploy-community/**", "pact-examples-community/ts-community/scripts-community/**"]
+applyTo: ["pact-examples/pact-community/deploy/**", "pact-examples/ts/scripts/**"]
 # Deployment Rules
 
 ## Deploy Order (CRITICAL)
@@ -15,7 +15,7 @@ Module deployment order is strict — no forward references allowed:
 ### Scoped vs Unscoped (CRITICAL)
 - **Scoped signers** (`addSigner(pubKey, (w) => [w('coin.GAS')])`) CANNOT satisfy `enforce-keyset`
 - **Unscoped signers** (`addSigner(pubKey)`) handle gas + keyset enforcement
-- For deploy-community/admin ops: ALWAYS use unscoped signers
+- For deploy/admin ops: ALWAYS use unscoped signers
 
 ## Table Creation
 - `create-table` MUST be in the same tx as module deploy

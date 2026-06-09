@@ -13,7 +13,7 @@ description: "Versioning, tagging, and release notes for Pact 5 smart contracts 
 ## Release Checklist
 - [ ] All Gate 2 criteria passed (Tester GO, Security APPROVE)
 - [ ] CHANGELOG.md updated with all changes
-- [ ] Version bumped in relevant package.json -community/ module metadata
+- [ ] Version bumped in relevant package.json / module metadata
 - [ ] Git tag created: `v{MAJOR}.{MINOR}.{PATCH}`
 - [ ] Testnet deployment successful
 - [ ] Gas measurements documented

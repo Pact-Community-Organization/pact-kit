@@ -37,9 +37,9 @@ sequenceDiagram
     participant SDK as TypeScript SDK
     participant Node as KDA-CE Node
     User->>SDK: Build transaction
-    SDK->>Node: -community/local (preflight)
+    SDK->>Node: /local (preflight)
     Node-->>SDK: Gas estimate
-    SDK->>Node: -community/send (submit)
-    SDK->>Node: -community/poll (confirm)
+    SDK->>Node: /send (submit)
+    SDK->>Node: /poll (confirm)
     Node-->>SDK: Result
 ```

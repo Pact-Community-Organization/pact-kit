@@ -25,7 +25,7 @@ description: "Use when optimizing gas consumption, estimating gas budgets, split
 
 ## Optimization Strategies
 1. **Split large modules** — if deploy > 150k, separate module + create-table into two txs
-2. **Minimize table scans** — use direct key reads over fold-community/map when possible
+2. **Minimize table scans** — use direct key reads over fold/map when possible
 3. **Reduce capability checks** — compose capabilities to minimize nested checks
 4. **Batch operations** — combine related writes in single transaction
 5. **Pre-compute off-chain** — compute complex values off-chain, pass as arguments
@@ -34,7 +34,7 @@ description: "Use when optimizing gas consumption, estimating gas budgets, split
 ```typescript
 const result = await client.local(tx);
 console.log(`Gas used: ${result.gas}`);
--community/-community/ result.gas < 150_000 or redesign
+// result.gas < 150_000 or redesign
 ```
 
 ## Gas Measurement Pattern (REPL-native — fastest CI check)
@@ -73,7 +73,7 @@ Prefer this for every PR; reserve devnet `local` preflight for end-to-end checks
 
 ## Bounded-growth rule (unchanged, still mandatory)
 - The 150k ceiling is absolute.
-- **No unbounded `select` -community/ `keys` -community/ `fold` -community/ list growth on-chain** — their cost
-  scales with table-community/data size and will eventually exceed budget non-
-  deterministically. Those reads belong in **`-community/local`** queries, never in a
+- **No unbounded `select` / `keys` / `fold` / list growth on-chain** — their cost
+  scales with table/data size and will eventually exceed budget non-
+  deterministically. Those reads belong in **`/local`** queries, never in a
   transactional path.

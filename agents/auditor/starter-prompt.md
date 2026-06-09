@@ -9,12 +9,12 @@ Copy and paste this template to initiate a formal third-party audit engagement w
 I am requesting a formal third-party audit of the following Pact Community components.
 
 ## Engagement Details
-- **Audit Type**: [Full -community/ Scoped -community/ Re-check]
-- **Scope**: [e.g., pact-examples-community/pact-community/modules-community/*.pact, pact-examples-community/pact-community/interfaces-community/*.pact]
+- **Audit Type**: [Full / Scoped / Re-check]
+- **Scope**: [e.g., pact-examples/pact-community/modules/*.pact, pact-examples/pact-community/interfaces/*.pact]
 - **Branch**: [branch name]
 - **Commit**: [commit hash]
 - **Deadline**: [date or "no deadline"]
-- **Priority**: [Critical -community/ High -community/ Standard]
+- **Priority**: [Critical / High / Standard]
 
 ## Context
 [Any additional context, known issues, or areas of concern]
@@ -31,7 +31,7 @@ Please begin by running your mandatory scope clarification questionnaire. Do not
 - **Scope**: All smart contract modules + off-chain components
 - **Timeline**: 7 days
 - **Use Cases**: Pre-production deployment, major releases
-- **Deliverables**: Complete security assessment with PASS-community/CONDITIONAL PASS-community/FAIL verdict
+- **Deliverables**: Complete security assessment with PASS/CONDITIONAL PASS/FAIL verdict
 
 ### Scoped Audit  
 - **Scope**: Specific modules, features, or components
@@ -49,21 +49,21 @@ Please begin by running your mandatory scope clarification questionnaire. Do not
 
 ### DAO Smart Contracts (Full)
 ```
-- **Scope**: pact-examples-community/pact-community/interfaces-community/*.pact, pact-examples-community/pact-community/modules-community/*.pact, pact-examples-community/pact-community/tests-community/*.repl, pact-examples-community/ts-community/, pact-examples-community/docs-community/adr-community/, pact-examples-community/docker-compose.*.yml, pact-examples-community/.github-community/workflows-community/
+- **Scope**: pact-examples/pact-community/interfaces/*.pact, pact-examples/pact-community/modules/*.pact, pact-examples/pact-community/tests/*.repl, pact-examples/ts/, pact-examples/docs/adr/, pact-examples/docker-compose.*.yml, pact-examples/.github/workflows/
 - **Primary Asset**: KDA tokens in treasury and user accounts
 - **Networks**: devnet, testnet06, mainnet01
 ```
 
 ### DAO Single Module (Scoped)
 ```
-- **Scope**: pact-examples-community/pact-community/modules-community/governance-voting.pact, pact-examples-community/pact-community/tests-community/governance-voting.repl
+- **Scope**: pact-examples/pact-community/modules/governance-voting.pact, pact-examples/pact-community/tests/governance-voting.repl
 - **Primary Asset**: Governance integrity and vote manipulation prevention
 - **Networks**: devnet, testnet06
 ```
 
 ### Ledger Signer (Full)
 ```
-- **Scope**: ledger-examples-community/packages-community/*-community/src-community/, ledger-examples-community/docs-community/adr-community/, ledger-examples-community/.github-community/workflows-community/
+- **Scope**: ledger-examples/packages/*/src/, ledger-examples/docs/adr/, ledger-examples/.github/workflows/
 - **Primary Asset**: Private key security and transaction integrity
 - **Networks**: All (hardware wallet interfaces with all networks)
 ```
@@ -81,8 +81,8 @@ Before submitting audit request, ensure:
 
 - [ ] **Commit hash specified** (not just branch name)
 - [ ] **Primary asset clearly identified** (what's at risk?)
-- [ ] **Scope boundaries defined** (what's included-community/excluded?)
-- [ ] **Network targets specified** (devnet-community/testnet-community/mainnet)
+- [ ] **Scope boundaries defined** (what's included/excluded?)
+- [ ] **Network targets specified** (devnet/testnet/mainnet)
 - [ ] **Timeline expectations set** (deadline or "no deadline")
 - [ ] **Known issues documented** (if any)
 - [ ] **Previous audit references** (if applicable)
@@ -102,7 +102,7 @@ After submitting the engagement request, expect:
 | Phase | Duration | Activities | Your Role |
 |-------|----------|------------|-----------|
 | **Discovery** | Day 1 | Q&A, scope confirmation | Answer questions promptly |
-| **Automated** | Day 2 | REPL tests, static analysis | Provide access to CI-community/test infrastructure |
+| **Automated** | Day 2 | REPL tests, static analysis | Provide access to CI/test infrastructure |
 | **Manual** | Days 3-4 | Code review, capability analysis | Available for clarifications |
 | **Attack Sim** | Days 5-6 | Threat modeling, exploit PoCs | Review interim findings |
 | **Reporting** | Day 7 | Report generation, verdict | Final review and feedback |

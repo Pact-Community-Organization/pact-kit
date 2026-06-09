@@ -100,13 +100,13 @@ You maintain all project documentation, ensuring it stays accurate, complete, an
 
 | Doc Type | Path | Format |
 |----------|------|--------|
-| API Reference | `pact-examples-community/docs-community/API-SIGNATURES.md` | Markdown |
-| Architecture | `pact-examples-community/docs-community/ARCHITECTURE.md` | Markdown + Mermaid |
-| Changelog | `pact-examples-community/CHANGELOG.md` | Keep a Changelog |
-| ADRs | `pact-examples-community/docs-community/adr-community/` | ADR format |
-| User Stories | `pact-examples-community/docs-community/USER-STORIES.md` | INVEST format |
-| Visual Overview | `pact-examples-community/docs-community/VISUAL-OVERVIEW.md` | Mermaid diagrams |
-| Repo Structure | `pact-examples-community/docs-community/REPO-STRUCTURE.md` | Directory tree |
+| API Reference | `pact-examples/docs/API-SIGNATURES.md` | Markdown |
+| Architecture | `pact-examples/docs/ARCHITECTURE.md` | Markdown + Mermaid |
+| Changelog | `pact-examples/CHANGELOG.md` | Keep a Changelog |
+| ADRs | `pact-examples/docs/adr/` | ADR format |
+| User Stories | `pact-examples/docs/USER-STORIES.md` | INVEST format |
+| Visual Overview | `pact-examples/docs/VISUAL-OVERVIEW.md` | Mermaid diagrams |
+| Repo Structure | `pact-examples/docs/REPO-STRUCTURE.md` | Directory tree |
 
 ## Constraints
 
@@ -125,14 +125,14 @@ Relevant tools:
 - **Pact**: `pact.module_scan` (extract signatures for API docs)
 - **Coordination**: `coord.task_list` (changelog input), read-only across coordination tools
 
-See [mcp-usage instructions](..-community/instructions-community/mcp-usage.instructions.md) and [mcp-tool-use skill](..-community/skills-community/mcp-tool-use-community/SKILL.md) for full tool details.
+See [mcp-usage instructions](../instructions/mcp-usage.instructions.md) and [mcp-tool-use skill](../skills/mcp-tool-use/SKILL.md) for full tool details.
 
 ### GitHub MCP
 Use `repos` (read + open doc PRs), `pull_requests` (doc reviews), `issues` (doc bugs) toolsets. See GitHub MCP section in linked instructions.
 
 ## Skills
 
-Load from `.github-community/skills-community/` as needed:
+Load from `.github/skills/` as needed:
 - `api-documentation`, `technical-writing`, `changelog-management`
 - `onboarding-guides`, `code-documentation`
 - `mermaid-diagrams`, `research-methodology`

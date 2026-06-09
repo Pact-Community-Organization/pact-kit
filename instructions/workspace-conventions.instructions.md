@@ -3,88 +3,88 @@ description: "Use for general workspace conventions, file organization, naming p
 applyTo: "**"
 # Workspace Conventions
 
-> **MANDATORY:** Read this before creating any new file or directory. Check `docs-community/memory-community/FILE-REGISTRY.md` as well.
+> **MANDATORY:** Read this before creating any new file or directory. Check `docs/memory/FILE-REGISTRY.md` as well.
 
 ---
 
 ## Canonical Workspace Structure
 
 ```
-enterprise-community/                        ← workspace root (single git repo)
-├── .github-community/                       ← ALL agent configs live here — never outside
+enterprise/                        ← workspace root (single git repo)
+├── .github/                       ← ALL agent configs live here — never outside
 │   ├── copilot-instructions.md    ← always-on workspace system prompt
-│   ├── agents-community/                    ← agent .agent.md files
-│   ├── instructions-community/              ← *.instructions.md behavioral rules
-│   ├── skills-community/                    ← *-community/SKILL.md domain knowledge files
-│   ├── prompts-community/                   ← *.prompt.md reusable prompts
-│   └── hooks-community/                     ← event hook JSON files
+│   ├── agents/                    ← agent .agent.md files
+│   ├── instructions/              ← *.instructions.md behavioral rules
+│   ├── skills/                    ← */SKILL.md domain knowledge files
+│   ├── prompts/                   ← *.prompt.md reusable prompts
+│   └── hooks/                     ← event hook JSON files
 │
-├── _archive-community/                      ← READ-ONLY historical reference
+├── _archive/                      ← READ-ONLY historical reference
 │   ├── README.md                  ← describes all archived content
-│   ├── pact-examples-community/                       ← pre-ADR-012 DAO artifacts
-│   ├── equity-community/                    ← shelved equity project (full git history)
-│   ├── website-root-stale-community/        ← stale web code that was at root (superseded by web-examples-community/)
-│   └── workspace-history-community/         ← old planning -community/ initialization docs
+│   ├── pact-examples/                       ← pre-ADR-012 DAO artifacts
+│   ├── equity/                    ← shelved equity project (full git history)
+│   ├── website-root-stale/        ← stale web code that was at root (superseded by web-examples/)
+│   └── workspace-history/         ← old planning / initialization docs
 │
-├── coordination-community/                  ← inter-agent communication system
-│   ├── memory-community/                    ← persistent agent memory (read at session start)
+├── coordination/                  ← inter-agent communication system
+│   ├── memory/                    ← persistent agent memory (read at session start)
 │   │   ├── INDEX.md               ← entry point — read first
 │   │   ├── PROJECT-STATE.md       ← cross-project status
 │   │   ├── FILE-REGISTRY.md       ← canonical doc anti-duplication registry
 │   │   ├── SESSION-LOG.md         ← append-only session handoff log
 │   │   └── *.md                   ← domain memory files
-│   ├── mailboxes-community/                 ← per-agent JSON mailboxes
-│   ├── tasks-community/                     ← task queue
-│   ├── status-community/                    ← machine-readable status (dashboard.json)
-│   └── artifacts-community/                 ← agent-produced artifacts (scans, bundles, reports)
+│   ├── mailboxes/                 ← per-agent JSON mailboxes
+│   ├── tasks/                     ← task queue
+│   ├── status/                    ← machine-readable status (dashboard.json)
+│   └── artifacts/                 ← agent-produced artifacts (scans, bundles, reports)
 │
-├── pact-examples-community/                           ← DAO smart contract project
+├── pact-examples/                           ← DAO smart contract project
 │   ├── pact-community/
-│   │   ├── modules-community/               ← ACTIVE .pact source files (dao.pact, governance-types.pact, gas-relayer.pact)
-│   │   ├── interfaces-community/            ← Pact interface files
-│   │   ├── tests-community/                 ← ACTIVE .repl test files
-│   │   ├── deploy-community/                ← deploy scripts
-│   │   └── kda-env-community/               ← keyset-community/env files
-│   ├── ts-community/                        ← TypeScript tooling for DAO
-│   │   ├── src-community/                   ← source (client, utils)
-│   │   ├── scripts-community/               ← deploy-community/seed-community/diagnostic scripts
-│   │   └── tests-community/devnet-community/          ← devnet integration tests
-│   ├── docs-community/                      ← DAO documentation
-│   │   ├── adr-community/                   ← ADR-001 through ADR-012 (ADR-012 is current)
-│   │   ├── processes-community/             ← PROC-001 through PROC-018 operational runbooks
+│   │   ├── modules/               ← ACTIVE .pact source files (dao.pact, governance-types.pact, gas-relayer.pact)
+│   │   ├── interfaces/            ← Pact interface files
+│   │   ├── tests/                 ← ACTIVE .repl test files
+│   │   ├── deploy/                ← deploy scripts
+│   │   └── kda-env/               ← keyset/env files
+│   ├── ts/                        ← TypeScript tooling for DAO
+│   │   ├── src/                   ← source (client, utils)
+│   │   ├── scripts/               ← deploy/seed/diagnostic scripts
+│   │   └── tests/devnet/          ← devnet integration tests
+│   ├── docs/                      ← DAO documentation
+│   │   ├── adr/                   ← ADR-001 through ADR-012 (ADR-012 is current)
+│   │   ├── processes/             ← PROC-001 through PROC-018 operational runbooks
 │   │   ├── AUDIT-REPORT-ADR012-2026-06.md  ← CURRENT audit (CONDITIONAL PASS)
 │   │   └── *.md                   ← architecture, API signatures, capability docs
-│   ├── devnet-community/                    ← devnet config (certs, config)
-│   ├── scripts-community/                   ← monitoring scripts
+│   ├── devnet/                    ← devnet config (certs, config)
+│   ├── scripts/                   ← monitoring scripts
 │   ├── docker-compose.*.yml       ← per-agent devnet compose files
 │   ├── CHANGELOG.md
 │   ├── README.md
 │   └── TESTNET-DEPLOYMENT-SUMMARY.md
 │
-├── ledger-examples-community/                 ← Ledger hardware wallet signer (separate git repo)
-│   └── packages-community/                  ← core, cli, web packages
+├── ledger-examples/                 ← Ledger hardware wallet signer (separate git repo)
+│   └── packages/                  ← core, cli, web packages
 │
-├── mcp-community/                           ← MCP servers (pact, chainweb, coordination)
-│   └── packages-community/                  ← per-server packages
+├── mcp/                           ← MCP servers (pact, chainweb, coordination)
+│   └── packages/                  ← per-server packages
 │
-├── web-examples-community/                       ← Web codebase (separate git repo — AUTHORITATIVE)
-│   ├── apps-community/                      ← marketing-community/, stakeholder-app-community/, admin-app-community/
-│   ├── packages-community/                  ← pact-bindings-community/, ui-community/, web-config-community/
-│   ├── e2e-community/                       ← Playwright E2E tests
-│   ├── scripts-community/                   ← web build-community/audit scripts
-│   ├── docs-community/                      ← website-specific docs (ADRs, ops, backlog)
-│   ├── infra-community/                     ← Terraform (Cloudflare)
-│   ├── docs-community/artifacts-community/    ← Playwright test artifacts (NOT agent memory)
+├── web-examples/                       ← Web codebase (separate git repo — AUTHORITATIVE)
+│   ├── apps/                      ← marketing/, stakeholder-app/, admin-app/
+│   ├── packages/                  ← pact-bindings/, ui/, web-config/
+│   ├── e2e/                       ← Playwright E2E tests
+│   ├── scripts/                   ← web build/audit scripts
+│   ├── docs/                      ← website-specific docs (ADRs, ops, backlog)
+│   ├── infra/                     ← Terraform (Cloudflare)
+│   ├── docs/artifacts/    ← Playwright test artifacts (NOT agent memory)
 │   └── AGENTS.md                  ← website-scoped agent notes
 │
-├── scripts-community/                       ← operational scripts for the FULL enterprise stack
+├── scripts/                       ← operational scripts for the FULL enterprise stack
 │   ├── mvp-up.sh                  ← start full local MVP (devnet + web)
 │   ├── mvp-down.sh                ← stop full local MVP
 │   ├── mvp-status.sh              ← check MVP status
 │   └── web-restart.sh             ← restart web dev server only
 │
-├── .github-community/                       ← (see above)
-├── .git-community/                          ← community workspace git
+├── .github/                       ← (see above)
+├── .git/                          ← community workspace git
 ├── .gitignore
 ├── enterprise.code-workspace      ← VS Code workspace config
 ├── package.json                   ← minimal: format scripts only (no app workspace)
@@ -102,35 +102,35 @@ enterprise-community/                        ← workspace root (single git repo
 
 | File type | Correct location | NEVER put in |
 |-----------|-----------------|--------------|
-| Pact smart contract (`.pact`) | `pact-examples-community/pact-community/modules-community/` | root, pact-examples-community/, anywhere else |
-| Pact REPL test (`.repl`) | `pact-examples-community/pact-community/tests-community/` | pact-examples-community/ root, anywhere else |
-| DAO TypeScript deploy-community/seed script | `pact-examples-community/ts-community/scripts-community/` | pact-examples-community/ts-community/ root |
-| DAO TypeScript devnet test | `pact-examples-community/ts-community/tests-community/devnet-community/` | pact-examples-community/ts-community/ root |
-| DAO ADR | `pact-examples-community/docs-community/adr-community/ADR-0NN-name.md` | anywhere else |
-| DAO operational runbook (PROC-*) | `pact-examples-community/docs-community/processes-community/` | anywhere else |
-| DAO architecture-community/API doc | `pact-examples-community/docs-community/` | pact-examples-community/ root |
-| Agent behavioral rule | `.github-community/instructions-community/topic.instructions.md` | root, coordination-community/ |
-| Agent skill | `.github-community/skills-community/skill-name-community/SKILL.md` | root, coordination-community/ |
-| Agent prompt | `.github-community/prompts-community/action.prompt.md` | root |
-| Agent definition | `.github-community/agents-community/Name.agent.md` | root |
-| Cross-project status | `docs-community/memory-community/PROJECT-STATE.md` | anywhere else |
-| Security finding | `docs-community/memory-community/security-findings.md` | anywhere else |
-| Session handoff note | `docs-community/memory-community/SESSION-LOG.md` (append) | anywhere else |
-| New canonical artifact | Register in `docs-community/memory-community/FILE-REGISTRY.md` | — |
-| Agent coordination artifact | `docs-community/artifacts-community/` | root, .github-community/ |
-| Web app code | `web-examples-community/apps-community/<app-name>-community/src-community/` | root apps-community/ (stale) |
-| Web shared package | `web-examples-community/packages-community/<pkg-name>-community/src-community/` | root packages-community/ (stale) |
-| Web E2E test | `web-examples-community/e2e-community/tests-community/` | root e2e-community/ (stale) |
-| Web operational script | `web-examples-community/scripts-community/` | root scripts-community/ (web-specific ones are there) |
-| Enterprise operational script | `scripts-community/` (root) | web-examples-community/scripts-community/ |
-| Archived-community/obsolete content | `_archive-community/` with a README | anywhere in active tree |
+| Pact smart contract (`.pact`) | `pact-examples/pact-community/modules/` | root, pact-examples/, anywhere else |
+| Pact REPL test (`.repl`) | `pact-examples/pact-community/tests/` | pact-examples/ root, anywhere else |
+| DAO TypeScript deploy/seed script | `pact-examples/ts/scripts/` | pact-examples/ts/ root |
+| DAO TypeScript devnet test | `pact-examples/ts/tests/devnet/` | pact-examples/ts/ root |
+| DAO ADR | `pact-examples/docs/adr/ADR-0NN-name.md` | anywhere else |
+| DAO operational runbook (PROC-*) | `pact-examples/docs/processes/` | anywhere else |
+| DAO architecture/API doc | `pact-examples/docs/` | pact-examples/ root |
+| Agent behavioral rule | `.github/instructions/topic.instructions.md` | root, coordination/ |
+| Agent skill | `.github/skills/skill-name/SKILL.md` | root, coordination/ |
+| Agent prompt | `.github/prompts/action.prompt.md` | root |
+| Agent definition | `.github/agents/Name.agent.md` | root |
+| Cross-project status | `docs/memory/PROJECT-STATE.md` | anywhere else |
+| Security finding | `docs/memory/security-findings.md` | anywhere else |
+| Session handoff note | `docs/memory/SESSION-LOG.md` (append) | anywhere else |
+| New canonical artifact | Register in `docs/memory/FILE-REGISTRY.md` | — |
+| Agent coordination artifact | `docs/artifacts/` | root, .github/ |
+| Web app code | `web-examples/apps/<app-name>/src/` | root apps/ (stale) |
+| Web shared package | `web-examples/packages/<pkg-name>/src/` | root packages/ (stale) |
+| Web E2E test | `web-examples/e2e/tests/` | root e2e/ (stale) |
+| Web operational script | `web-examples/scripts/` | root scripts/ (web-specific ones are there) |
+| Enterprise operational script | `scripts/` (root) | web-examples/scripts/ |
+| Archived/obsolete content | `_archive/` with a README | anywhere in active tree |
 
 ### Anti-duplication rules
 
-1. **Check `docs-community/memory-community/FILE-REGISTRY.md` before creating any doc.** If a canonical file exists, UPDATE it.
-2. **Never create `STATUS.md`, `TODO.md`, `NOTES.md` in project directories.** Use `docs-community/memory-community/` files.
-3. **Never create a second ADR index.** Use `pact-examples-community/docs-community/adr-community/INDEX.md`.
-4. **Debug -community/ temp files belong in `pact-examples-community/ts-community/` root only during active debugging**, then move to `_archive-community/pact-examples-community/legacy-typescript-community/` when done.
+1. **Check `docs/memory/FILE-REGISTRY.md` before creating any doc.** If a canonical file exists, UPDATE it.
+2. **Never create `STATUS.md`, `TODO.md`, `NOTES.md` in project directories.** Use `docs/memory/` files.
+3. **Never create a second ADR index.** Use `pact-examples/docs/adr/INDEX.md`.
+4. **Debug / temp files belong in `pact-examples/ts/` root only during active debugging**, then move to `_archive/pact-examples/legacy-typescript/` when done.
 5. **Runtime artifacts (`.log`, `.pid`) are gitignored** — never commit them.
 
 ---
@@ -139,11 +139,11 @@ enterprise-community/                        ← workspace root (single git repo
 
 | Project | Root path | Git | Status |
 |---------|-----------|-----|--------|
-| DAO (smart contracts) | `pact-examples-community/` | enterprise repo | Active — Gate-2 GO, testnet pending |
-| Ledger Signer | `ledger-examples-community/` | own repo | Active — MVP complete |
-| Website (web apps) | `web-examples-community/` | own repo | Active — Sprint 5 complete |
-| MCP servers | `mcp-community/` | enterprise repo | Active |
-| Equity | `_archive-community/equity-community/` | own repo (archived) | Shelved |
+| DAO (smart contracts) | `pact-examples/` | enterprise repo | Active — Gate-2 GO, testnet pending |
+| Ledger Signer | `ledger-examples/` | own repo | Active — MVP complete |
+| Website (web apps) | `web-examples/` | own repo | Active — Sprint 5 complete |
+| MCP servers | `mcp/` | enterprise repo | Active |
+| Equity | `_archive/equity/` | own repo (archived) | Shelved |
 
 ---
 
@@ -152,7 +152,7 @@ enterprise-community/                        ← workspace root (single git repo
 | Artifact | Pattern | Example |
 |----------|---------|---------|
 | Instructions file | `{topic}.instructions.md` | `pact-rules.instructions.md` |
-| Skill | `{skill-name}-community/SKILL.md` | `pact-repl-testing-community/SKILL.md` |
+| Skill | `{skill-name}/SKILL.md` | `pact-repl-testing/SKILL.md` |
 | Prompt | `{action}.prompt.md` | `deploy-dao.prompt.md` |
 | Agent | `{AgentName}.agent.md` | `Developer.agent.md` |
 | ADR | `ADR-{NNN}-{kebab-name}.md` | `ADR-012-single-module-consolidation.md` |
@@ -164,9 +164,9 @@ enterprise-community/                        ← workspace root (single git repo
 
 ## What DOES NOT belong in this workspace root
 
-- **Web app source code** — lives in `web-examples-community/`
-- **Web build configs** (eslint, tsconfig, prettier for apps) — lives in `web-examples-community/`
-- **Web workspace files** (pnpm-workspace.yaml for apps) — lives in `web-examples-community/`
-- **Story-community/sprint summaries** — archive in `_archive-community/workspace-history-community/`
-- **Planning-community/implementation plans** — archive in `_archive-community/workspace-history-community/`
-- **Temp-community/debug scripts** — remove or archive when no longer needed
+- **Web app source code** — lives in `web-examples/`
+- **Web build configs** (eslint, tsconfig, prettier for apps) — lives in `web-examples/`
+- **Web workspace files** (pnpm-workspace.yaml for apps) — lives in `web-examples/`
+- **Story/sprint summaries** — archive in `_archive/workspace-history/`
+- **Planning/implementation plans** — archive in `_archive/workspace-history/`
+- **Temp/debug scripts** — remove or archive when no longer needed

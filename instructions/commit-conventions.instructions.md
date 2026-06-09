@@ -18,7 +18,7 @@ Refs: #issue-number
 - `test` — Adding or modifying tests
 - `docs` — Documentation changes
 - `deploy` — Deployment configuration
-- `ci` — CI-community/CD pipeline changes
+- `ci` — CI/CD pipeline changes
 - `chore` — Maintenance tasks
 
 ### Scopes
@@ -29,9 +29,9 @@ Refs: #issue-number
 
 ## Branch Names
 ```
-{type}-community/{issue-number}-{short-description}
+{type}/{issue-number}-{short-description}
 ```
-Examples: `feat-community/53-dividend-accumulator`, `fix-community/48-voter-count-schema`
+Examples: `feat/53-dividend-accumulator`, `fix/48-voter-count-schema`
 
 ## PR Titles
 ```

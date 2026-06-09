@@ -21,7 +21,7 @@ Multiple shareholders per chain (varying balances, roles, voting behavior).
 
 ## Simulation Design
 
-Use **time manipulation** (`env-chain-data` -community/ block time advancement) to simulate multiple years of operation. Each simulated "year" exercises a different combination of conditions (normal operations, mid-cycle config changes, interruptions, edge cases).
+Use **time manipulation** (`env-chain-data` / block time advancement) to simulate multiple years of operation. Each simulated "year" exercises a different combination of conditions (normal operations, mid-cycle config changes, interruptions, edge cases).
 
 ## Scenario Matrix — Every Permutation Required
 
@@ -74,7 +74,7 @@ Use **time manipulation** (`env-chain-data` -community/ block time advancement) 
 - Deactivate during active voting (rejection)
 - Verify final tally matches sum of all chain tallies exactly
 - **Year 2 simulation**: Admin changes config (review_days, voting_days, quorum_pct) between proposals — verify new config takes effect
-- **Year 3 simulation**: Admin creates proposal, changes time parameters mid-review, cancels-community/deactivates, creates new proposal
+- **Year 3 simulation**: Admin creates proposal, changes time parameters mid-review, cancels/deactivates, creates new proposal
 - Multiple proposal cycles across simulated years
 
 ### 4. Admin Operations
@@ -106,25 +106,25 @@ Use **time manipulation** (`env-chain-data` -community/ block time advancement) 
 - Guard enforcement on every guarded function
 - Double-initialization rejection (all modules)
 - Hub-only functions called from satellite (rejection)
-- Zero and negative amounts on all transfer-community/buy-community/declare functions
+- Zero and negative amounts on all transfer/buy/declare functions
 - Precision boundary: 12-decimal-place amounts
 - Maximum possible values (near total supply)
 - Empty state operations (claim with no dividends, vote with no proposal)
 
 ## Deliverable
 
-**`docs-community/E2E-AUDIT-REPORT.md`** containing:
+**`docs/E2E-AUDIT-REPORT.md`** containing:
 
-1. **Executive Summary**: Overall pass-community/fail, total scenarios, coverage metrics
+1. **Executive Summary**: Overall pass/fail, total scenarios, coverage metrics
 2. **Environment**: Devnet config, deploy hashes, chain IDs used
 3. **Scenario Results Table**: Every individual test case with:
    - Scenario ID (e.g., `TOK-001`, `DIV-015`, `VOT-032`)
-   - Category (Token -community/ Dividend -community/ Voting -community/ Admin -community/ Gas Station -community/ Integration)
+   - Category (Token / Dividend / Voting / Admin / Gas Station / Integration)
    - Chain(s) involved
    - Description
    - Expected result
    - Actual result
-   - **PASS -community/ FAIL**
+   - **PASS / FAIL**
    - Gas consumed
    - Transaction hash(es)
 4. **Failed Scenario Details**: For each failure — root cause, affected module, fix applied

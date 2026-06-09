@@ -1,6 +1,6 @@
 ---
 description: "Use when working on the DAO project modules (governance-types, governance-token, distribution-module, governance-voting, gas-relayer). Domain-specific knowledge, module relationships, and business rules."
-applyTo: ["pact-examples-community/**"]
+applyTo: ["pact-examples/**"]
 ---
 # DAO Domain Knowledge
 
@@ -20,13 +20,13 @@ applyTo: ["pact-examples-community/**"]
 ## Cross-Module Dependencies
 - `distribution-module` reads balances from `governance-token`
 - `governance-voting` reads balances from `governance-token`
-- `governance-token` credit-community/debit must update dividend correction factors
+- `governance-token` credit/debit must update dividend correction factors
 - Config changes in `governance-voting` must align with tally schema
 
 ## File Locations
-- Pact modules: `pact-examples-community/pact-community/modules-community/`
-- Pact interfaces: `pact-examples-community/pact-community/interfaces-community/`
-- REPL tests: `pact-examples-community/pact-community/tests-community/`
-- Deploy scripts: `pact-examples-community/pact-community/deploy-community/`
-- TypeScript: `pact-examples-community/ts-community/`
-- Documentation: `pact-examples-community/docs-community/`
+- Pact modules: `pact-examples/pact-community/modules/`
+- Pact interfaces: `pact-examples/pact-community/interfaces/`
+- REPL tests: `pact-examples/pact-community/tests/`
+- Deploy scripts: `pact-examples/pact-community/deploy/`
+- TypeScript: `pact-examples/ts/`
+- Documentation: `pact-examples/docs/`

@@ -27,7 +27,7 @@ Severity is determined by combining **Impact** and **Likelihood** assessments:
 - Cross-chain fund redirections
 
 ### Medium Impact  
-- **Partial fund loss**: Limited theft or user-community/treasury fund exposure
+- **Partial fund loss**: Limited theft or user/treasury fund exposure
 - **Temporary system disruption**: Protocol can be restored but with significant effort
 - **Economic manipulation**: Unfair advantage but not total system compromise
 - **Moderate data exposure**: Non-sensitive user information leaked
@@ -188,7 +188,7 @@ Consider but don't automatically change severity:
 - **Public disclosure**: Risk of copycat attacks may increase urgency
 - **Business impact**: Reputation or partnership effects
 
-## Special Considerations for Pact 5 -community/ KDA-CE
+## Special Considerations for Pact 5 / KDA-CE
 
 ### Critical Pact 5 Patterns (Always HIGH or CRITICAL)
 - **Read-only context violations**: DML in `try` blocks or `enforce` arguments
@@ -239,7 +239,7 @@ Consider but don't automatically change severity:
 - **Exploit proof**: REPL or devnet demonstration where possible
 - **Impact analysis**: Detailed explanation of potential consequences
 - **Remediation guidance**: Specific technical recommendations
-- **Status tracking**: Open-community/Acknowledged-community/Fixed-community/Verified-community/Won't Fix
+- **Status tracking**: Open/Acknowledged/Fixed/Verified/Won't Fix
 
 ### Severity Appeals Process:
 1. **Clear justification required**: Specific technical reasoning for severity change
