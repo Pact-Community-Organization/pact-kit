@@ -36,7 +36,7 @@ description: "Pact 5 interface definition and implementation — fungible-v2, cr
 ## Key Interfaces
 - `fungible-v2` — Token standard (transfer, balance, etc.)
 - `fungible-xchain-v1` — Cross-chain transfer support
-- `dao-types` — Project-specific shared types for DAO modules
+- `governance-types` — Project-specific shared types for DAO modules
 
 ## Rules
 - Interfaces cannot be upgraded once deployed

@@ -10,12 +10,12 @@
 I am requesting a formal third-party audit of the following Pact Community components.
 
 ## Engagement Details
-- **Audit Type**: [Full / Scoped / Re-check]
-- **Scope**: pact-examples/pact/modules/*.pact, pact-examples/pact/interfaces/*.pact
+- **Audit Type**: [Full -community/ Scoped -community/ Re-check]
+- **Scope**: pact-examples-community/pact-community/modules-community/*.pact, pact-examples-community/pact-community/interfaces-community/*.pact
 - **Branch**: main
 - **Commit**: [current HEAD commit hash]
 - **Deadline**: [date or "no deadline"]
-- **Priority**: [Critical / High / Standard]
+- **Priority**: [Critical -community/ High -community/ Standard]
 
 ## Notes
 [Any additional context, known issues, or areas of concern]
@@ -30,7 +30,7 @@ Please begin by running your mandatory scope clarification questionnaire. Do not
 | Type | Scope | Timeline | Use Case |
 |------|-------|----------|----------|
 | **Full** | All modules + off-chain | 7 days | Pre-production deployment |
-| **Scoped** | Specific modules/features | 3-5 days | Feature additions, bug fixes |
+| **Scoped** | Specific modules-community/features | 3-5 days | Feature additions, bug fixes |
 | **Re-check** | Previously audited code | 1-2 days | Post-remediation verification |
 
 ## Required Workspace Paths
@@ -38,28 +38,28 @@ Please begin by running your mandatory scope clarification questionnaire. Do not
 ### For DAO Audit
 ```
 Key Paths to Review:
-- pact/interfaces/dao-types.pact          (Core schema and types)
-- pact/modules/dao-token.pact             (Token and account management)
-- pact/modules/dao-dividend.pact          (Dividend accumulator)
-- pact/modules/dao-voting.pact            (Governance and proposals)
-- pact/modules/dao-gas-station.pact       (Gas payment)
-- pact/tests/*.repl                       (Test coverage)
-- ts/                                     (TypeScript integration)
-- docs/adr/                               (Architecture decisions)
-- docs/ARCHITECTURE.md                    (System overview)
+- pact-community/interfaces-community/governance-types.pact          (Core schema and types)
+- pact-community/modules-community/governance-token.pact             (Token and account management)
+- pact-community/modules-community/distribution-module.pact          (Dividend accumulator)
+- pact-community/modules-community/governance-voting.pact            (Governance and proposals)
+- pact-community/modules-community/gas-relayer.pact       (Gas payment)
+- pact-community/tests-community/*.repl                       (Test coverage)
+- ts-community/                                     (TypeScript integration)
+- docs-community/adr-community/                               (Architecture decisions)
+- docs-community/ARCHITECTURE.md                    (System overview)
 - docker-compose.*.yml                    (Infrastructure)
-- .github/workflows/                      (CI/CD)
+- .github-community/workflows-community/                      (CI-community/CD)
 ```
 
 ### For Ledger Signer Audit  
 ```
 Key Paths to Review:
-- packages/core/src/                      (Core library)
-- packages/cli/src/                       (CLI tool)
-- packages/web/src/                       (Web interface)
-- docs/adr/                               (Architecture decisions)
-- tests/                                  (Test suites)
-- .github/workflows/                      (CI/CD)
+- packages-community/core-community/src-community/                      (Core library)
+- packages-community/cli-community/src-community/                       (CLI tool)
+- packages-community/web-community/src-community/                       (Web interface)
+- docs-community/adr-community/                               (Architecture decisions)
+- tests-community/                                  (Test suites)
+- .github-community/workflows-community/                      (CI-community/CD)
 ```
 
 ## Automated Tools & Commands
@@ -67,7 +67,7 @@ Key Paths to Review:
 ### REPL Test Execution
 ```bash
 # Execute all REPL tests
-for f in pact/tests/*.repl; do 
+for f in pact-community/tests-community/*.repl; do 
     echo "Testing $f..."
     pact "$f"
     if [ $? -ne 0 ]; then
@@ -92,20 +92,20 @@ cd ts && npm run test:devnet
 #### Pact 5 Trap Detection
 ```bash
 # Read-only violations
-grep -r "try.*\(insert\|update\|write\|with-capability\)" pact/
+grep -r "try.*\(insert\|update\|write\|with-capability\)" pact-community/
 
 # Binary + operator misuse  
-grep -r "+ .* +.*" pact/
+grep -r "+ .* +.*" pact-community/
 
 # pact-id as sole guard
-grep -r "(enforce (= (pact-id)" pact/
-grep -r "pact-id" pact/ | grep -v "require-capability"
+grep -r "(enforce (= (pact-id)" pact-community/
+grep -r "pact-id" pact-community/ | grep -v "require-capability"
 
 # Built-in name collisions
-grep -r "\(let.*\|bind.*\) \(exp\|abs\|log\|mod\|round\|ln\|sqrt\|floor\|ceiling\)" pact/
+grep -r "\(let.*\|bind.*\) \(exp\|abs\|log\|mod\|round\|ln\|sqrt\|floor\|ceiling\)" pact-community/
 
 # Unguarded admin operations
-grep -r "governance\|admin" pact/ | grep -v "capability\|with-capability"
+grep -r "governance\|admin" pact-community/ | grep -v "capability\|with-capability"
 ```
 
 ### Gas Measurement Commands
@@ -140,9 +140,9 @@ docker compose -f docker-compose.auditor.yml down -v
 
 Please provide answers to all 12 mandatory questions:
 
-1. **Exact Scope**: Which files/modules are in-scope? (provide specific paths)
+1. **Exact Scope**: Which files-community/modules are in-scope? (provide specific paths)
 2. **Primary Asset**: What assets are at risk? (KDA tokens, governance, user data)
-3. **Networks**: Which environments should be considered? (devnet/testnet/mainnet)
+3. **Networks**: Which environments should be considered? (devnet-community/testnet-community/mainnet)
 4. **Privileged Keys**: Who holds admin keys? What is the governance model?
 5. **Formal Invariants**: Are there documented properties that must always hold?
 6. **Threat Model**: What attacker capabilities should be assumed?
@@ -199,10 +199,10 @@ I will not proceed with code review until ALL questions are answered.
 ## Emergency Procedures
 
 ### Critical Finding Discovery
-1. **Immediate notification**: Inform Orchestrator via docs/mailboxes/
+1. **Immediate notification**: Inform Orchestrator via docs-community/mailboxes-community/
 2. **Halt review**: Pause audit until finding confirmed
 3. **Isolate issue**: Create minimal PoC reproducer
-4. **Document impact**: Assess fund/governance risk
+4. **Document impact**: Assess fund-community/governance risk
 5. **Recommend action**: Suggest immediate mitigations
 
 ### Scope Ambiguity
@@ -234,7 +234,7 @@ I will not proceed with code review until ALL questions are answered.
 
 ### Before Report Generation
 - [ ] All findings have specific evidence
-- [ ] All CRITICAL/HIGH findings have PoC exploits
+- [ ] All CRITICAL-community/HIGH findings have PoC exploits
 - [ ] Severity classifications reviewed for consistency
 - [ ] Remediation guidance is specific and actionable
 

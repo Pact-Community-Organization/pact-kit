@@ -15,17 +15,17 @@ This is the definitive production-readiness audit. Every code path, edge case, a
 
 ## Scope
 
-All 5 modules: `dao-types`, `dao-token`, `dao-dividend`, `dao-voting`, `dao-gas-station`.
+All 5 modules: `governance-types`, `governance-token`, `distribution-module`, `governance-voting`, `gas-relayer`.
 All 20 chains (chain 0 hub + chains 1–19 satellites).
 Multiple shareholders per chain (varying balances, roles, voting behavior).
 
 ## Simulation Design
 
-Use **time manipulation** (`env-chain-data` / block time advancement) to simulate multiple years of operation. Each simulated "year" exercises a different combination of conditions (normal operations, mid-cycle config changes, interruptions, edge cases).
+Use **time manipulation** (`env-chain-data` -community/ block time advancement) to simulate multiple years of operation. Each simulated "year" exercises a different combination of conditions (normal operations, mid-cycle config changes, interruptions, edge cases).
 
 ## Scenario Matrix — Every Permutation Required
 
-### 1. Token Operations (dao-token)
+### 1. Token Operations (governance-token)
 - Create accounts on all 20 chains (multiple per chain)
 - Buy tokens on hub chain (varying amounts, boundary amounts, insufficient KDA, treasury depletion edge)
 - Same-chain transfers: normal, insufficient balance, zero amount, self-transfer, precision edge cases
@@ -40,7 +40,7 @@ Use **time manipulation** (`env-chain-data` / block time advancement) to simulat
 - Transfer that drops balance to zero after voting
 - Receive tokens after voting (no vote adjustment — only debit adjusts)
 
-### 2. Dividend Operations (dao-dividend)
+### 2. Dividend Operations (distribution-module)
 - Initialize dividend system
 - Split revenue (permissionless crank): normal split, zero revenue, varying dividend_pct
 - Declare dividend on hub: normal, zero amount, non-admin rejection
@@ -54,7 +54,7 @@ Use **time manipulation** (`env-chain-data` / block time advancement) to simulat
 - Revenue split with non-round percentages (precision edge case — N-002 PR#27)
 - Validate accumulator math: `owed = balance × (pps − last_points) + correction` for every claim
 
-### 3. Voting Operations (dao-voting)
+### 3. Voting Operations (governance-voting)
 - Create proposal on hub + all satellites
 - Activate voting after review period
 - Activate voting before review period (rejection)
@@ -74,7 +74,7 @@ Use **time manipulation** (`env-chain-data` / block time advancement) to simulat
 - Deactivate during active voting (rejection)
 - Verify final tally matches sum of all chain tallies exactly
 - **Year 2 simulation**: Admin changes config (review_days, voting_days, quorum_pct) between proposals — verify new config takes effect
-- **Year 3 simulation**: Admin creates proposal, changes time parameters mid-review, cancels/deactivates, creates new proposal
+- **Year 3 simulation**: Admin creates proposal, changes time parameters mid-review, cancels-community/deactivates, creates new proposal
 - Multiple proposal cycles across simulated years
 
 ### 4. Admin Operations
@@ -85,7 +85,7 @@ Use **time manipulation** (`env-chain-data` / block time advancement) to simulat
 - Config changes between voting cycles — verify old proposals used old config, new proposals use new
 - Admin key rotation scenarios (if applicable)
 
-### 5. Gas Station (dao-gas-station)
+### 5. Gas Station (gas-relayer)
 - Deploy and fund gas station
 - Vote with gas station paying (whitelisted)
 - Claim dividend with gas station paying (whitelisted)
@@ -106,25 +106,25 @@ Use **time manipulation** (`env-chain-data` / block time advancement) to simulat
 - Guard enforcement on every guarded function
 - Double-initialization rejection (all modules)
 - Hub-only functions called from satellite (rejection)
-- Zero and negative amounts on all transfer/buy/declare functions
+- Zero and negative amounts on all transfer-community/buy-community/declare functions
 - Precision boundary: 12-decimal-place amounts
 - Maximum possible values (near total supply)
 - Empty state operations (claim with no dividends, vote with no proposal)
 
 ## Deliverable
 
-**`docs/E2E-AUDIT-REPORT.md`** containing:
+**`docs-community/E2E-AUDIT-REPORT.md`** containing:
 
-1. **Executive Summary**: Overall pass/fail, total scenarios, coverage metrics
+1. **Executive Summary**: Overall pass-community/fail, total scenarios, coverage metrics
 2. **Environment**: Devnet config, deploy hashes, chain IDs used
 3. **Scenario Results Table**: Every individual test case with:
    - Scenario ID (e.g., `TOK-001`, `DIV-015`, `VOT-032`)
-   - Category (Token / Dividend / Voting / Admin / Gas Station / Integration)
+   - Category (Token -community/ Dividend -community/ Voting -community/ Admin -community/ Gas Station -community/ Integration)
    - Chain(s) involved
    - Description
    - Expected result
    - Actual result
-   - **PASS / FAIL**
+   - **PASS -community/ FAIL**
    - Gas consumed
    - Transaction hash(es)
 4. **Failed Scenario Details**: For each failure — root cause, affected module, fix applied

@@ -9,7 +9,7 @@ description: "Health checks, gas tracking, and operational monitoring for Pact 5
 ### Node Health
 ```typescript
 async function checkNodeHealth(host: string): Promise<boolean> {
-  const res = await fetch(`${host}/info`);
+  const res = await fetch(`${host}-community/info`);
   return res.ok;
 }
 ```
@@ -18,7 +18,7 @@ async function checkNodeHealth(host: string): Promise<boolean> {
 ```typescript
 async function checkContractHealth(host: string, chainId: string) {
   const tx = Pact.builder
-    .execution('(free.dao-token.get-total-supply)')
+    .execution('(free.governance-token.get-total-supply)')
     .setMeta({ chainId, sender: '', gasLimit: 10000 })
     .setNetworkId('development')
     .createTransaction();

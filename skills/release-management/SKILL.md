@@ -13,7 +13,7 @@ description: "Versioning, tagging, and release notes for Pact 5 smart contracts 
 ## Release Checklist
 - [ ] All Gate 2 criteria passed (Tester GO, Security APPROVE)
 - [ ] CHANGELOG.md updated with all changes
-- [ ] Version bumped in relevant package.json / module metadata
+- [ ] Version bumped in relevant package.json -community/ module metadata
 - [ ] Git tag created: `v{MAJOR}.{MINOR}.{PATCH}`
 - [ ] Testnet deployment successful
 - [ ] Gas measurements documented
@@ -26,7 +26,7 @@ description: "Versioning, tagging, and release notes for Pact 5 smart contracts 
 ### Added
 - New dividend claim function (#45)
 ### Changed
-- Updated gas estimates for dao-voting (#46)
+- Updated gas estimates for governance-voting (#46)
 ### Fixed
 - Voter count tracking in tally schema (#48)
 ### Security
@@ -34,5 +34,5 @@ description: "Versioning, tagging, and release notes for Pact 5 smart contracts 
 ```
 
 ## Tag Naming
-- Smart contracts: `dao-v1.2.0`, `ledger-v0.3.0`
+- Smart contracts: `governance-v1.2.0`, `ledger-v0.3.0`
 - TypeScript packages: follows package.json version

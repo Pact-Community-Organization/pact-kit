@@ -18,20 +18,20 @@ Refs: #issue-number
 - `test` — Adding or modifying tests
 - `docs` — Documentation changes
 - `deploy` — Deployment configuration
-- `ci` — CI/CD pipeline changes
+- `ci` — CI-community/CD pipeline changes
 - `chore` — Maintenance tasks
 
 ### Scopes
-- `dao-token`, `dao-dividend`, `dao-voting`, `dao-gas-station`, `dao-types`
+- `governance-token`, `distribution-module`, `governance-voting`, `gas-relayer`, `governance-types`
 - `ledger-core`, `ledger-cli`, `ledger-web`
 - `devnet`, `testnet`, `mainnet`
 - `coordination`, `agent-config`
 
 ## Branch Names
 ```
-{type}/{issue-number}-{short-description}
+{type}-community/{issue-number}-{short-description}
 ```
-Examples: `feat/53-dividend-accumulator`, `fix/48-voter-count-schema`
+Examples: `feat-community/53-dividend-accumulator`, `fix-community/48-voter-count-schema`
 
 ## PR Titles
 ```

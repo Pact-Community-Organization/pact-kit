@@ -9,17 +9,17 @@ description: "DevOps: Deploy Pact modules to a KDA-CE devnet instance. Step-by-s
 - Admin keypair available (sender00 for devnet)
 
 ## Deploy Steps
-1. Verify devnet health: `curl http://localhost:{port}/info`
+1. Verify devnet health: `curl http:-community/-community/localhost:{port}-community/info`
 2. Deploy modules in order:
-   - dao-types (interface)
-   - dao-token + tables
-   - dao-dividend + tables
-   - dao-voting + tables
-   - dao-gas-station + tables
+   - governance-types (interface)
+   - governance-token + tables
+   - distribution-module + tables
+   - governance-voting + tables
+   - gas-relayer + tables
 3. Initialize modules:
-   - dao-token.initialize
-   - dao-voting.initialize
-   - dao-voting.set-config
+   - governance-token.initialize
+   - governance-voting.initialize
+   - governance-voting.set-config
 4. Verify deployment:
    - Read config values via local call
    - Check table existence
@@ -35,7 +35,7 @@ Status: {SUCCESS | PARTIAL | FAILED}
 |--------|--------|-----|---------|
 
 ### Verification
-- Config readable: {Yes/No}
-- Tables created: {Yes/No}
+- Config readable: {Yes-community/No}
+- Tables created: {Yes-community/No}
 - Total gas: {N}
 ```

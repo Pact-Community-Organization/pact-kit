@@ -27,7 +27,7 @@ Severity is determined by combining **Impact** and **Likelihood** assessments:
 - Cross-chain fund redirections
 
 ### Medium Impact  
-- **Partial fund loss**: Limited theft or user/treasury fund exposure
+- **Partial fund loss**: Limited theft or user-community/treasury fund exposure
 - **Temporary system disruption**: Protocol can be restored but with significant effort
 - **Economic manipulation**: Unfair advantage but not total system compromise
 - **Moderate data exposure**: Non-sensitive user information leaked
@@ -121,7 +121,7 @@ Severity is determined by combining **Impact** and **Likelihood** assessments:
 - Would exploit disrupt normal operations significantly?
 
 ### MEDIUM
-- **Criteria**: Various Impact/Likelihood combinations not qualifying as HIGH or higher
+- **Criteria**: Various Impact-community/Likelihood combinations not qualifying as HIGH or higher
 - **Deployment Impact**: Should be addressed but may be accepted with documentation
 - **Remediation Timeline**: Next development sprint (2-4 weeks)
 - **Examples**:
@@ -188,7 +188,7 @@ Consider but don't automatically change severity:
 - **Public disclosure**: Risk of copycat attacks may increase urgency
 - **Business impact**: Reputation or partnership effects
 
-## Special Considerations for Pact 5 / KDA-CE
+## Special Considerations for Pact 5 -community/ KDA-CE
 
 ### Critical Pact 5 Patterns (Always HIGH or CRITICAL)
 - **Read-only context violations**: DML in `try` blocks or `enforce` arguments
@@ -239,7 +239,7 @@ Consider but don't automatically change severity:
 - **Exploit proof**: REPL or devnet demonstration where possible
 - **Impact analysis**: Detailed explanation of potential consequences
 - **Remediation guidance**: Specific technical recommendations
-- **Status tracking**: Open/Acknowledged/Fixed/Verified/Won't Fix
+- **Status tracking**: Open-community/Acknowledged-community/Fixed-community/Verified-community/Won't Fix
 
 ### Severity Appeals Process:
 1. **Clear justification required**: Specific technical reasoning for severity change
@@ -258,11 +258,11 @@ Severity: CRITICAL (High Impact + High Likelihood)
 - Impact: HIGH (Complete treasury fund loss - $500K+ at risk)
 - Likelihood: HIGH (Single transaction, no authentication required)
 
-Location: dao-dividend.pact:89
+Location: distribution-module.pact:89
 Evidence: `(coin.transfer-create treasury account guard amount)` 
 Code lacks capability guard - any user can drain treasury.
 
-Exploit: `(dao-dividend.claim-dividend "attacker" 1000000.0)`
+Exploit: `(distribution-module.claim-dividend "attacker" 1000000.0)`
 PoC: Verified on devnet - drained entire treasury in one transaction
 ```
 
@@ -274,7 +274,7 @@ Severity: HIGH (High Impact + Medium Likelihood)
 - Impact: HIGH (Governance takeover possible)
 - Likelihood: MEDIUM (Requires significant stake and timing)
 
-Location: dao-voting.pact:156
+Location: governance-voting.pact:156
 Evidence: Vote weight not properly validated against token balance
 Exploit requires purchasing 30%+ stake but enables permanent control.
 ```
@@ -287,7 +287,7 @@ Severity: MEDIUM (Medium Impact + Medium Likelihood)
 - Impact: MEDIUM (DoS potential under high load)  
 - Likelihood: MEDIUM (Requires coordinated transaction volume)
 
-Location: dao-token.pact:234
+Location: governance-token.pact:234
 Evidence: `(select token-table (constantly true))` unbounded
 Could consume excessive gas or hit 150k limit during high activity.
 ```

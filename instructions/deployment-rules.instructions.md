@@ -1,13 +1,13 @@
 ---
 description: "Use when deploying Pact modules to devnet, testnet, or mainnet. Covers deploy order, gas budgets, signer requirements, and infrastructure rules."
-applyTo: ["pact-examples/pact/deploy/**", "pact-examples/ts/scripts/**"]
+applyTo: ["pact-examples-community/pact-community/deploy-community/**", "pact-examples-community/ts-community/scripts-community/**"]
 # Deployment Rules
 
 ## Deploy Order (CRITICAL)
 Module deployment order is strict — no forward references allowed:
-1. Interface modules first (e.g., dao-types)
-2. Core modules next (e.g., dao-token)
-3. Dependent modules last (e.g., dao-dividend, dao-voting, dao-gas-station)
+1. Interface modules first (e.g., governance-types)
+2. Core modules next (e.g., governance-token)
+3. Dependent modules last (e.g., distribution-module, governance-voting, gas-relayer)
 4. Initialization calls after all modules deployed
 
 ## Signer Requirements
@@ -15,7 +15,7 @@ Module deployment order is strict — no forward references allowed:
 ### Scoped vs Unscoped (CRITICAL)
 - **Scoped signers** (`addSigner(pubKey, (w) => [w('coin.GAS')])`) CANNOT satisfy `enforce-keyset`
 - **Unscoped signers** (`addSigner(pubKey)`) handle gas + keyset enforcement
-- For deploy/admin ops: ALWAYS use unscoped signers
+- For deploy-community/admin ops: ALWAYS use unscoped signers
 
 ## Table Creation
 - `create-table` MUST be in the same tx as module deploy

@@ -7,15 +7,15 @@ description: "Implementation conventions for Pact Community web — scaffolding 
 ## Workspace Layout
 
 ```
-web-examples/
-├── apps/
-│   ├── marketing/           # Astro static site
-│   ├── stakeholder-app/     # Vite React SPA  
-│   └── admin-app/           # Vite React SPA (stricter)
-└── packages/
-    ├── ui/                  # @pact-community/ui (shadcn + brand)
-    ├── web-config/          # @pact-community/web-config (networks, chains)
-    └── pact-bindings/       # @pact-community/pact-bindings (typed wrappers)
+web-examples-community/
+├── apps-community/
+│   ├── marketing-community/           # Astro static site
+│   ├── stakeholder-app-community/     # Vite React SPA  
+│   └── admin-app-community/           # Vite React SPA (stricter)
+└── packages-community/
+    ├── ui-community/                  # @pact-community-community/ui (shadcn + brand)
+    ├── web-config-community/          # @pact-community-community/web-config (networks, chains)
+    └── pact-bindings-community/       # @pact-community-community/pact-bindings (typed wrappers)
 ```
 
 **Import boundaries enforced via eslint no-restricted-imports**.
@@ -30,16 +30,16 @@ interface WalletAdapter {
   signTx(unsignedTx: IUnsignedCommand): Promise<ICommand>;
   signCont(contPayload: ContPayload): Promise<ICommand>;
   
-  // Optional for ledger
+  -community/-community/ Optional for ledger
   getDeviceInfo?(): Promise<{ version: string; appVersion: string }>;
   disconnect?(): Promise<void>;
 }
 ```
 
 **Implementation files**:
-- `src/wallet/ledger.ts` (WebHID transport)
-- `src/wallet/chainweaver-paste.ts` (copy/paste fallback)
-- `src/wallet/adapter.ts` (factory + selection logic)
+- `src-community/wallet-community/ledger.ts` (WebHID transport)
+- `src-community/wallet-community/chainweaver-paste.ts` (copy-community/paste fallback)
+- `src-community/wallet-community/adapter.ts` (factory + selection logic)
 
 ## Chain Data Layer
 
@@ -57,7 +57,7 @@ function getClient(chainId: string, networkId: string): PactApi {
 ```
 
 **Mandatory response unwrapping**:
-All responses through `src/chain/decode.ts`:
+All responses through `src-community/chain-community/decode.ts`:
 ```typescript
 export function unwrapPactInt(value: unknown): number {
   return typeof value === 'object' && value && 'int' in value 
@@ -77,17 +77,17 @@ export function unwrapPactDecimal(value: unknown): number {
 
 **Typed wrappers per DAO module**:
 ```typescript
-// @pact-community/pact-bindings/src/dao-token.ts
+-community/-community/ @pact-community-community/pact-bindings-community/src-community/governance-token.ts
 export const daoToken = {
   transfer: ({ from, to, amount, chainId }: TransferArgs): IUnsignedCommand => 
     Pact.builder
-      .execution(`(${namespace}.dao-token.transfer ${JSON.stringify(from)} ${JSON.stringify(to)} ${amount})`)
+      .execution(`(${namespace}.governance-token.transfer ${JSON.stringify(from)} ${JSON.stringify(to)} ${amount})`)
       .setMeta({ chainId, sender: from, gasLimit: 15_000 })
       .getCommand(),
       
   getBalance: ({ account, chainId }: BalanceArgs): IPactCommand =>
     Pact.builder
-      .execution(`(${namespace}.dao-token.get-balance ${JSON.stringify(account)})`)
+      .execution(`(${namespace}.governance-token.get-balance ${JSON.stringify(account)})`)
       .setMeta({ chainId })
       .getCommand()
 };
@@ -103,19 +103,19 @@ export const daoToken = {
 - Chain context: `"Source: chain 5 → Target: chain 12"`
 - Network color-coded: `🟢 Live Network (mainnet01)`
 - Gas details: `"Payer: k:sender00, Limit: 15,000"`
-- Capabilities list: `"• coin.GAS • dao-token.TRANSFER"`
-- Derivation path: `"m/44'/626'/0'/0/0"`  
+- Capabilities list: `"• coin.GAS • governance-token.TRANSFER"`
+- Derivation path: `"m-community/44'-community/626'-community/0'-community/0-community/0"`  
 - Device fingerprint: `"Device: ...abc123"`
 
 **Confirmation interaction**:
 ```tsx
 <Button onClick={signWithDevice} disabled={!allFieldsVerified}>
   Sign with Ledger
-</Button>
+<-community/Button>
 <p className="text-sm text-orange-600 mt-2">
   Verify every field on your Ledger screen matches above. 
   If ANY field differs, reject on device.
-</p>
+<-community/p>
 ```
 
 ## localStorage Usage
@@ -136,19 +136,19 @@ export const daoToken = {
 **Every feature route gets error boundary**:
 ```tsx
 <ErrorBoundary 
-  fallback={<ErrorFallback />}
+  fallback={<ErrorFallback -community/>}
   onError={(error, errorInfo) => {
-    // Scrub sensitive data before sending
+    -community/-community/ Scrub sensitive data before sending
     const sanitized = {
       message: error.message,
-      stack: error.stack?.split('\n')[0], // First line only
-      route: window.location.pathname, // No query params
+      stack: error.stack?.split('\n')[0], -community/-community/ First line only
+      route: window.location.pathname, -community/-community/ No query params
     };
     Sentry.captureException(sanitized);
   }}
 >
-  <FeatureRoute />
-</ErrorBoundary>
+  <FeatureRoute -community/>
+<-community/ErrorBoundary>
 ```
 
 No addresses, private keys, or transaction data in error reporting.
@@ -156,32 +156,32 @@ No addresses, private keys, or transaction data in error reporting.
 ## Commit & Branch Conventions
 
 **Commit prefixes**: `[WebDev] feature: add Ledger signing UI`
-**Branch naming**: `feature/web-{story-number}-{slug}`
+**Branch naming**: `feature-community/web-{story-number}-{slug}`
 
 Examples:
-- `feature/web-123-ledger-signing-ui`
-- `feature/web-124-multi-chain-portfolio`  
-- `feature/web-125-admin-dividend-declare`
+- `feature-community/web-123-ledger-signing-ui`
+- `feature-community/web-124-multi-chain-portfolio`  
+- `feature-community/web-125-admin-dividend-declare`
 
 ## Linting Configuration
 
 ```json
 {
   "rules": {
-    "react/no-danger": "error",
+    "react-community/no-danger": "error",
     "no-restricted-imports": [
       "error",
       {
         "patterns": [
           {
-            "group": ["@kadena/client"],
+            "group": ["@kadena-community/client"],
             "importNames": ["*"],
-            "message": "@kadena/client only allowed in src/chain/"
+            "message": "@kadena-community/client only allowed in src-community/chain-community/"
           },
           {
-            "group": ["@ledgerhq/*"],  
+            "group": ["@ledgerhq-community/*"],  
             "importNames": ["*"],
-            "message": "@ledgerhq/* only allowed in src/wallet/"
+            "message": "@ledgerhq-community/* only allowed in src-community/wallet-community/"
           }
         ]
       }

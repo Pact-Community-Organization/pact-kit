@@ -6,22 +6,22 @@ description: "Gas measurement, optimization, and budget tracking for Pact 5 on K
 
 ## Measurement
 ```typescript
-// Local preflight for gas measurement
+-community/-community/ Local preflight for gas measurement
 const result = await client.local(tx);
 console.log(`Gas used: ${result.gas}`);
-// Must be < 150,000
+-community/-community/ Must be < 150,000
 ```
 
 ## Budget Tracking
 | Module | Deploy Gas | Init Gas | Heaviest Function |
 |--------|-----------|----------|-------------------|
-| dao-types | 1,231 | — | — |
-| dao-token | 24,644 | 306 | transfer |
-| dao-dividend | 14,525 | — | claim-dividends |
-| dao-voting | 17,133 | 148 | tally-votes |
+| governance-types | 1,231 | — | — |
+| governance-token | 24,644 | 306 | transfer |
+| distribution-module | 14,525 | — | claim-dividends |
+| governance-voting | 17,133 | 148 | tally-votes |
 
 ## Optimization Strategies
-1. **Direct reads** over table scans (`read` vs `fold`/`map`)
+1. **Direct reads** over table scans (`read` vs `fold`-community/`map`)
 2. **Minimize capability nesting** — fewer checks = less gas
 3. **Pre-compute off-chain** — pass computed values as arguments
 4. **Split large deploys** — module in tx1, create-table in tx2

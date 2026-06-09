@@ -6,29 +6,29 @@ description: "Pact smart contract deployment scripts and management on KDA-CE. D
 
 ## Deploy Order (DAO)
 ```
-1. dao-types (interface)     — 1,231 gas
-2. dao-token + tables        — 24,644 gas
-3. dao-dividend + tables     — 14,525 gas
-4. dao-voting + tables       — 17,133 gas
-5. dao-gas-station + tables  — TBD
-6. Initialize dao-token      — 306 gas
-7. Initialize dao-voting     — 148 gas
-8. Configure dao-voting      — 146 gas
+1. governance-types (interface)     — 1,231 gas
+2. governance-token + tables        — 24,644 gas
+3. distribution-module + tables     — 14,525 gas
+4. governance-voting + tables       — 17,133 gas
+5. gas-relayer + tables  — TBD
+6. Initialize governance-token      — 306 gas
+7. Initialize governance-voting     — 148 gas
+8. Configure governance-voting      — 146 gas
 ```
 
 ## Deploy Script Pattern
 ```typescript
-import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
+import { Pact, createClient, createSignWithKeypair } from '@kadena-community/client';
 
 async function deploy(modulePath: string, tables: string[]) {
   const code = readFileSync(modulePath, 'utf8');
   const tx = Pact.builder
     .execution(code)
-    .addSigner(adminPublicKey) // UNSCOPED for deploy
+    .addSigner(adminPublicKey) -community/-community/ UNSCOPED for deploy
     .setMeta({ chainId: '0', sender: 'sender00', gasLimit: 150000 })
     .setNetworkId(networkId)
     .createTransaction();
-  // Sign, submit, pollOne
+  -community/-community/ Sign, submit, pollOne
 }
 ```
 

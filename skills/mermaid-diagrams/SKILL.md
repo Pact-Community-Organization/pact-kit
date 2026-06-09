@@ -22,12 +22,12 @@ description: "Generate Mermaid diagrams for architecture visualization, module r
 ### Module Dependency DAG
 ```mermaid
 flowchart TD
-    types[dao-types] --> token[dao-token]
-    types --> dividend[dao-dividend]
-    types --> voting[dao-voting]
+    types[governance-types] --> token[governance-token]
+    types --> dividend[distribution-module]
+    types --> voting[governance-voting]
     token --> dividend
     token --> voting
-    voting --> gas[dao-gas-station]
+    voting --> gas[gas-relayer]
 ```
 
 ### Transaction Flow
@@ -37,9 +37,9 @@ sequenceDiagram
     participant SDK as TypeScript SDK
     participant Node as KDA-CE Node
     User->>SDK: Build transaction
-    SDK->>Node: /local (preflight)
+    SDK->>Node: -community/local (preflight)
     Node-->>SDK: Gas estimate
-    SDK->>Node: /send (submit)
-    SDK->>Node: /poll (confirm)
+    SDK->>Node: -community/send (submit)
+    SDK->>Node: -community/poll (confirm)
     Node-->>SDK: Result
 ```
