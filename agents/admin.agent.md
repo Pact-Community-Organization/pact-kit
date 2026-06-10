@@ -36,17 +36,17 @@ You coordinate the specialist agents and the independent Auditor:
 
 | Agent | Role | Model | When to Delegate |
 |-------|------|-------|-----------------|
-| **Architect** | System design, ADRs, API signatures | Opus 4.8 primary, Sonnet 4.6 fallback | Architecture questions, design reviews, handoff docs |
-| **Developer** | Pact implementation, TypeScript, tests | Sonnet 4.6 primary, Opus 4.8 fallback | Code implementation, bug fixes, REPL tests |
-| **Tester** | Independent QA, adversarial testing | Opus 4.8 primary, Sonnet 4.6 fallback | Code review, validation, go/no-go decisions |
-| **Security** | Audits, threat modeling, verification | Opus 4.8 primary, Sonnet 4.6 fallback | Security reviews, vulnerability assessment |
-| **DevOps** | CI/CD, deployment, infrastructure | Sonnet 4.6 primary, Opus 4.8 fallback | Deployment, pipeline setup, devnet management |
-| **Product** | Requirements, backlog, prioritization | Sonnet 4.6 primary, Opus 4.8 fallback | Feature definition, priority decisions, user stories |
-| **Docs** | Documentation, changelogs, guides | Sonnet 4.6 primary, Opus 4.8 fallback | API docs, changelogs, onboarding content |
-| **Support** | Issue triage, SDK help, feedback | Sonnet 4.6 primary, Opus 4.8 fallback | Bug triage, SDK questions, FAQ updates |
-| **WebDev** | Web implementation, stakeholder/admin apps | Sonnet 4.6 primary, Opus 4.8 fallback | Frontend features, UX fixes, Playwright-backed UI work |
-| **GitHubArchitect** | `.github/` architecture, workflows, policies | Opus 4.8 primary, Sonnet 4.6 fallback | Agent/skill governance, workflow design, policy refactors |
-| **Auditor** | Independent third-party smart contract audits | Opus 4.8 primary, Sonnet 4.6 fallback | External-style audits, scoped security reviews, formal verdicts |
+| **Architect** | System design, ADRs, API signatures | Auto | Architecture questions, design reviews, handoff docs |
+| **Developer** | Pact implementation, TypeScript, tests | Auto | Code implementation, bug fixes, REPL tests |
+| **Tester** | Independent QA, adversarial testing | Auto | Code review, validation, go/no-go decisions |
+| **Security** | Audits, threat modeling, verification | Auto | Security reviews, vulnerability assessment |
+| **DevOps** | CI/CD, deployment, infrastructure | Auto | Deployment, pipeline setup, devnet management |
+| **Product** | Requirements, backlog, prioritization | Auto | Feature definition, priority decisions, user stories |
+| **Docs** | Documentation, changelogs, guides | Auto | API docs, changelogs, onboarding content |
+| **Support** | Issue triage, SDK help, feedback | Auto | Bug triage, SDK questions, FAQ updates |
+| **WebDev** | Web implementation, stakeholder/admin apps | Auto | Frontend features, UX fixes, Playwright-backed UI work |
+| **GitHubArchitect** | `.github/` architecture, workflows, policies | Auto | Agent/skill governance, workflow design, policy refactors |
+| **Auditor** | Independent third-party smart contract audits | Auto | External-style audits, scoped security reviews, formal verdicts |
 
 ## Task Decomposition Workflow
 
