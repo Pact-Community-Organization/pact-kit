@@ -1,95 +1,143 @@
 ---
 name: mcp-tool-use
-description: "Select and invoke Pact Community MCP tools correctly. Covers tool selection decision tree, argument construction, error handling, and the mandatory 'prefer MCP over bespoke' rule for pact, chainweb, and coordination operations."
+description: "Practical guide for selecting and using Pact Community MCP tools safely, including when to use MCP versus direct edits, category mapping, decision checklists, examples, safety controls, troubleshooting, and a quick reference."
 ---
 
-# MCP Tool Use Skill
+# MCP Tool Use
 
 ## Purpose
 
-This skill enables correct selection and invocation of Pact Community MCP tools for Pact 5 smart contract development, Chainweb operations, and multi-agent coordination. MCP tools provide schema validation, audit logging, and type-unwrapping that eliminates common devnet testing failures.
+Use this skill to choose and invoke Pact Community MCP tools safely and consistently.
+The goal is to reduce fragile shell workflows, preserve auditability, and make tool behavior predictable for maintainers.
 
-## Selection Flowchart
+This guide covers:
+1. When MCP tools are preferred versus direct file edits.
+2. How tool categories map to common tasks.
+3. A checklist to pick the right tool quickly.
+4. Example call patterns with expected outputs.
+5. Safety rules for read-only and destructive actions.
+6. Common errors and practical troubleshooting.
+7. A minimal quick-reference table for daily use.
 
-```mermaid
-flowchart TD
-    Start[What am I doing?] --> PactDev{Pact development?}
-    Start --> ChainwebOp{Chainweb operation?}
-    Start --> AgentCoord{Agent coordination?}
-    Start --> GitHubOp{GitHub operation?}
-    Start --> Other[Use standard tools]
-    
-    PactDev --> ReplRun[Run REPL test → pact.repl_run]
-    PactDev --> ModScan[Scan for traps → pact.module_scan]
-    
-    ChainwebOp --> DevnetInfo[Get devnet info → chainweb.info]
-    ChainwebOp --> ChainTime[Get chain time → chainweb.chain_time]
-    ChainwebOp --> Preflight[Local call/preflight → chainweb.local]
-    ChainwebOp --> SendTx[Submit transaction → chainweb.send]
-    ChainwebOp --> PollTx[Poll for result → chainweb.poll]
-    
-    AgentCoord --> TaskOps[Task management → coord.task_*]
-    AgentCoord --> MailboxOps[Message passing → coord.mailbox_*]
-    AgentCoord --> StatusOps[Status updates → coord.status_set]
-    AgentCoord --> MemoryOps[Record findings → coord.memory_append]
-    
-    GitHubOp --> RepoOps[Read files/code → GitHub MCP repos]
-    GitHubOp --> IssueOps[Issue operations → GitHub MCP issues]
-    GitHubOp --> PROpS[PR operations → GitHub MCP pull_requests]
-    GitHubOp --> WorkflowOps[CI/actions → GitHub MCP actions]
-```
+## 1) When to use MCP tools vs direct file edits
 
-## Per-Tool Quick Reference
+Use MCP tools first when the operation involves stateful systems, APIs, or structured transactions.
+Use direct edits for local source changes where no external system interaction is required.
 
-### Pact Server (`@pact-community/mcp-pact`)
-- `pact.repl_run` — Run single .repl file; returns stdout/stderr, exit status, gas measurements
-- `pact.module_scan` — Static analysis for Pact 5 critical traps; returns findings with line numbers
+Use MCP tools when:
+- You are running Pact REPL checks, static scans, or chain operations.
+- You are reading or updating coordination state (tasks, mailbox, status, memory logs).
+- You are interacting with GitHub resources (issues, PRs, workflows, repo files).
+- You need schema-validated arguments and machine-readable responses.
+- You want a clear, auditable action trail.
 
-### Chainweb Server (`@pact-community/mcp-chainweb`)
-- `chainweb.info` — Fetch node info, validate network ID; returns chains list, version, network validation
-- `chainweb.chain_time` — Current chain time in seconds; returns timestamp, avoids "too far in future" errors
-- `chainweb.local` — Preflight simulation; returns result/error, gas cost, auto-unwraps Pact JSON types
-- `chainweb.send` — Submit signed transaction; requires prior preflight, returns request key
-- `chainweb.poll` — Poll for transaction completion; avoids nginx 504 timeout, returns final result
+Use direct file edits when:
+- You are implementing source code changes in local files.
+- You are updating markdown, comments, or local configuration content.
+- The task is purely local and does not depend on remote or shared state.
+- No dedicated MCP capability exists for the requested operation.
 
-### Coordination Server (`@pact-community/mcp-coordination`)
-- `coord.task_create` — Create new task; requires title, assignee, dependencies
-- `coord.task_list` — List tasks with optional filters; returns task summaries
-- `coord.task_get` — Get specific task by ID; returns full task object
-- `coord.task_update` — Atomic task update under file lock; prevents race conditions
-- `coord.task_complete` — Mark task done; validates artifact paths exist
-- `coord.mailbox_send` — Send message to agent inbox; appends to JSONL
-- `coord.mailbox_read` — Read agent inbox non-destructively; returns message list
-- `coord.mailbox_ack` — Mark messages as read; sets readAt timestamp
-- `coord.status_set` — Update agent status; supports idle/working/blocked/error states
-- `coord.memory_append` — Append to scoped memory log; supports agent/, session/, global/ scopes
+Rule of thumb:
+- External or shared state: use MCP.
+- Local code content: edit files directly.
 
-### GitHub MCP Server (Remote)
-- `get_file_contents` — Read files from GitHub repos; returns file content, metadata
-- `issue_read` — Read issue details; returns issue object with comments, labels, status
-- `create_pull_request` — Create new PR; requires title, body, base/head branches
-- `pull_request_read:get_comments` — Read PR comments; returns threaded comment data
-- `pull_request_read:get_reviews` — Read PR reviews; returns review status, feedback
-- Additional toolsets: `context`, `repos`, `actions`, `code_security`, `dependabot`, `notifications`, `orgs`, `projects`, `discussions`
+## 2) Tool category map
 
-## Calling Pattern
+### Pact MCP
 
-MCP tools are called like any other tool in the agent's available toolset once the server is registered in `.mcp.json`.
+Primary domain: Pact language development and contract validation.
 
-### Example: Pact Server
+Typical use cases:
+- Run `.repl` test files.
+- Scan Pact modules for known traps and anti-patterns.
+- Validate contract behavior before chain submission.
+
+Typical outputs:
+- Structured test/scan result.
+- Error text with location hints.
+- Gas metrics or execution summaries.
+
+### Chainweb MCP
+
+Primary domain: chain interactions and transaction lifecycle.
+
+Typical use cases:
+- Get network or chain metadata.
+- Preflight Pact code with local simulation.
+- Submit signed transactions.
+- Poll request keys to final completion.
+
+Typical outputs:
+- Chain/network info objects.
+- Preflight success or failure payload.
+- Request keys from send operations.
+- Final transaction result payload from polling.
+
+### Coordination MCP
+
+Primary domain: shared workflow state for agent/task systems.
+
+Typical use cases:
+- Create, read, and update task records.
+- Send and acknowledge mailbox messages.
+- Set status and append memory entries.
+
+Typical outputs:
+- Normalized task objects.
+- Message arrays with IDs and timestamps.
+- Confirmation responses for status/memory updates.
+
+### GitHub MCP
+
+Primary domain: repository and collaboration operations.
+
+Typical use cases:
+- Read or update repository files.
+- Create/read/update issues and pull requests.
+- Inspect workflow/action results.
+
+Typical outputs:
+- Repository metadata and file content.
+- Issue/PR objects and review threads.
+- CI run summaries and status fields.
+
+## 3) Decision checklist for tool selection
+
+Before invoking any tool, answer these questions:
+
+1. Does this action touch remote, on-chain, or shared state?
+2. Is there an MCP tool that explicitly models this action?
+3. Do I need structured output instead of parsing free-form terminal text?
+4. Can I run read-only first to validate assumptions?
+5. Does the action modify, delete, or publish something irreversible?
+6. If destructive, do I already have explicit human confirmation?
+
+If the first three answers are yes, choose MCP.
+If the action is local-only source editing, use direct file edits.
+
+## 4) Example call patterns and expected outputs
+
+### Pact example: run REPL test
+
 ```json
 {
   "method": "tools/call",
   "params": {
     "name": "pact.repl_run",
     "arguments": {
-      "replPath": "pact-community/tests/governance-token.repl"
+      "replPath": "pact/tests/token.repl"
     }
   }
 }
 ```
 
-### Example: Chainweb Server  
+Expected output shape:
+- `success` boolean.
+- `stdout` and `stderr` text fields.
+- Optional gas or execution summary fields.
+
+### Chainweb example: preflight then send then poll
+
 ```json
 {
   "method": "tools/call",
@@ -105,42 +153,36 @@ MCP tools are called like any other tool in the agent's available toolset once t
 }
 ```
 
-### Example: Coordination Server
+Expected output shape:
+- Preflight result object with success/failure indicators.
+- Gas estimate or consumption details.
+- Error metadata when simulation fails.
+
+Follow-up calls:
+- `chainweb.send` returns request key(s).
+- `chainweb.poll` returns final transaction result.
+
+### Coordination example: task update
+
 ```json
 {
   "method": "tools/call",
   "params": {
-    "name": "coord.task_create",
+    "name": "coord.task_update",
     "arguments": {
-      "title": "Implement distribution-module claim function",
-      "assignee": "Developer",
-      "type": "implementation",
-      "dependencies": ["arch-review-123"]
+      "id": "task-123",
+      "status": "in_progress",
+      "notes": "Implemented capability checks and added tests"
     }
   }
 }
 ```
 
-## GitHub MCP Reference
+Expected output shape:
+- Updated task object with status, timestamps, and metadata.
+- Locking or validation error if concurrent edits conflict.
 
-GitHub MCP server is hosted by GitHub at `https://api.githubcopilot.com/mcp/` and provides structured access to GitHub operations via OAuth.
-
-### Toolset Summary
-
-| Toolset | Purpose | When Agent Should Use |
-|---------|---------|---------------------|
-| `context` | Read repo context for understanding | Finding project structure, technology context |
-| `repos` | File operations, code reading/writing | Reading source code, creating/updating files |
-| `issues` | Issue lifecycle management | Filing bugs, reading requirements, status updates |
-| `pull_requests` | PR lifecycle management | Code reviews, merging, commenting, status |
-| `actions` | CI/CD workflow inspection | Checking build status, failure diagnosis |
-| `code_security` | Security scanning results | Reading SAST findings, vulnerability reports |
-| `dependabot` | Dependency security alerts | Reviewing dependency vulnerabilities |
-| `notifications` | GitHub notification management | Triaging mentions, subscriptions |
-| `orgs`, `projects` | Organization/project management | Board operations, team coordination |
-| `discussions` | Community discussions | Q&A, announcements, feedback collection |
-
-### Example Call
+### GitHub example: read file content
 
 ```json
 {
@@ -148,90 +190,86 @@ GitHub MCP server is hosted by GitHub at `https://api.githubcopilot.com/mcp/` an
   "params": {
     "name": "get_file_contents",
     "arguments": {
-      "owner": "pact-community-organization",
-      "repo": "contracts",
-      "path": "pact-community/modules/token.pact",
+      "owner": "pact-community",
+      "repo": "example-repo",
+      "path": "README.md",
       "ref": "main"
     }
   }
 }
-
-Response:
-{
-  "content": "(module governance-token GOVERNANCE\n  @doc \"DAO token with vote tracking...\"\n  ...",
-  "encoding": "utf-8",
-  "size": 15234,
-  "sha": "abc123...",
-  "path": "pact-community/modules/token.pact"
-}
 ```
 
-**Upstream documentation**: https://github.com/github/github-mcp-server
+Expected output shape:
+- File content plus encoding metadata.
+- Blob SHA and path details.
+- Not-found error structure when path/ref is invalid.
 
-## Error Handling
+## 5) Safety rules
 
-MCP tools return `isError: true` with an `errCode` in the payload when operations fail. Never retry without reading the error.
+Safety defaults:
+- Start with read-only operations whenever possible.
+- Validate inputs before submit/update calls.
+- Keep destructive actions blocked until explicit human confirmation.
 
-### Common Error Codes
-- `INVALID_INPUT` — Malformed arguments or missing required fields
-- `NOT_FOUND` — File not found or task/message ID doesn't exist
-- `LOCK_HELD` — File locked by concurrent operation, retry after delay
-- `CORRUPT_STATE` — JSON parse failure or schema validation failure
-- `NETWORK_ID_MISMATCH` — Chainweb tool received non-development network
-- `PREFLIGHT_FAILED` — Local call failed, cannot proceed to send
+Required controls:
+1. Read before write: inspect current state first.
+2. Preflight before send: do not submit transactions without local validation.
+3. Confirm target identity: repo, branch, network, and chain must be explicit.
+4. Never auto-delete or force-update on inferred intent.
+5. Record intent and outcome for traceability when workflow requires it.
 
-## What NOT to Do
+Actions that require explicit human confirmation:
+- Deleting files, branches, issues, comments, or task records.
+- Force pushes, force updates, or irreversible publish operations.
+- On-chain actions with permanent state impact.
 
-### Five Anti-Patterns to Avoid
+## 6) Common errors and troubleshooting
 
-1. **Calling raw `curl` against devnet when `chainweb.*` exists**
-   - Wrong: `curl http://localhost:8081/chainweb/0.0/development/chain/0/pact-community/api/v1/local`
-   - Right: `chainweb.local` tool call
+`INVALID_INPUT`
+- Cause: missing required arguments or wrong argument shape.
+- Fix: compare payload fields with tool schema; send minimal valid args first.
 
-2. **Writing directly to `docs/tasks/*.json` when `coord.task_*` exists**  
-   - Wrong: File manipulation with `echo` or text editing
-   - Right: `coord.task_create`, `coord.task_update` tool calls
+`NOT_FOUND`
+- Cause: wrong ID/path/ref/network/chain value.
+- Fix: run a read/list call to discover canonical identifiers, then retry.
 
-3. **Shelling out to `pact` when `pact.repl_run` exists**
-   - Wrong: `run_in_terminal` with `pact pact-community/tests/governance-token.repl`
-   - Right: `pact.repl_run` tool call
+`LOCK_HELD` or concurrency conflict
+- Cause: another process updated the same coordination object.
+- Fix: re-read latest state, merge intent, retry once.
 
-4. **Using `client.listen()` (504 timeout) — use `chainweb.poll`**
-   - Wrong: `@kadena/client` listen for long-running transactions
-   - Right: `chainweb.poll` with timeout configuration
+`PREFLIGHT_FAILED`
+- Cause: Pact code failed simulation or signatures/caps are incomplete.
+- Fix: inspect error payload, correct code or signer/cap set, rerun preflight.
 
-5. **Bypassing preflight by calling `chainweb.send` without prior `chainweb.local`**
-   - Tool already enforces this dependency — do not try to work around it
+`NETWORK_ID_MISMATCH`
+- Cause: tool arguments target the wrong network.
+- Fix: explicitly set network and chain values; verify against info call.
 
-## GitHub MCP Anti-patterns
+`AUTHORIZATION` or permission errors
+- Cause: token scope, repo access, or signing authority is insufficient.
+- Fix: verify credentials and permissions; avoid repeated blind retries.
 
-1. **Using `gh pr create` in terminal when `create_pull_request` MCP tool exists**
-   - Wrong: `gh pr create --title "Fix bug" --body "Description"`  
-   - Right: GitHub MCP `create_pull_request` tool call
+General troubleshooting sequence:
+1. Reproduce with the smallest valid input.
+2. Run read-only inspection to validate IDs and current state.
+3. Retry once after correcting the specific error cause.
+4. Escalate with error payload if still unresolved.
 
-2. **Parsing `gh api` JSON output manually when the MCP tool returns structured data**
-   - Wrong: `gh api /repos/owner/repo/issues | jq '.[] | .title'`
-   - Right: GitHub MCP `issues` toolset with structured response
+## 7) Minimal quick-reference table
 
-3. **Using `curl` against `api.github.com` when GitHub MCP tools cover the endpoint**
-   - Wrong: `curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/owner/repo`
-   - Right: GitHub MCP `repos` toolset
+| Need | Preferred tool family | Safe first call | Follow-up |
+|---|---|---|---|
+| Run Pact REPL tests | Pact MCP | `pact.repl_run` | `pact.module_scan` |
+| Check chain metadata | Chainweb MCP | `chainweb.info` | `chainweb.chain_time` |
+| Simulate transaction | Chainweb MCP | `chainweb.local` | `chainweb.send`, then `chainweb.poll` |
+| Update task workflow | Coordination MCP | `coord.task_get` or `coord.task_list` | `coord.task_update` |
+| Read repo file | GitHub MCP | `get_file_contents` | issue/PR/action tools as needed |
+| Local source change | Direct edit | read file and patch | run tests/lint as needed |
 
-4. **Calling destructive GitHub MCP tools (delete, force-update) without explicit human confirmation**
-   - Wrong: Calling `delete_*` tools based on AI decision
-   - Right: Always request human confirmation for destructive operations
+## Final reminders
 
-5. **Hardcoding repo owner/name in shell scripts when MCP tools accept them as structured inputs**
-   - Wrong: Bash scripts with hardcoded `owner/repo` strings
-   - Right: GitHub MCP tool calls with owner/repo as structured arguments
-
-## When to Escalate
-
-If an MCP tool is missing a capability you need, escalate to Orchestrator with a proposed tool signature. Do NOT paper over gaps with raw shell commands.
-
-**Template for escalation:**
-```
-[AgentName] MCP tool gap: Need {capability} for {use-case}
-Proposed signature: {tool-name}({args}) -> {return-type}
-Current workaround impact: {describes manual process}
-```
+- Prefer MCP for operations that touch remote, on-chain, or shared state.
+- Prefer direct edits for local code content changes.
+- Default to read-only inspection first.
+- Require explicit human confirmation before destructive actions.
+- Use structured error payloads to fix root causes, not guess-and-retry loops.
