@@ -189,10 +189,4 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 
 ## Skills
 
-Load from `.github/skills/` as needed:
-- `task-decomposition` — Breaking features into agent-assignable tasks
-- `agent-coordination` — Managing inter-agent communication
-- `dependency-resolution` — Task DAG management
-- `quality-gate-enforcement` — Gate verification checklists
-- `status-reporting` — Progress synthesis for user
-- `escalation-management` — Blocker and conflict resolution
+This repository ships only Pact smart-contract skills. Task decomposition, coordination, dependency tracking, quality-gate enforcement, status synthesis, and escalation are native model capabilities — follow the `inter-agent-protocol` and `quality-gate-rules` instructions for conventions.

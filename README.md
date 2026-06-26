@@ -9,9 +9,9 @@ Reusable Copilot agents, skills, instructions, prompts, and hooks so Pact and Ka
 | Category | Description | Folder | Count |
 |---|---|---:|---:|
 | Agents | Eight role-based Copilot agents for coordination, delivery, QA, security, and documentation. | [agents](agents) | 8 |
-| Instructions | Always-on and scoped guidance files for behavior, validation, security, and Pact-specific rules. | [instructions](instructions) | 20 |
-| Skills | Bundled workflow skills and reference material for Pact, testing, security, deployment, and docs. | [skills](skills) | 74 |
-| Prompts | Reusable task prompts for architecture, implementation, review, analysis, and reporting workflows. | [prompts](prompts) | 27 |
+| Instructions | Always-on and scoped guidance files for behavior, validation, security, and Pact-specific rules. | [instructions](instructions) | 18 |
+| Skills | Pact smart-contract workflow skills: design, capabilities, schema, testing, gas, security, and KDA-CE platform. | [skills](skills) | 24 |
+| Prompts | Reusable task prompts for Pact architecture, implementation, review, security, and validation workflows. | [prompts](prompts) | 24 |
 | Hooks | Copilot hook definitions that call portable runtime scripts in `.github/scripts/`. | [hooks](hooks) | 4 |
 
 ## Installation
@@ -61,15 +61,13 @@ You can also install a single agent, instruction, skill, prompt, or hook instead
 
 ## Skills
 
-The skills catalog is grouped by theme so it is easy to install selectively. The headline Pact-focused skills are `pact-*` modules for design, capabilities, schema, interface, REPL, devnet, gas, guards, events, invariants, module validation, and security review. See [skills](skills) for the full catalog.
+This repository ships **only Pact smart-contract language skills** — no generic software-engineering skills. The catalog is grouped by theme for selective install. See [skills](skills) for the full catalog.
 
-- Pact Core: module design, capabilities, schema design, interface design, guards, defpacts, and events.
-- Testing & QA: REPL testing, devnet testing, module validation, coverage analysis, fuzzing, mutation testing, and integration flows.
-- Security & Audit: security review, threat modeling, adversarial testing, capability analysis, dependency scanning, incident response, and formal verification.
-- Deployment & Infra: deployment management, devnet management, container orchestration, environment management, CI/CD, release management, and monitoring.
-- Architecture & Design: system architecture, Pact architecture, cross-chain design, API design, gas analysis, technical planning, and nonfunctional requirements.
-- Docs & Writing: technical writing, API documentation, code documentation, changelog management, onboarding guides, and Mermaid diagrams.
-- Coordination & Meta: task decomposition, agent coordination, status reporting, quality-gate enforcement, escalation management, and self-validation.
+- Pact Core: `pact-module-design`, `pact-capabilities`, `pact-schema-design`, `pact-interface-design`, `pact-guards`, `pact-defpact`, `pact-events`, `pact-architecture`, `pact-invariants`.
+- Testing & Tooling: `pact-repl-testing`, `pact-devnet-testing`, `pact-module-validation`, `pact-cli-tooling`, `debug-pact`, `static-analysis`.
+- Security & Audit: `pact-security-review`, `capability-analysis`, `compliance-verification`, `formal-verification`.
+- Gas & Cross-chain: `pact-gas-analysis`, `gas-station-design`, `cross-chain-design`.
+- Platform: `kda-ce-compliance`, `devnet-management`.
 
 ## Instructions
 
@@ -83,7 +81,6 @@ The repository ships a focused set of instructions files for behavior and valida
 - `cross-module-rules.instructions.md`: protect module boundaries and interface consistency.
 - `deployment-rules.instructions.md`: enforce safe deploy sequencing and approval requirements.
 - `diagnostic-integrity-rules.instructions.md`: keep tests and reviews truthful and reproducible.
-- `documentation-standards.instructions.md`: maintain consistent technical documentation quality.
 - `gas-optimization.instructions.md`: reason about gas use and optimization.
 - `github-guardrails.instructions.md`: protect hook and script behavior.
 - `inter-agent-protocol.instructions.md`: route messages and tasks between agents cleanly.
@@ -94,7 +91,6 @@ The repository ships a focused set of instructions files for behavior and valida
 - `security-rules.instructions.md`: apply security review expectations and threat controls.
 - `self-audit-checklist.instructions.md`: check your own work before reporting outcomes.
 - `testing-rules.instructions.md`: write and evaluate tests with correct Pact patterns.
-- `typescript-sdk.instructions.md`: follow integration rules for TypeScript clients and serialization.
 
 ## Prompts
 
@@ -104,8 +100,8 @@ Prompts are grouped by the work they support:
 - Architecture and design: `architecture-lockdown`, `architecture-review`, `design-defpact`, `new-pact-module`.
 - Implementation and validation: `developer-handoff`, `generate-integration-stubs`, `generate-repl-tests`, `validate-pact-module`, `verify-pact-module`, `design-test-suite`.
 - Security and review: `capability-audit`, `full-security-audit`, `pact-security-audit`, `security-assessment`, `threat-model`, `review-pr`.
-- Deployment and operations: `deploy-to-devnet`, `setup-ci-pipeline`, `gas-analysis`.
-- Documentation and migration: `generate-api-docs`, `write-changelog`, `migrate-pact-schema`.
+- Deployment and operations: `deploy-to-devnet`, `gas-analysis`.
+- Migration: `migrate-pact-schema`.
 - Analysis and triage: `analyze-feature`, `task-decomposition`, `team-status`.
 
 ## Hooks

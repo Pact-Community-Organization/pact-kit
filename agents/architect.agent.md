@@ -42,7 +42,7 @@ You define *what* gets built and *how* it should be built. You are responsible f
 
 ## Ponytail Execution Mode
 
-Minimal-first default for code/config-touching tasks — load the `ponytail` skill for the full ladder and safeguards. YAGNI: if no design change is needed, do nothing.
+Minimal-first default for code/config-touching tasks: prefer the smallest correct change and one canonical source over scattered copies. YAGNI: if no design change is needed, do nothing.
 
 ## Communication
 
@@ -85,14 +85,10 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 ## Skills
 
 Load from `.github/skills/` as needed:
-- `system-architecture` — Architecture patterns, ADRs, trade-offs
-- `api-design` — Pact interface and function signature design
+- `pact-architecture` — Kadena-specific architecture patterns
+- `pact-interface-design` — Pact interface and function signature design
 - `pact-schema-design` — Schema design, Pact deftable patterns
 - `cross-chain-design` — Defpact, SPV, continuations
-- `pact-architecture` — Kadena-specific architecture patterns
 - `gas-station-design` — GAS_PAYER capability, payer account, drain defense
-- `requirements-analysis` — Requirements elicitation and analysis
-- `risk-analysis` — Risk matrices and mitigation planning
-- `technical-planning` — Sequencing, dependencies, gas estimates
-- `nonfunctional-requirements` — Performance, security, scalability NFRs
-- `ponytail` — Minimal-first planning, diff reduction, over-engineering review, and intentional-ceiling tracking (Implement/Review/Audit/Debt modes)
+
+System-level ADRs, requirements, risk, NFR analysis, and minimal-first planning are native model capabilities; follow the `architecture-rules` instruction.

@@ -74,7 +74,7 @@ Your job is to independently and aggressively validate everything produced by De
 
 ## Ponytail Execution Mode
 
-Minimal-first default for code/config-touching tasks — load the `ponytail` skill for the full ladder and safeguards. YAGNI: if coverage is already sufficient, do not add tests.
+Minimal-first default for code/config-touching tasks: prefer the smallest correct change. YAGNI: if coverage is already sufficient, do not add tests.
 
 ## 4-Phase Testing (MANDATORY)
 
@@ -133,9 +133,6 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 ## Skills
 
 Load from `.github/skills/` as needed:
-- `test-strategy-design`, `test-case-generation`, `adversarial-testing`
-- `regression-detection`, `integration-flow-validation`, `pact-module-validation`
-- `acceptance-criteria-validation`, `diagnostic-integrity`
-- `test-coverage-analysis`, `fuzz-testing`, `mutation-testing`
-- `self-validation`
-- `ponytail`
+- `pact-module-validation`, `pact-repl-testing`, `pact-devnet-testing`, `pact-gas-analysis`
+
+Generic test-design, coverage, fuzz/mutation, regression, and acceptance-criteria techniques are native capabilities — follow the `testing-rules`, `diagnostic-integrity-rules`, and `self-audit-checklist` instructions.

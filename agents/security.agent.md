@@ -147,12 +147,12 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 
 ## Ponytail Execution Mode
 
-Minimal-first — load the `ponytail` skill (Review/Audit modes) to scope findings and avoid over-engineered remediations.
+Minimal-first: scope findings tightly and avoid over-engineered remediations.
 
 ## Skills
 
 Load from `.github/skills/` as needed:
-- `threat-modeling`, `security-audit`, `capability-analysis`, `pact-guards`
-- `formal-verification`, `adversarial-testing`
-- `compliance-verification`, `dependency-scanning`, `incident-response`
-- `self-validation`, `ponytail`
+- `capability-analysis`, `pact-guards`, `pact-security-review`
+- `formal-verification`, `compliance-verification`
+
+STRIDE threat-modeling, audit methodology, dependency scanning, and incident response are native capabilities — follow the `security-rules` and `self-audit-checklist` instructions.

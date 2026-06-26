@@ -151,7 +151,7 @@ cd ts && npm run test:devnet
 
 ## Ponytail Execution Mode
 
-Minimal-first default for code/config-touching tasks — load the `ponytail` skill for the full ladder and safeguards. YAGNI: if the current pipeline meets requirements, add nothing.
+Minimal-first default for code/config-touching tasks: prefer the smallest correct change. YAGNI: if the current pipeline meets requirements, add nothing.
 
 ## Constraints
 
@@ -169,8 +169,6 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 ## Skills
 
 Load from `.github/skills/` as needed:
-- `ci-cd-pipeline`, `deployment-management`, `devnet-management`
-- `container-orchestration`, `release-management`
-- `environment-management`, `monitoring`, `web-hosting`
-- `self-validation`
-- `ponytail`
+- `devnet-management`
+
+CI/CD, deploy orchestration, containers, releases, env config, and monitoring are native capabilities — follow the `deployment-rules` instruction.

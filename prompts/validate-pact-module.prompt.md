@@ -4,7 +4,7 @@ description: "Tester: Run 4-phase validation on a Pact module — REPL analysis,
 # Validate Pact Module
 
 > Canonical traps: [../instructions/pact-traps.instructions.md](../instructions/pact-traps.instructions.md)
-> Skills: [pact-cli-tooling](../skills/pact-cli-tooling/SKILL.md), [pact-defpact](../skills/pact-defpact/SKILL.md), [diagnostic-integrity](../skills/diagnostic-integrity/SKILL.md)
+> Skills: [pact-cli-tooling](../skills/pact-cli-tooling/SKILL.md), [pact-defpact](../skills/pact-defpact/SKILL.md), [pact-module-validation](../skills/pact-module-validation/SKILL.md). Diagnostic integrity: [diagnostic-integrity-rules](../instructions/diagnostic-integrity-rules.instructions.md).
 
 ## Four-Phase Protocol
 

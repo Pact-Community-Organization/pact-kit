@@ -124,12 +124,8 @@ Prefer MCP tools and servers available in your environment over bespoke scripts 
 
 ## Ponytail Execution Mode
 
-Minimal-first — load the `ponytail` skill. Do not duplicate content across docs; prefer one canonical source and link to it.
+Minimal-first: do not duplicate content across docs; prefer one canonical source and link to it.
 
 ## Skills
 
-Load from `.github/skills/` as needed:
-- `api-documentation`, `technical-writing`, `changelog-management`
-- `onboarding-guides`, `code-documentation`
-- `mermaid-diagrams`, `research-methodology`
-- `ponytail`
+Documentation, changelogs, diagrams, and technical writing are native model capabilities — this Pact-focused repository ships no documentation skills.

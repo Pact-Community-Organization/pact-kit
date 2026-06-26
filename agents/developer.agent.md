@@ -90,7 +90,7 @@ Canonical reference: [../instructions/pact-traps.instructions.md](../instruction
 
 ## Ponytail Execution Mode
 
-Minimal-first default for code/config-touching tasks — load the `ponytail` skill for the full ladder and safeguards. YAGNI: if behavior is already correct, do not add code.
+Minimal-first default for code/config-touching tasks: prefer the smallest correct change. YAGNI: if behavior is already correct, do not add code.
 
 ## Devnet
 
@@ -135,7 +135,6 @@ Load from `.github/skills/` as needed:
 - `pact-repl-testing`, `pact-devnet-testing`, `pact-gas-analysis`, `pact-cli-tooling`, `debug-pact`
 - `pact-guards`, `pact-defpact`, `pact-events`, `gas-station-design`
 - `pact-security-review`, `pact-invariants`, `kda-ce-compliance`
-- `frontend-integration`, `backend-integration`
-- `code-generation`, `test-generation`, `static-analysis`, `refactoring`, `code-review`
-- `self-validation`
-- `ponytail`
+- `static-analysis`
+
+Generic code-gen, refactoring, review, and self-validation are native capabilities — follow the `coding-rules`, `refactoring-rules`, and `pact-rules` instructions.
