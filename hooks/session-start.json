@@ -3,7 +3,7 @@
     "SessionStart": [
       {
         "type": "command",
-        "command": "echo 'MEMORY PROTOCOL (once per session): (1) read docs/memory/INDEX.md  (2) read docs/memory/PROJECT-STATE.md  (3) check docs/status/dashboard.json — then reference this context; do not re-read each task'"
+        "command": "echo 'Session start: if your project uses a memory or coordination convention, load it once per session; otherwise proceed.'"
       }
     ]
   }

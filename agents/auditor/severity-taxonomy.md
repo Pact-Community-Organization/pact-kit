@@ -1,6 +1,6 @@
 # Audit Finding Severity Taxonomy
 
-This document defines the severity classification system for Pact third-party audits, with specific criteria, examples, and decision guidelines.
+This document defines the severity classification system for third-party audits in a Pact project, with specific criteria, examples, and decision guidelines.
 
 ## Severity Matrix
 
@@ -258,11 +258,12 @@ Severity: CRITICAL (High Impact + High Likelihood)
 - Impact: HIGH (Complete treasury fund loss - $500K+ at risk)
 - Likelihood: HIGH (Single transaction, no authentication required)
 
-Location: dao-dividend.pact:89
+Location: pacts.pact:89
+Location: my-governance.pact:89
 Evidence: `(coin.transfer-create treasury account guard amount)` 
 Code lacks capability guard - any user can drain treasury.
 
-Exploit: `(dao-dividend.claim-dividend "attacker" 1000000.0)`
+Exploit: `(my-governance.claim-reward "attacker" 1000000.0)`
 PoC: Verified on devnet - drained entire treasury in one transaction
 ```
 
@@ -274,7 +275,7 @@ Severity: HIGH (High Impact + Medium Likelihood)
 - Impact: HIGH (Governance takeover possible)
 - Likelihood: MEDIUM (Requires significant stake and timing)
 
-Location: dao-voting.pact:156
+Location: my-governance.pact:156
 Evidence: Vote weight not properly validated against token balance
 Exploit requires purchasing 30%+ stake but enables permanent control.
 ```
@@ -287,7 +288,7 @@ Severity: MEDIUM (Medium Impact + Medium Likelihood)
 - Impact: MEDIUM (DoS potential under high load)  
 - Likelihood: MEDIUM (Requires coordinated transaction volume)
 
-Location: dao-token.pact:234
+Location: my-token.pact:234
 Evidence: `(select token-table (constantly true))` unbounded
 Could consume excessive gas or hit 150k limit during high activity.
 ```

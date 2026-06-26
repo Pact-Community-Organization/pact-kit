@@ -7,11 +7,11 @@
 ```
 # Audit Engagement Request
 
-I am requesting a formal third-party audit of the following Pact components.
+I am requesting a formal third-party audit of the following project components.
 
 ## Engagement Details
 - **Audit Type**: [Full / Scoped / Re-check]
-- **Scope**: pact-examples/pact/modules/*.pact, pact-examples/pact/interfaces/*.pact
+- **Scope**: [project-defined smart-contract paths]
 - **Branch**: main
 - **Commit**: [current HEAD commit hash]
 - **Deadline**: [date or "no deadline"]
@@ -35,28 +35,18 @@ Please begin by running your mandatory scope clarification questionnaire. Do not
 
 ## Required Workspace Paths
 
-### For DAO Audit
+### For Future Smart-Contract Audit
 ```
 Key Paths to Review:
-- pact/interfaces/dao-types.pact          (Core schema and types)
-- pact/modules/dao-token.pact             (Token and account management)
-- pact/modules/dao-dividend.pact          (Dividend accumulator)
-- pact/modules/dao-voting.pact            (Governance and proposals)
-- pact/modules/dao-gas-station.pact       (Gas payment)
-- pact/tests/*.repl                       (Test coverage)
-- ts/                                     (TypeScript integration)
-- docs/adr/                               (Architecture decisions)
-- docs/ARCHITECTURE.md                    (System overview)
-- docker-compose.*.yml                    (Infrastructure)
-- .github/workflows/                      (CI/CD)
+- [define canonical project paths before starting the audit]
 ```
 
-### For Ledger Signer Audit  
+### For Generic TypeScript + Pact Audit  
 ```
 Key Paths to Review:
-- packages/core/src/                      (Core library)
-- packages/cli/src/                       (CLI tool)
-- packages/web/src/                       (Web interface)
+- pact/modules/                           (Pact modules)
+- pact/tests/                             (REPL tests)
+- ts/src/                                 (TypeScript integration)
 - docs/adr/                               (Architecture decisions)
 - tests/                                  (Test suites)
 - .github/workflows/                      (CI/CD)
@@ -199,7 +189,7 @@ I will not proceed with code review until ALL questions are answered.
 ## Emergency Procedures
 
 ### Critical Finding Discovery
-1. **Immediate notification**: Inform Admin via docs/mailboxes/
+1. **Immediate notification**: Inform Admin through your project's coordination channel
 2. **Halt review**: Pause audit until finding confirmed
 3. **Isolate issue**: Create minimal PoC reproducer
 4. **Document impact**: Assess fund/governance risk

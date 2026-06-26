@@ -4,16 +4,16 @@ description: "Pact smart contract deployment scripts and management on KDA-CE. D
 ---
 # Deployment Management
 
-## Deploy Order (DAO)
+## Deploy Order (Illustrative)
 ```
-1. dao-types (interface)     — 1,231 gas
-2. dao-token + tables        — 24,644 gas
-3. dao-dividend + tables     — 14,525 gas
-4. dao-voting + tables       — 17,133 gas
-5. dao-gas-station + tables  — TBD
-6. Initialize dao-token      — 306 gas
-7. Initialize dao-voting     — 148 gas
-8. Configure dao-voting      — 146 gas
+1. my-types (interface)      — 1,231 gas (illustrative)
+2. my-token + tables         — 24,644 gas (illustrative)
+3. my-dividend + tables      — 14,525 gas (illustrative)
+4. my-governance + tables    — 17,133 gas (illustrative)
+5. my-gas-station + tables   — TBD
+6. Initialize my-token       — 306 gas (illustrative)
+7. Initialize my-governance  — 148 gas (illustrative)
+8. Configure my-governance   — 146 gas (illustrative)
 ```
 
 ## Deploy Script Pattern

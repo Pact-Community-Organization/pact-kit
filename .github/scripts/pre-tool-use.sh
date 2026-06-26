@@ -20,8 +20,4 @@ if [[ ! -f "$agents_dir/admin.agent.md" ]]; then
   echo "[hooks][pre-tool-use] warning: missing canonical coordinator agent: agents/admin.agent.md"
 fi
 
-if [[ -f "$agents_dir/orchestrator.agent.md" ]]; then
-  echo "[hooks][pre-tool-use] warning: deprecated agent still present: agents/orchestrator.agent.md"
-fi
-
 exit 0

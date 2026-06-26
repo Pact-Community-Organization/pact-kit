@@ -88,7 +88,7 @@ Defpact-specific source-backed rules:
 ```
 
 ## Naming Conventions
-- Modules: `kebab-case` (e.g., `dao-token`)
+- Modules: `kebab-case` (e.g., `my-token`)
 - Functions: `kebab-case` (e.g., `get-balance`)
 - Capabilities: `UPPER-CASE` (e.g., `TRANSFER`, `GOVERNANCE`)
 - Tables: `kebab-case-table` (e.g., `account-table`)

@@ -79,7 +79,7 @@ Every state mutation traces back to an enforced guard.
                   (row-enforced accounts 'guard k))))
 ```
 
-## DAO-specific invariants
+## Project-specific invariants
 
 ### Voting
 - `vote_amount <= balance` during VOTING status.

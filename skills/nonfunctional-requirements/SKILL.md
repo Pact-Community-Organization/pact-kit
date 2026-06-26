@@ -25,7 +25,7 @@ description: "Non-functional requirements for KDA-CE smart contracts: gas perfor
 ### Compatibility
 - Fungible-v2 interface compliance for tokens
 - Kadena client SDK compatibility
-- Ledger hardware wallet support (ledger-signer project)
+- Generic hardware-wallet support for signing workflows
 
 ### Operability
 - Module upgradeable via governance keyset

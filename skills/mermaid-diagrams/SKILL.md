@@ -22,12 +22,12 @@ description: "Generate Mermaid diagrams for architecture, module relationships, 
 ### Module Dependency DAG
 ```mermaid
 flowchart TD
-    types[dao-types] --> token[dao-token]
-    types --> dividend[dao-dividend]
-    types --> voting[dao-voting]
+    types[my-types] --> token[my-token]
+    types --> dividend[my-dividend]
+    types --> voting[my-governance]
     token --> dividend
     token --> voting
-    voting --> gas[dao-gas-station]
+    voting --> gas[my-gas-station]
 ```
 
 ### Transaction Flow

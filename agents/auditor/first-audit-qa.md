@@ -21,19 +21,19 @@ This document defines the mandatory pre-audit questionnaire that the Auditor age
 *Purpose: Define precise boundaries of what will be reviewed*
 
 **Acceptable Answer Includes:**
-- Specific file paths (e.g., `pact-examples/pact/modules/*.pact`)
+- Specific file paths (e.g., `pact/modules/*.pact`)
 - Explicit inclusion/exclusion statements
 - Branch name and commit hash
 - Off-chain components if applicable (CI/CD, deployment scripts, TypeScript)
 
 **Follow-up Required If:**
-- Only high-level descriptions provided ("the DAO system")
+- Only high-level descriptions provided ("the whole platform")
 - No commit hash specified
 - Unclear whether tests are included
 - Ambiguous about off-chain scope
 
 **Example Follow-up:**
-> "You mentioned 'DAO modules' — please specify the exact .pact files. Should I include pact-examples/pact/tests/*.repl files? What about pact-examples/ts/ TypeScript integration code?"
+> "You mentioned contract modules — please specify the exact `.pact` files. Should I include `pact/tests/*.repl` files? What about `ts/` TypeScript integration code?"
 
 #### **Q2: What is the primary asset at risk?**
 

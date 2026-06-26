@@ -18,7 +18,7 @@ async function checkNodeHealth(host: string): Promise<boolean> {
 ```typescript
 async function checkContractHealth(host: string, chainId: string) {
   const tx = Pact.builder
-    .execution('(free.dao-token.get-total-supply)')
+    .execution('(free.my-token.get-total-supply)')
     .setMeta({ chainId, sender: '', gasLimit: 10000 })
     .setNetworkId('development')
     .createTransaction();

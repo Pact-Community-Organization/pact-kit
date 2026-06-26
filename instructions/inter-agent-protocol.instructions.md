@@ -16,11 +16,9 @@ description: "Inter-agent message protocol: identity tags, task lifecycle, veto 
 **Note**: For GitHub operations, prefer GitHub MCP tools (`issues`, `pull_requests` toolsets) over `gh` CLI when available. The `[AgentName]` prefix requirement still applies for all comments. GitHub MCP provides structured data and audit logging versus terminal stdout parsing.
 
 ### Internal (File-based)
-- Task queue: `docs/tasks/`
-- Agent mailboxes: `docs/mailboxes/{agent}.json`
-- Status dashboard: `docs/status/dashboard.json`
+- Task queue, agent mailboxes, and a status dashboard can be used if your project keeps an internal coordination area.
 
-**Note**: File-based operations SHOULD go through `coord.*` MCP tools when available rather than direct file manipulation. This ensures audit logging, schema validation, and prevents race conditions. See [mcp-usage instructions](mcp-usage.instructions.md) for tool selection guidance.
+**Note**: File-based operations SHOULD go through your MCP coordination tools when available rather than direct file manipulation. This keeps audit logging, schema validation, and race-condition handling consistent with the project’s conventions.
 
 ## Task Lifecycle
 

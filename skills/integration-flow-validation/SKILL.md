@@ -6,16 +6,16 @@ description: "End-to-end lifecycle testing across all Pact modules — buy, tran
 
 ## Lifecycle Test Flows
 
-### DAO Token Lifecycle
+### Token Lifecycle
 ```
-1. Deploy all modules (types → token → dividend → voting → gas-station)
+1. Deploy all modules (my-types → my-token → my-dividend → my-governance → my-gas-station)
 2. Initialize token (set supply, admin config)
-3. Buy tokens (transfer KDA → receive DAO tokens)
+3. Buy tokens (transfer KDA → receive my-token tokens)
 4. Transfer tokens between accounts
 5. Verify balances across both modules
 ```
 
-### DAO Governance Lifecycle
+### Governance Lifecycle
 ```
 1. Create proposal (voting module)
 2. Vote on proposal (requires token balance)
@@ -24,7 +24,7 @@ description: "End-to-end lifecycle testing across all Pact modules — buy, tran
 5. Execute proposal if passed
 ```
 
-### DAO Dividend Lifecycle
+### Dividend Lifecycle
 ```
 1. Distribute dividends (add to pool)
 2. Verify accumulator state (pps update)

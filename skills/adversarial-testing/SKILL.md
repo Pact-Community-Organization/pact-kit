@@ -62,7 +62,7 @@ description: "Attack-oriented test design for Pact 5 smart contracts: capability
 ```typescript
 // Test: call admin function without governance keyset
 const tx = Pact.builder
-  .execution(`(free.dao-token.admin-function)`)
+  .execution(`(free.my-token.admin-function)`)
   .addSigner(attackerKey) // non-admin key
   .setMeta({ chainId: '0', sender: 'attacker', gasLimit: 150000 })
   .setNetworkId('development')

@@ -18,17 +18,17 @@ Then [expected outcome is observed]
 - "Then" must be measurable (not subjective)
 - Include both positive and negative ACs
 
-## Examples (DAO)
+## Examples
 ```
 AC: Token Transfer
-Given an account "alice" with 100.0 DAO tokens
+Given an account "alice" with 100.0 my-token tokens
 When "alice" transfers 50.0 tokens to "bob"
 Then "alice" balance is 50.0
 And "bob" balance is 50.0
 And total supply is unchanged
 
 AC: Unauthorized Transfer (Negative)
-Given an account "alice" with 100.0 DAO tokens
+Given an account "alice" with 100.0 my-token tokens
 When "mallory" attempts to transfer from "alice" without authorization
 Then the transaction fails with "Keyset failure"
 And "alice" balance remains 100.0

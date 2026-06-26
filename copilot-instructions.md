@@ -1,10 +1,10 @@
-# Pact agent system — Tier 1 (always-on router)
+# Pact agent marketplace — Tier 1 (always-on router)
 
-An agent system for **Pact 5** smart contract development. Pact runs on multiple platforms; these defaults target **Kadena Community Edition (KDA-CE)** — adapt them to whichever Pact platform your project targets.
+Reusable Copilot customizations for Pact and Kadena projects. Pact runs on multiple platforms; these defaults stay vendor-neutral and portable.
 
 ## Session start (read once)
 
-If your project uses the `docs/memory/` coordination convention, read `INDEX.md` → `PROJECT-STATE.md` ONCE per session (not auto-loaded), then rely on that context — do NOT re-read them each task. Check a file registry (if present) before creating a file. Scope/identity/irreversible-action and file-placement gates are enforced by the always-on `clarification-protocol` and `workspace-conventions` — follow them, do not restate.
+If your project uses a session-start memory or registry convention, load it once per session and then rely on that context instead of re-reading it for every task. Check a file registry if your project keeps one before creating a file. Scope, identity, irreversible-action, and file-placement gates are enforced by the always-on `clarification-protocol` and `workspace-conventions` — follow them, do not restate.
 
 ## Universal non-negotiables (no narrower home)
 
@@ -19,5 +19,5 @@ Your context already lists every instruction (with its `applyTo`), skill, and ag
 
 - Domain rules load by path: Pact → `pact-rules` (`*.pact`/`*.repl`); TS SDK → `typescript-sdk`; deploy/gas/security/testing → their `*-rules` instructions.
 - Pact language traps: pull the matching section of `pact-traps.instructions.md` on demand — large, not auto-loaded.
-- Cross-project status & roles: `docs/memory/PROJECT-STATE.md`, `AGENT-REGISTRY.md`.
+- Cross-project status & roles: if your project keeps a status/roles registry, use that single source of truth.
 - Guardrail mechanism (hooks/scripts, secret scan): `github-guardrails.instructions.md` — loads for `.github/hooks|scripts`.

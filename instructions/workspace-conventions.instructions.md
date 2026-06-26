@@ -4,9 +4,9 @@ applyTo: "**"
 ---
 # Workspace Conventions
 
-> **MANDATORY before creating any file/dir.** If your project keeps a file registry (e.g. `docs/memory/FILE-REGISTRY.md`), check it first.
+> **MANDATORY before creating any file/dir.** If your project keeps a file registry, check it first.
 
-> These are recommended conventions for organizing a Pact project that uses this `.github/` agent system. Adapt the project paths to your repository — the only fixed requirement is the `.github/` layout below.
+> These are recommended conventions for organizing a Pact project that uses this `.github/` agent system. Adapt the paths to your repository — the only fixed requirement is the `.github/` layout below.
 
 ## `.github/` Layout (fixed)
 
@@ -30,14 +30,14 @@ Organize your repository however suits the project; a common layout is:
 - `ts/scripts/` — deploy/seed/diagnostic scripts.
 - `ts/tests/` — integration/devnet tests.
 - `docs/` — project documentation (ADRs, processes, API, architecture).
-- `_archive/` — read-only history (give each archived area a `README.md`).
+- an archive/history folder (give each archived area a `README.md`).
 
 ### Optional coordination convention
 
-If you run the multi-agent workflow, a lightweight coordination area helps keep state in one place:
+If you run a multi-agent workflow, a lightweight coordination area can help keep state in one place:
 
-- `docs/memory/` — session-start memory: `INDEX.md` (entry point), `PROJECT-STATE.md` (status), `FILE-REGISTRY.md` (anti-duplication registry), `SESSION-LOG.md` (append-only handoffs), `*.md` (domain memory).
-- `docs/tasks/`, `docs/mailboxes/`, `docs/status/`, `docs/artifacts/` — task queue, per-agent mailboxes, status dashboard, and agent reports.
+- A session-start memory entry point, status note, file registry, append-only session log, and supporting domain notes.
+- Task queues, per-agent mailboxes, status dashboards, and agent reports can live alongside that convention if you use one.
 
 ## File Placement Rules
 
@@ -54,7 +54,7 @@ If you run the multi-agent workflow, a lightweight coordination area helps keep 
 | Agent skill | `.github/skills/skill-name/SKILL.md` |
 | Agent prompt | `.github/prompts/action.prompt.md` |
 | Agent definition | `.github/agents/Name.agent.md` |
-| Archived/obsolete content | `_archive/` with a README |
+| Archived/obsolete content | an optional archive area with a README |
 
 ### Anti-duplication rules
 1. If you keep a file registry, check it before creating any doc; UPDATE the canonical file if it already exists.

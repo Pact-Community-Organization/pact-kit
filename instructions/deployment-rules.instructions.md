@@ -5,9 +5,9 @@ applyTo: ["pact-examples/pact/deploy/**", "pact-examples/ts/scripts/**"]
 
 ## Deploy Order (CRITICAL)
 Module deployment order is strict — no forward references allowed:
-1. Interface modules first (e.g., dao-types)
-2. Core modules next (e.g., dao-token)
-3. Dependent modules last (e.g., dao-dividend, dao-voting, dao-gas-station)
+1. Interface modules first (for example, `my-types`)
+2. Core modules next (for example, `my-token`)
+3. Dependent modules last (for example, `my-governance` and any other dependent modules)
 4. Initialization calls after all modules deployed
 
 ## Signer Requirements

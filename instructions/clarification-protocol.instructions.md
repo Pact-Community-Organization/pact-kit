@@ -31,7 +31,7 @@ Ask before proceeding whenever ANY is true:
 
 1. **Batch ALL unclear questions** in a single questions-tool call — never serialize questions you already know you need.
 2. **Be specific** — ask about the exact ambiguity, not "Can you clarify?".
-3. **Show what you found** before asking (e.g. "`dao.pact` (current) vs `dao-token.pact` (archived) — which?").
+3. **Show what you found** before asking (e.g. "`payments.pact` (current) vs `payments-v1.pact` (archived) — which?").
 4. **Offer options** when a selection works better than free-form text.
 5. **Do not ask about optional parameters** — only things that materially change your action.
 6. **Max 5 questions per batch** — prioritize blocking ones.
@@ -40,7 +40,7 @@ Never: say "I'll assume X and proceed" then proceed; ask what you can determine 
 
 ## Research Before Asking
 
-1. Consult the session-start memory context (INDEX/PROJECT-STATE, already read this session); re-read only if stale.
+1. If your project uses a session-start memory or registry convention, consult it once per session and re-read only if it changed or became stale.
 2. Search the codebase for relevant files.
 3. Read relevant instruction/skill files for the domain.
 
@@ -56,8 +56,8 @@ Mark uncertain findings (not requests) explicitly, e.g. `[UNCERTAIN] code path l
 
 ## Mandatory Pre-Task Checklist (writing/deleting files)
 
-- [ ] Referenced session-start memory (INDEX/PROJECT-STATE) — re-read only if changed.
-- [ ] Checked `FILE-REGISTRY.md` for related canonical files.
+- [ ] If your project uses session-start memory, referenced it — re-read only if changed.
+- [ ] If your project uses a file registry, checked it for related canonical files.
 - [ ] Understand exactly which files will be created/modified/deleted.
 - [ ] New file: confirmed correct location in `workspace-conventions.instructions.md`.
 - [ ] Scope unclear: asked the user to confirm before proceeding.

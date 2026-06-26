@@ -22,7 +22,7 @@ Refs: #issue-number
 - `chore` — Maintenance tasks
 
 ### Scopes
-- `dao-token`, `dao-dividend`, `dao-voting`, `dao-gas-station`, `dao-types`
+- `my-token`, `my-governance`, or your module names
 - `ledger-core`, `ledger-cli`, `ledger-web`
 - `devnet`, `testnet`, `mainnet`
 - `coordination`, `agent-config`

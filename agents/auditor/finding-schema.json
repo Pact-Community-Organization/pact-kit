@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://smartpacts.com/schemas/audit-finding.json",
-  "title": "Pact Audit Finding",
-  "description": "JSON schema for third-party audit findings in Pact projects",
+  "$id": "https://example.com/schemas/audit-finding.json",
+  "title": "Pact Project Audit Finding",
+  "description": "JSON schema for third-party audit findings in a Pact project",
   "type": "object",
   "required": [
     "id",
@@ -265,29 +265,29 @@
   "examples": [
     {
       "id": "AUD-001", 
-      "title": "Unguarded Treasury Access in dao-dividend.pact",
+      "title": "Unguarded Treasury Access in my-governance.pact",
       "severity": "CRITICAL",
       "category": "Access Control",
-      "description": "The claim-dividend function lacks proper capability guards, allowing any user to drain the treasury by specifying arbitrary amounts.",
+      "description": "The claim-reward function lacks proper capability guards, allowing any user to drain the treasury by specifying arbitrary amounts.",
       "impact": "High",
       "likelihood": "High",
       "impact_analysis": "Complete treasury drain is possible with a single transaction. Estimated $500K+ at risk based on current treasury holdings.",
       "exploit_steps": [
-        "Call dao-dividend.claim-dividend with attacker account",
+        "Call my-governance.claim-reward with attacker account",
         "Specify amount larger than legitimate dividend claim",
         "Transaction succeeds due to missing guard",
         "Treasury funds transferred to attacker account"
       ],
       "affected_files": [
         {
-          "path": "pact-examples/pact/modules/dao-dividend.pact",
+          "path": "pact/modules/my-governance.pact",
           "line_number": 89,
-          "function_name": "claim-dividend"
+          "function_name": "claim-reward"
         }
       ],
       "evidence": {
         "code_snippet": "(coin.transfer-create treasury account guard amount)",
-        "repl_proof": "(dao-dividend.claim-dividend \"attacker\" 1000000.0)",
+        "repl_proof": "(my-governance.claim-reward \"attacker\" 1000000.0)",
         "devnet_proof": "Transaction txid:abc123... successfully drained 500K from treasury"
       },
       "remediation": {
@@ -296,7 +296,7 @@
         "code_example": "(with-capability (CLAIM account amount) (enforce (<= amount owed) \"Claim exceeds owed amount\") ...)"
       },
       "status": "Open",
-      "auditor": "Pact Auditor Agent",
+      "auditor": "Marketplace Auditor Agent",
       "audit_date": "2026-04-15",
       "tags": ["capability-bypass", "token-mechanics", "governance"],
       "blocks_deployment": true,
