@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "pact-agents",
+  "description": "Pact 5 / KDA-CE agent skills, instructions, and prompts for Kadena smart contract developers.",
+  "owner": {
+    "name": "Pact Community Organization",
+    "url": "https://github.com/Pact-Community-Organization"
+  },
+  "plugins": [
+    {
+      "name": "pact-agents",
+      "description": "24 Pact/KDA-CE skills, 8 role-based agents, 18 instruction files, and CI scripts for Kadena smart contract development.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}
