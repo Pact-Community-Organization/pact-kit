@@ -1,50 +1,75 @@
-# Agent Portability
+# Tool Support
 
-Pact Agent Marketplace is an agent-portable skill distribution. The skills in `skills/` hold
-the core behavior; host-specific files are adapters that make that behavior easy to load in
-a given agent host.
+Pact Agent Marketplace is designed to work with Claude Code, Codex, and Gemini CLI.
+The core content (`skills/`, `instructions/`, `commands/`, `agents/`) is shared across all hosts;
+host-specific files are thin adapters that make it accessible in each tool.
 
 ## Supported Hosts
 
-| Host | Files | Install | Notes |
-|------|-------|---------|-------|
-| Claude Code | `.claude-plugin/plugin.json`, `skills/`, `agents/`, `instructions/`, `hooks/` | `claude plugins add Pact-Community-Organization/github-marketplace` | Full plugin install: skills auto-discovered, agents available as subagents, instructions scoped by `applyTo`. |
-| Codex | `.codex-plugin/plugin.json`, `skills/`, `agents/`, `instructions/` | `codex plugins add Pact-Community-Organization/github-marketplace` | Plugin install with same skills and instructions. |
-| Gemini CLI | `gemini-extension.json`, `AGENTS.md`, `skills/` | `gemini extension install https://github.com/Pact-Community-Organization/github-marketplace` | Extension manifest points `contextFileName` at `AGENTS.md` for always-on rules. Skills are auto-discovered from `skills/`. |
-| GitHub Copilot | `copilot-instructions.md`, `agents/`, `skills/`, `instructions/`, `prompts/` | `bash <(curl -fsSL .../scripts/install.sh) /path/to/repo` | Copies assets into `.github/`. Copilot picks up `copilot-instructions.md` and `.github/agents/` automatically. |
-| Any agent (copy-paste) | `AGENTS.md` or `skills/*/SKILL.md` | Copy the file(s) you need | `AGENTS.md` at the repo root works as always-on rules for any agent that reads it. Individual `SKILL.md` files can be copy-pasted into any skill-supporting host. |
+| Host | Install method | What you get |
+|---|---|---|
+| Claude Code | `claude plugins add Pact-Community-Organization/github-marketplace` | Full install: 24 skills, 20 commands, 16 instructions, `pact-auditor` agent, CI scripts |
+| Codex | `codex plugins add Pact-Community-Organization/github-marketplace` | 24 skills, 20 commands, 16 instructions, `pact-auditor` agent |
+| Gemini CLI | `gemini extension install https://github.com/...` | `AGENTS.md` always-on context injected into every session |
+| Any host | `bash <(curl -fsSL .../scripts/install.sh)` | Full install into `~/.claude/` |
 
-## What Each Install Provides
+## Per-host Details
 
-### Plugin install (Claude Code / Codex)
+### Claude Code
 
-- **Skills**: all 24 Pact/KDA-CE skills available by name via the skill picker
-- **Agents**: 8 role-based agents (Developer, Tester, Architect, Security, Auditor, DevOps, Docs, Admin)
-- **Instructions**: 18 instruction files — scoped automatically by `applyTo` (e.g. `*.pact`/`*.repl` triggers `pact-rules`)
-- **Prompts**: 24 task prompts for architecture, implementation, review, security, and validation
+Plugin adapter: `.claude-plugin/plugin.json`
 
-### Gemini CLI extension install
+Installs skills, commands, and instructions into Claude Code's native discovery paths.
+The `pact-auditor` sub-agent is available as an independent reviewer — invoke it with
+`security review` or `ready to ship`. CI scripts install to `~/.claude/scripts/` and can
+be wired as `PostToolUse` and `Stop` hooks in `~/.claude/settings.json`.
 
-- **AGENTS.md**: compact always-on Pact/KDA-CE system prompt injected into every session
-- **Skills**: auto-discovered from `skills/` directory
-- **No agents or hooks** at this tier — agents require manual invocation
+### Codex
 
-### Copy-paste install (`scripts/install.sh`)
+Plugin adapter: `.codex-plugin/plugin.json`
 
-Everything above, installed into `TARGET/.github/`. The script copies agents, skills,
-instructions, prompts, hooks, and CI scripts. Run `chmod +x .github/scripts/*.sh` after
-installation.
+Same skill and instruction surface as Claude Code. Commands available via Codex's command
+picker. `pact-auditor` available as a sub-agent.
 
-## Adapter Rule
+### Gemini CLI
 
-Keep adapters thin. When a host supports skills or hooks, point it at the existing `skills/`
-and `hooks/` directories. When a host only supports project instructions, use `AGENTS.md`
-as the compact fallback — it covers the non-negotiables without requiring plugin support.
+Extension adapter: `gemini-extension.json` (sets `contextFileName: "AGENTS.md"`)
 
-## Always-on Fallback
+The `AGENTS.md` at the repo root is injected as always-on context into every Gemini CLI
+session. It carries the non-negotiables (static analysis gate, gas ceiling, ADR discipline,
+minimal-first rule) and a catalog of available skills and the `pact-auditor` agent.
 
-`AGENTS.md` at the repository root is the universal fallback. It is auto-loaded by:
-Gemini CLI, Cursor, Windsurf, Antigravity, CodeWhale, Swival, VS Code + Codex extension,
-Kiro (as a steering rule), and any agent that respects the `AGENTS.md` convention.
+Skills and commands are not natively discovered by Gemini CLI — reference them manually
+from `~/.claude/skills/` and `~/.claude/commands/` after running the curl-pipe installer.
 
-Copy it into any project to get Pact/KDA-CE context without installing the full bundle.
+### Any host — curl-pipe installer
+
+`scripts/install.sh` copies the full package into `~/.claude/`:
+
+```
+~/.claude/
+  skills/           24 domain skill files
+  instructions/     16 behavioral instruction files
+  commands/         20 slash command files
+  agents/
+    pact-auditor.md
+  scripts/
+    pact-static-check.sh
+    session-end-secrets-scan.sh
+  CLAUDE.md.template
+```
+
+The installer merges — it never deletes existing files. Run it again after updates.
+
+## AGENTS.md — Universal Fallback
+
+`AGENTS.md` at the repository root is the universal fallback for any agent host that reads it
+automatically. It is picked up without any plugin install by: Gemini CLI, Cursor, Windsurf,
+Antigravity, CodeWhale, Swival, VS Code + Codex extension, and Kiro (as a steering rule).
+
+Copy it into any Pact project root to get the non-negotiables without installing the full package:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/github-marketplace/main/AGENTS.md \
+  > /path/to/your-project/AGENTS.md
+```
