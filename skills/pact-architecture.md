@@ -4,7 +4,7 @@ description: "Kadena-specific architecture patterns for Pact 5 on KDA-CE. Govern
 ---
 # Pact Architecture Patterns
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Governance Models
 ```pact

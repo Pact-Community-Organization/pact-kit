@@ -5,29 +5,25 @@ description: "Docker devnet orchestration for KDA-CE. Container lifecycle, port 
 # Devnet Management
 
 ## Container Configuration
-| Agent | Port | Compose File | Container Name |
-|-------|------|-------------|----------------|
-| Developer | 8081 | docker-compose.developer.yml | devnet-developer |
-| Tester | 8082 | docker-compose.tester.yml | devnet-tester |
-| Security | 8083 | docker-compose.security.yml | devnet-security |
+Port: 8081 (default). Configurable via `DEVNET_HOST` env var.
+Compose file: `docker-compose.yml` in project root.
 
 ## Lifecycle Commands
 ```bash
 # Start devnet
-docker compose -f docker-compose.{agent}.yml up -d
+docker compose up -d
 
 # Check health
-curl http://localhost:{port}/info
+curl http://localhost:8081/info
 
 # View logs
-docker compose -f docker-compose.{agent}.yml logs -f
+docker compose logs -f
 
 # Reset (clean state)
-docker compose -f docker-compose.{agent}.yml down -v
-docker compose -f docker-compose.{agent}.yml up -d
+docker compose down -v && docker compose up -d
 
 # Stop
-docker compose -f docker-compose.{agent}.yml down
+docker compose down
 ```
 
 ## Health Check

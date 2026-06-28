@@ -4,7 +4,7 @@ description: "Pact 5 module architecture — governance, table ownership, namesp
 ---
 # Pact Module Design
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Module Template
 ```pact
@@ -97,7 +97,7 @@ defcap or a keyset").
 
 ## Standard utility library — `pact-util-lib` (Pascal / `free` namespace)
 `free.util-lists`, `free.util-strings`, `free.util-math`, `free.util-time`, `free.util-random`,
-`free.util-zk`, `free.util-chain-data`, `free.util-fungible` (v0.11, Pact 5.3) are MIT-licensed,
+`free.util-zk`, `free.util-chain-data`, `free.util-fungible` (v0.11; verify 5.4ce compatibility) are MIT-licensed,
 maintained by Pascal (a core KDA-CE developer), and **deployed on mainnet** in the `free` namespace.
 They are pure-Pact compositions of native builtins — e.g. `util-lists` wraps
 `take`/`drop`/`enumerate`/`zip`/`fold`; `util-strings` builds `split`/`join`/`slice`/`upper`/`lower`/
@@ -113,7 +113,7 @@ They are pure-Pact compositions of native builtins — e.g. `util-lists` wraps
 - **Default (minimal-first / YAGNI):** the MIT license lets us **copy the exact function inline** into
   our module. Prefer this for the 1–3 helpers a contract actually needs, and unit-test them against the
   native traps (take/drop clamping, inclusive `enumerate`, `at`-not-on-strings, `zip`-shortest) — see
-  [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md).
+  [../instructions/pact-traps.md](../instructions/pact-traps.md).
 - **Reuse the deployed module as a dependency** only for non-security, read-only convenience on a
   throwaway/local path, with the version pinned and reviewed.
 - Treat the lib as a **vetted reference implementation** of native composition, never as a trusted

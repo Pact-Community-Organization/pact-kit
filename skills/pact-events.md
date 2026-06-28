@@ -4,7 +4,7 @@ description: "Pact 5 events: @event capabilities, managed-cap emission, emit-eve
 ---
 # Pact Events
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Emission Rules (source-anchored)
 - `@event` on a **basic capability** emits an event on successful **normal acquisition** (`with-capability`). `test-capability` does **not** emit — emission is guarded by `NormalCapEval` (source: `evalCap` `DefEvent` branch, `emittedEvent = fqctToPactEvent origToken <$ guard (ecType == NormalCapEval)` in `pact/Pact/Core/IR/Eval/CEK/Evaluator.hs`).

@@ -4,9 +4,9 @@ description: "Pact formal verification — @model properties, property-based tes
 ---
 # Formal Verification
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md). For *choosing which* invariants/properties to write per module, see the `pact-invariants` skill — this skill is the grammar reference.
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md). For *choosing which* invariants/properties to write per module, see the `pact-invariants` skill — this skill is the grammar reference.
 
-> **STATUS — Pact 5.0–5.3 / KDA-CE:** the Z3-backed property checker and the
+> **STATUS — Pact 5.4ce / KDA-CE:** the Z3-backed property checker and the
 > `(verify …)` native are **NOT implemented in Pact 5 core**. `verify` is absent
 > from the builtin set and `Semantics.md` tracks it as `[ ] implemented`; only
 > `(typecheck 'module)` exists (since 5.2). The `@model` grammar below **is parsed
@@ -153,7 +153,7 @@ use the propositional forms:
 ## Recommended baseline (wire into CI)
 - Put `conserves-mass` (`column-delta = 0`) **and** non-negative-balance
   `(invariant (>= balance 0.0))` on **every fungible table** as `@model` spec.
-- **`(verify 'module)` is NOT available in Pact 5.3** — do not wire it into CI.
+- **`(verify 'module)` is NOT available in Pact 5.4ce** — do not wire it into CI.
   Instead run `(typecheck 'module)` (5.2+) and enforce conservation/auth via REPL
   `expect`/`expect-failure` + devnet adversarial tests. Keep the `@model`
   annotations in source as the executable spec for when `verify` ships.

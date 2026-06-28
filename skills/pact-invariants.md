@@ -6,7 +6,7 @@ description: "Pact formal verification with @model annotations, invariant proper
 
 > For the full `@model` grammar (annotation kinds, vocabulary, quantifiers,
 > `succeeds-when`/`abort`/`result`, limits) see the `formal-verification` skill.
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md).
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md).
 >
 > This skill complements `formal-verification`: it is about **deciding which
 > invariants and properties a real module needs**, and where each one lives.
@@ -95,7 +95,7 @@ Every state mutation traces back to an enforced guard.
 ## Workflow
 1. Pick invariants from the catalog that match the module's risk surface.
 2. Place data-shape ones on the schema, behavioral ones on the defun.
-3. **`(verify 'module)` is NOT implemented in Pact 5.0–5.3** — `@model` is parsed
+3. **`(verify 'module)` is NOT implemented in Pact 5.4ce** — `@model` is parsed
   but unenforced. Run `(typecheck 'module)` (5.2+) and assert the same properties
   via REPL `expect`/`expect-failure` + devnet adversarial tests.
 4. Fix code or refine the property; re-check.

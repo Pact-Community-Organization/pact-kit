@@ -4,7 +4,7 @@ description: "Developer-level security review for Pact 5: capability audit, guar
 ---
 # Developer Security Review
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Pre-Commit Security Checklist
 
@@ -77,5 +77,5 @@ docs' YODA6 `USER` bug — a public `hello-world` directly acquiring
 enclosing real guard. A weak-cap acquisition on a public path with no
 `enforce-guard` / scoped-managed signature / runtime context between the
 entrypoint and the acquisition is a finding. See
-[../capability-analysis/SKILL.md](../capability-analysis/SKILL.md) for the full
+[../skills/capability-analysis.md](../skills/capability-analysis.md) for the full
 SAFE-vs-EXPLOITABLE rule.

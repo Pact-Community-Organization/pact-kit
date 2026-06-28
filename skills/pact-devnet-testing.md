@@ -35,7 +35,5 @@ const result = await client.pollOne(submitted, { timeout: 600_000, interval: 5_0
 4. **Local preflight** — `client.local(tx)` for gas estimation before submit
 5. **Postcondition verification** — always verify state changed via localCall after tx
 
-## Devnet Ports
-- Developer: 8081
-- Tester: 8082
-- Security: 8083
+## Devnet Port
+Default: 8081 (configurable via `DEVNET_HOST` env var)

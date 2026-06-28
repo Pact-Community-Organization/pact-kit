@@ -1,12 +1,12 @@
 ---
 name: pact-cli-tooling
-description: "Pact 5.3 CLI/REPL tooling: .repl execution, parse check, --check-shadowing, typecheck, env-gas measurement, LCOV coverage, REPL builtins reference."
+description: "Pact 5.4ce CLI/REPL tooling: .repl execution, parse check, --check-shadowing, typecheck, env-gas measurement, LCOV coverage, REPL builtins reference."
 ---
 # Pact CLI & REPL Tooling
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 >
-> **Binary location:** use the `pact` 5.3 binary available on your `PATH`. Run experiments in a temp scratch dir, not in tracked module folders.
+> **Binary location:** use the `pact` 5.4ce binary available on your `PATH`. Run experiments in a temp scratch dir, not in tracked module folders.
 
 ## Running Files
 ```bash
@@ -21,11 +21,11 @@ pact -t path/to/file.repl           # --trace: per-expression trace output
 ```bash
 pact FILE                      # bare load = parse / compile check (exit 0 = "Load successful")
 pact --check-shadowing FILE    # detect native shadowing
-pact --version                 # confirm v5.3
+pact --version                 # should report v5.4ce (KDA-CE)
 pact --lsp                     # language server for editor diagnostics
 ```
-- Pact 5.3 has **no `--check` flag** — a bare `pact FILE` invocation IS the load/parse check (no `expect`s run; exit 0 prints `Load successful`).
-- `typecheck` is available as a native (5.2) for static type checking. There is NO `verify` native in Pact 5.0–5.3 (the Z3 `@model` checker is not ported) — see the Formal Verification section below.
+- Pact 5.4ce has **no `--check` flag** — a bare `pact FILE` invocation IS the load/parse check (no `expect`s run; exit 0 prints `Load successful`).
+- `typecheck` is available as a native (5.2+) for static type checking. There is NO `verify` native in Pact 5.4ce (the Z3 `@model` checker is not ported) — see the Formal Verification section below.
 - Note: a module whose top-level form reads tx data (`(namespace (read-msg 'ns))`) needs `env-data` — verify those via their `.repl` harness, not a bare load.
 - Native name shadowing is load-time rejected in Pact 5.1+ (see canonical traps) — `--check-shadowing` surfaces it ahead of load.
 
@@ -49,19 +49,19 @@ The fastest way to measure gas is in the REPL — no devnet round-trip.
 - `env-gas` with no arg **reads** the counter; `(env-gas 0)` **resets** it.
 - `env-gasmodel` selects the model; `env-gaslog` emits a per-operation breakdown.
 
-## Formal Verification — NOT a Pact 5.3 native
-`(verify …)` does **not exist** in Pact 5.0–5.3 — the Z3 `@model` property checker
+## Formal Verification — NOT a Pact 5.4ce native
+`(verify …)` does **not exist** in Pact 5.4ce — the Z3 `@model` property checker
 is not ported to Pact 5 core (`Semantics.md`: `verify [ ] implemented`). Use the
 real static type checker instead:
 ```pact
 (typecheck 'free.my-module)   ;; static typechecker (5.2+) — types only, NOT @model
 ```
-`@model` annotations are parsed but **unenforced** in 5.3; verify properties via
+`@model` annotations are parsed but **unenforced** in 5.4ce; verify properties via
 REPL `expect`/`expect-failure` + devnet adversarial tests. See
-[formal-verification](../formal-verification/SKILL.md).
+[formal-verification](../skills/formal-verification.md).
 
 ## Coverage
-REPL code coverage (5.3) produces **LCOV** output at `coverage/lcov.info` — feed it to standard coverage reporters in CI.
+REPL code coverage produces **LCOV** output at `coverage/lcov.info` — feed it to standard coverage reporters in CI.
 
 ## REPL env builtins — quick reference
 | Builtin | Purpose |
@@ -79,4 +79,4 @@ REPL code coverage (5.3) produces **LCOV** output at `coverage/lcov.info` — fe
 | `expect-that` | Assert a predicate holds |
 | `test-capability` | Acquire a capability for the current test scope |
 
-See [pact-repl-testing](../pact-repl-testing/SKILL.md) for test-file structure.
+See [pact-repl-testing](../skills/pact-repl-testing.md) for test-file structure.

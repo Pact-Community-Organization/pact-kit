@@ -4,7 +4,7 @@ description: "Pact 5 schema and table design: field types, key patterns, deftabl
 ---
 # Pact Schema Design
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Schema & Table Definition
 ```pact

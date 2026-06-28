@@ -4,7 +4,7 @@ description: "Comprehensive Pact module validation: 4-phase testing (REPL analys
 ---
 # Pact Module Validation
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: ../instructions/pact-traps.md
 
 ## Four-Phase Testing Protocol
 
@@ -21,7 +21,7 @@ description: "Comprehensive Pact module validation: 4-phase testing (REPL analys
 - Document any failures with evidence
 
 ### Phase 3: Devnet Deploy
-- Deploy all modules in order to dedicated devnet (port 8082)
+- Deploy all modules in order to devnet
 - Use unscoped signers for admin operations
 - Verify gas consumption within budgets
 - Confirm all tables created successfully
@@ -40,5 +40,5 @@ Phase 1 (REPL Analysis): {PASS|FINDINGS}
 Phase 2 (REPL Execution): {PASS|FAIL — N of M tests}
 Phase 3 (Devnet Deploy): {PASS|FAIL — gas: N}
 Phase 4 (Devnet Verification): {PASS|FAIL — N findings}
-Verdict: [Tester] [GO|NO-GO]
+Verdict: GO | NO-GO
 ```

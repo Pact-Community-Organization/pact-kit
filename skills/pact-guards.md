@@ -4,7 +4,7 @@ description: "Pact 5 guard taxonomy: keyset/keyset-ref/user/capability guards, p
 ---
 # Pact Guards & Principals
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Guard Taxonomy
 | Guard | Create / use | Principal prefix | Notes |

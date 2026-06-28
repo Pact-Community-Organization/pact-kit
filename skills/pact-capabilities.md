@@ -4,7 +4,7 @@ description: "Pact 5 capability patterns — @managed, @event, compose-capabilit
 ---
 # Pact Capabilities
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md). This skill explains capability mechanics; it does not re-list traps.
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md). This skill explains capability mechanics; it does not re-list traps.
 
 ## Capability Types
 
@@ -40,7 +40,7 @@ mean to re-run, or silently grants access.
 Error-surface note: when matching failure text, keep rendering context explicit.
 REPL `.repl` failures use Pretty strings, while on-chain/devnet failures use
 BoundedText. Use the canonical mapping table in
-[../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+[../instructions/pact-traps.md](../instructions/pact-traps.md)
 instead of mixing surfaces.
 
 ### `with-capability` — acquire and scope a grant
@@ -132,6 +132,8 @@ reachable only via the module's own (real-guarded) acquisition path.
 | `CREDIT` | `(enforce (!= receiver "") "valid receiver")` | ❌ WEAK | Private via `require-capability`; only acquired composed under `DEBIT` inside managed `TRANSFER`; always paired with a preceding `debit` (mass-conserving). |
 | `ROTATE` | `@managed` + `true` | ✅ (real guard is *inside* `rotate`: `enforce-guard old-guard`) | One-shot managed + in-fn guard. |
 | `TRANSFER` | `@managed amount TRANSFER-mgr`, composes `(DEBIT sender)`+`(CREDIT receiver)` | ✅ (via composed `DEBIT`) | Scoped/managed signature + real guard pulled in by composition. |
+| `TRANSFER_XCHAIN` | `@managed amount TRANSFER_XCHAIN-mgr` (one-shot), composes `(DEBIT sender)` | ✅ (via composed `DEBIT`) | Cross-chain send; one-shot managed cap — cap exhausted after a single transfer. |
+| `TRANSFER_XCHAIN_RECD` | `@event` only | — | Emitted on the receiving chain in step 2 of `transfer-crosschain`. No predicate body. |
 | `GAS` / `COINBASE` / `GENESIS` / `REMEDIATE` | `true` | ❌ none | "Magic" caps installed **only** by the node's execution machinery on specific protocol paths; consumed via `require-capability`. Presence of the cap *is* the proof of context (Pact 5.2 magic capabilities). |
 
 ### Why coin `CREDIT` is a SAFE weak cap (coin-specific example)
@@ -178,9 +180,9 @@ The danger is **exposing `with-capability` of a weak cap through an unguarded
 public path** — not the `true`/weak body itself.
 
 > Auditing weak-body caps (the SAFE-vs-EXPLOITABLE rule + grep heuristic):
-> [../capability-analysis/SKILL.md](../capability-analysis/SKILL.md).
+> [../skills/capability-analysis.md](../skills/capability-analysis.md).
 > Conservation backing (`conserves-mass`):
-> [../formal-verification/SKILL.md](../formal-verification/SKILL.md).
+> [../skills/formal-verification.md](../skills/formal-verification.md).
 
 ## Managed Capabilities — manager function contract
 
@@ -217,7 +219,12 @@ once per transaction**. Ideal for **VOTE** — one signature, one vote, replay-s
 
 ### Reference: coin contract
 `coin.TRANSFER` uses `@managed amount TRANSFER-mgr`; `TRANSFER-mgr` subtracts,
-enforces `>= 0.0`, and returns the remainder — the canonical correct pattern.
+enforces `>= 0.0`, and returns the remainder — the canonical **decremental** pattern.
+
+`coin.TRANSFER_XCHAIN` (fungible-xchain-v1) uses `@managed amount TRANSFER_XCHAIN-mgr`;
+`TRANSFER_XCHAIN-mgr` enforces `requested <= managed` and returns **`0.0`** — the
+canonical **one-shot** pattern. Do NOT apply the decremental pattern to cross-chain
+manager functions.
 
 ## Managed capabilities and signatures
 
@@ -269,7 +276,7 @@ the pact-events skill for event payload conventions.
 ## Quick Rules
 1. `with-capability` = acquire + scope + run-guard-once; `require-capability` =
    assert-already-granted, no body, top of internal fns.
-2. Manager fn must subtract, enforce `>= 0`, and return the decrement.
+2. Manager fn — two distinct contracts: **decremental** (TRANSFER-mgr: subtract → enforce `>= 0` → return remainder) vs **one-shot** (TRANSFER_XCHAIN-mgr: enforce `requested <= managed` → return `0.0`). Do not conflate.
 3. Bare `@managed` = single-use per tx (VOTE).
 4. Managed caps must be explicitly installed before acquisition (scoped sigs or
   `install-capability`).

@@ -4,7 +4,7 @@ description: "Pact 5 multi-step pacts (defpact) and cross-chain transfers: step 
 ---
 # Pact Defpact (Multi-Step & Cross-Chain)
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Structure
 A `defpact` is an ordered sequence of steps executed across separate transactions.
@@ -155,7 +155,7 @@ continuation lineage.
 ## Security
 - **`pact-id` is NOT an access guard** — `(pact-id)` throws outside a defpact (see canonical traps). Use composed capabilities for authorization, not bare pact-id.
 - **Re-acquire composed caps in EACH step** — capability scope does not survive across the tx boundary between steps. coin re-acquires `TRANSFER_XCHAIN` / `CREDIT` in step 1.
-- **Orphaned-transfer DoS**: if step 1 is never submitted, funds sit in limbo (debited on source, never credited on target). Mitigate with a gas-station relayer that submits the `cont` step (see [gas-station-design](../gas-station-design/SKILL.md)) and/or a rollback/refund path with a deadline — **rollback refunds are same-chain only** (cross-chain steps cannot roll back).
+- **Orphaned-transfer DoS**: if step 1 is never submitted, funds sit in limbo (debited on source, never credited on target). Mitigate with a gas-station relayer that submits the `cont` step (see [gas-station-design](../skills/gas-station-design.md)) and/or a rollback/refund path with a deadline — **rollback refunds are same-chain only** (cross-chain steps cannot roll back).
 
 ## REPL Testing
 - `(continue-pact step rollback pact-id)` advances a pact; `rollback` is a bool; `pact-id` is optional **but required across a `commit-tx`** boundary.

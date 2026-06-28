@@ -4,7 +4,7 @@ description: "Pact 5 interface definition and implementation — fungible-v2, cr
 ---
 # Pact Interface Design
 
-> Canonical traps: [../../instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## Interface Definition
 ```pact

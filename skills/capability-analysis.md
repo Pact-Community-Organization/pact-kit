@@ -44,7 +44,7 @@ Module: {name}
 
 A `defcap` body is an **internal gate, not a public ACL**. A cap is acquirable
 only inside its declaring module (for canonical behavior and error-rendering
-details, see `.github/instructions/pact-traps.instructions.md`). So a
+details, see `../instructions/pact-traps.md`). So a
 `true`/weak-body cap is an **in-module permission token** — security lives at the
 **acquisition site**, not in the body.
 

@@ -4,12 +4,12 @@ description: "Pact 5 gas station design: GAS_PAYER capability, capability-guard 
 ---
 # Gas Station Design
 
-> Canonical traps: [.github/instructions/pact-traps.instructions.md](../../instructions/pact-traps.instructions.md)
+> Canonical traps: [../instructions/pact-traps.md](../instructions/pact-traps.md)
 
 ## What a Gas Station Is
 An **autonomous account that pays gas on behalf of users' transactions**, enabling:
 - **Gasless UX** — users transact without holding KDA for gas.
-- **Defpact continuation relaying** — a relayer can submit `cont` steps funded by the station to reduce orphan risk for cross-chain flows (see [pact-defpact](../pact-defpact/SKILL.md)).
+- **Defpact continuation relaying** — a relayer can submit `cont` steps funded by the station to reduce orphan risk for cross-chain flows (see [pact-defpact](../skills/pact-defpact.md)).
 
 The station account is a **principal backed by a capability guard**, so only the constrained `GAS_PAYER` logic can spend from it.
 
@@ -52,7 +52,7 @@ A gas station holds spendable KDA — an unconstrained station is a free-money f
 - Keep the `GAS_PAYER` cap composition minimal — release `ALLOW_GAS` only after all checks pass.
 
 ## Cross-Chain Role
-A gas station can fund defpact continuation (`cont`) submissions by a relayer, which reduces the chance of orphaned cross-chain flow state. It does not guarantee completion by itself; pair it with robust continuation monitoring/retry logic and the underlying defpact rollback strategy. See [pact-defpact](../pact-defpact/SKILL.md).
+A gas station can fund defpact continuation (`cont`) submissions by a relayer, which reduces the chance of orphaned cross-chain flow state. It does not guarantee completion by itself; pair it with robust continuation monitoring/retry logic and the underlying defpact rollback strategy. See [pact-defpact](../skills/pact-defpact.md).
 
 ## Limits
 - **150,000 gas per transaction hard ceiling** — the station cannot fund a tx that exceeds it; bound `limit` well under the ceiling.

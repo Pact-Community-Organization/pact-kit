@@ -5,10 +5,10 @@ description: "Gas measurement, optimization, and budget tracking for Pact 5 on K
 # Pact Gas Analysis
 
 ## Measurement
-Budget table + measurement pattern: see `gas-optimization.instructions.md` (canonical).
+Budget table + measurement pattern: see `../instructions/gas-optimization.md` (canonical).
 
 ## Budget Tracking
-Budget table + measurement pattern: see `gas-optimization.instructions.md` (canonical).
+Budget table + measurement pattern: see `../instructions/gas-optimization.md` (canonical).
 
 ## Optimization Strategies
 1. **Direct reads** over table scans (`read` vs `fold`/`map`)
