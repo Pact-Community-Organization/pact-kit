@@ -1,23 +1,26 @@
-# Pact agent marketplace — Tier 1 (always-on router)
+# Pact 5 / KDA-CE — Copilot Instructions
 
-Reusable Copilot customizations for Pact and Kadena projects. Pact runs on multiple platforms; these defaults stay vendor-neutral and portable.
+Reusable instructions for Pact and Kadena projects. Vendor-neutral; AGENTS.md is the primary
+always-on context for tools that read it natively (Gemini CLI, Cursor, Windsurf, and others).
+These instructions target GitHub Copilot specifically.
 
-## Session start (read once)
+## Session start
 
-If your project uses a session-start memory or registry convention, load it once per session and then rely on that context instead of re-reading it for every task. Check a file registry if your project keeps one before creating a file. Scope, identity, irreversible-action, and file-placement gates are enforced by the always-on `clarification-protocol` and `workspace-conventions` — follow them, do not restate.
+Load project context once per session; do not re-read it for every task. Check the project's
+module registry before creating a file. Scope, identity, and file-placement gates are enforced
+by `clarification-protocol` and `workspace-conventions` (in `~/.claude/instructions/`).
 
-## Universal non-negotiables (no narrower home)
+## Non-negotiables
 
-- Pact deploys require `.github/scripts/pact-static-check.sh` exit 0 — never bypass.
-- Transparency-first: business-critical state and final outcomes on-chain by default; justify any off-chain logic.
-- Stability over churn: no architecture-changing refactor without a problem statement, alternatives, and ADR approval.
-- Code-touching work is minimal-first — prefer the smallest correct change — unless the user explicitly overrides.
+- Static analysis: `~/.claude/scripts/pact-static-check.sh` must exit 0 before any `.pact`/`.repl` change ships. Never bypass.
+- Transparency-first: business-critical state lives on-chain by default; justify any off-chain logic.
+- No architecture change without an ADR.
+- Minimal-first: stop at the first rung that holds — reuse, then stdlib, then one line, then minimum that works.
 
-## Read only what the task needs
+## Load on demand
 
-Your context already lists every instruction (with its `applyTo`), skill, and agent description — trust those to self-route; do not duplicate them here. Beyond that auto-routing:
+Skills in `~/.claude/skills/`, instructions in `~/.claude/instructions/`. Pull the relevant
+section of `pact-traps.md` on any `.pact`/`.repl` edit — it is large and not auto-loaded.
 
-- Domain rules load by path: Pact → `pact-rules` (`*.pact`/`*.repl`); deploy/gas/security/testing → their `*-rules` instructions.
-- Pact language traps: pull the matching section of `pact-traps.instructions.md` on demand — large, not auto-loaded.
-- Cross-project status & roles: if your project keeps a status/roles registry, use that single source of truth.
-- Guardrail mechanism (hooks/scripts, secret scan): `github-guardrails.instructions.md` — loads for `.github/hooks|scripts`.
+Before shipping any module, invoke `pact-auditor` (`~/.claude/agents/pact-auditor.md`) for an
+independent security review.

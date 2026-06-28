@@ -1,7 +1,7 @@
 {
   "name": "pact-agents",
   "version": "0.1.0",
-  "description": "24 Pact/KDA-CE skills, 8 role-based agents, 18 instruction files, and CI scripts for Kadena smart contract development.",
+  "description": "24 Pact/KDA-CE skills, 16 instructions, 20 slash commands, 1 security agent, and CI scripts for Kadena smart contract development.",
   "author": {
     "name": "Pact Community Organization",
     "url": "https://github.com/Pact-Community-Organization"
@@ -11,13 +11,14 @@
   "license": "Apache-2.0",
   "keywords": ["pact", "kadena", "kda-ce", "smart-contracts", "skills", "agents"],
   "skills": "./skills/",
+  "commands": "./commands/",
   "interface": {
     "displayName": "Pact Agents",
     "shortDescription": "Pact 5 / KDA-CE smart contract development skills and agents",
     "longDescription": "Domain-specific skills and role-based agents for Pact 5 smart contract development on Kadena Community Edition. Covers capabilities, guards, schema design, REPL testing, devnet workflows, security audit, gas analysis, cross-chain design, and more.",
     "developerName": "Pact Community Organization",
     "category": "Development",
-    "capabilities": ["Skills", "Instructions", "Agents", "Prompts"],
+    "capabilities": ["Skills", "Instructions", "Commands", "Agents"],
     "websiteURL": "https://github.com/Pact-Community-Organization/github-marketplace"
   }
 }
