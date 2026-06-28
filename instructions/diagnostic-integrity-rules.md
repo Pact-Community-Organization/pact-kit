@@ -57,4 +57,4 @@ These rules override ALL other behavioral guidance for Tester and Security agent
 - Devnet time-dependent tests MUST poll chain time, never static wait
 
 ## Self-Audit Requirement
-Before submitting ANY report, complete the self-audit checklist in `.github/instructions/self-audit-checklist.instructions.md`.
+Before submitting ANY report, complete the self-audit checklist in `self-audit-checklist.md`.

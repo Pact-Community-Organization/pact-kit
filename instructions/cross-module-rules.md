@@ -27,7 +27,7 @@ Modules reviewed in isolation = silent bugs. Cross-module write path gaps cause 
 
 ## Module-reference (modref) trust & reentrancy
 
-> Canonical traps: [pact-traps.instructions.md](pact-traps.instructions.md).
+> Canonical traps: [pact-traps.md](pact-traps.md).
 
 A module reference (`modref`) is **untrusted code**. When you call into a modref,
 you are invoking an implementation you do not control — and **it runs with every
@@ -70,11 +70,10 @@ caller function and observe/abuse partial state. Mitigations, in order:
    (`enforce-guard`), not just compare values.
 2. **Never hold a sensitive cap across an external/modref call** (the let-first
    pattern above).
-3. **Pact 5.3 read-only-by-default modref reentrancy** — when a modref re-enters
+3. **Pact 5.3+ read-only-by-default modref reentrancy** — when a modref re-enters
    the **originating** module, that re-entry is forced **read-only** (DML blocked:
-   `Operation disallowed in read-only or sys-only mode`). **Confirm the runtime is
-   ≥ 5.3** before relying on it, and **do not treat it as the sole defense** —
-   keep mitigations (1) and (2).
+   `Operation disallowed in read-only or sys-only mode`). Present in Pact 5.4ce (KDA-CE).
+   **Do not treat it as the sole defense** — keep mitigations (1) and (2).
 
 ### Late binding — modrefs resolve to the LATEST target
 A modref resolves at call time to the **currently deployed (latest upgraded)**

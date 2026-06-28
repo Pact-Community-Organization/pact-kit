@@ -4,12 +4,12 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 # Pact 5 / KDA-CE Canonical Trap List
 
 > **Single source of truth — load on demand.** Every fact below was empirically
-> verified against a real `pact` 5.3 binary and the `kda-community/pact-5` Haskell
-> source. Do not re-list traps elsewhere — link here. KDA-CE targets **Pact 5.3**.
+> verified against the `kda-community/pact-5` Haskell source (v5.4ce).
+> Do not re-list traps elsewhere — link here. KDA-CE targets **Pact 5.4ce**.
 >
 > **Token-efficient use:** this file is a sectioned reference, not auto-injected.
 > The lean always-on summary lives in
-> [pact-rules.instructions.md](pact-rules.instructions.md). **Read only the
+> [pact-rules.md](pact-rules.md). **Read only the
 > section(s) your task touches** — find the `##` heading in the index and read that
 > range; do not load the whole file. Each fact lives here exactly once.
 
@@ -355,7 +355,7 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
   `b` when `a` is true. Use this to order cheap/likely checks first.
 - **`if` takes exactly 3 args** `(if cond then else)`; `cond` must be a bool; only the taken branch
   is evaluated.
-- **`enforce`** `(enforce cond msg)`: `cond` runs in a **read-only** env (Pact 5.3 — reads OK, writes
+- **`enforce`** `(enforce cond msg)`: `cond` runs in a **read-only** env (Pact 5.4ce — reads OK, writes
   fail), and the **`msg` is LAZY** — it is evaluated ONLY when `cond` is false (so a `format`/`show`
   in the message costs nothing on the happy path). Failure raises a recoverable `UserEnforceError msg`.
 - **`enforce-one` SWALLOWS errors in its conditions — this is its defining behaviour.**
@@ -530,7 +530,8 @@ Verified in `pact/Pact/Core/IR/Eval/CEK/Evaluator.hs`,
   REPL test failure** (wire into CI).
 - **5.2** — `typecheck` native added.
 - **5.3** — read-only modref reentrancy guard; `enforce` / user-guards run
-  read-only; coverage support. **KDA-CE target.**
+  read-only; coverage support.
+- **5.4ce** — KDA-CE fork of kadena-io/pact-5. No documented functional language changes vs 5.3. **KDA-CE target.**
 
 ## Reusable error strings: REPL vs. on-chain rendering
 

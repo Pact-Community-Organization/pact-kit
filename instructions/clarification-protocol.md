@@ -59,5 +59,5 @@ Mark uncertain findings (not requests) explicitly, e.g. `[UNCERTAIN] code path l
 - [ ] If your project uses session-start memory, referenced it — re-read only if changed.
 - [ ] If your project uses a file registry, checked it for related canonical files.
 - [ ] Understand exactly which files will be created/modified/deleted.
-- [ ] New file: confirmed correct location in `workspace-conventions.instructions.md`.
+- [ ] New file: confirmed correct location in `workspace-conventions.md`.
 - [ ] Scope unclear: asked the user to confirm before proceeding.

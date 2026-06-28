@@ -17,7 +17,7 @@ Apply to every module:
 ### Capability Audit Checklist
 - [ ] All privileged functions require capability
 - [ ] Capabilities compose correctly (no bypass via direct call)
-- [ ] `@managed` capabilities properly scoped with install-capability inside with-capability
+- [ ] `@managed` capabilities have correct manager functions (subtract → enforce >= 0 → return remainder)
 - [ ] No capabilities brought into scope before module reference calls
 - [ ] Guard functions use `enforce-guard` not manual key checks
 - [ ] `pact-id` not used as sole access guard
@@ -45,9 +45,8 @@ makes its consumers **private** (it checks scope, never re-runs the body).
   guarded fns consume them via `require-capability` — presence of the cap *is* the
   proof of context. A `true` body is justified solely under this condition.
 
-Canonical traps: [pact-traps.instructions.md](pact-traps.instructions.md).
-Full audit rule + grep heuristic:
-[../skills/capability-analysis/SKILL.md](../skills/capability-analysis/SKILL.md).
+Canonical traps: pact-traps.md
+Full audit rule + grep heuristic: ../skills/capability-analysis.md
 
 ### Common Vulnerability Patterns
 1. **Unguarded admin functions** — missing `with-capability (GOVERNANCE)`
@@ -69,10 +68,9 @@ Full audit rule + grep heuristic:
 - **MEDIUM**: Non-exploitable issue, gas waste, information leak
 - **LOW**: Code quality, missing documentation, minor hardening
 
-## Security Verdict Format
+## Verdict Format
 ```
-[Security] [APPROVE|REJECT]
 Findings: N critical, N high, N medium, N low
-Details: {reference to findings report}
-Conditions: {any conditions on approval}
+Verdict: APPROVE | NEEDS-FIX
+Details: {findings with location, severity, evidence, fix}
 ```

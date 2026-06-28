@@ -12,7 +12,7 @@ applyTo: ["**/*.pact", "**/*.ts", "**/*.js"]
 - Comments prefixed with agent tag: `; [Developer] explanation`
 - Namespace: `free.` for development, project namespace for production
 - Module governance: keyset-ref-guard pattern
-- **Language traps**: see canonical [pact-traps.instructions.md](pact-traps.instructions.md) — do not re-list traps here. `test-capability` runs the defcap body; `expect` records failures and continues; `expect-failure` does NOT roll back prior REPL DB writes (all documented canonically there).
+- **Language traps**: see canonical [pact-traps.md](pact-traps.md) — do not re-list traps here. `test-capability` runs the defcap body; `expect` records failures and continues; `expect-failure` does NOT roll back prior REPL DB writes (all documented canonically there).
 
 ## TypeScript/JavaScript
 - Strict TypeScript for all integration code

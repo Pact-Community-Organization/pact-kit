@@ -6,7 +6,7 @@ applyTo: "**/*.{pact,repl}"
 
 ## Critical Traps
 
-**Full canonical traps + the dual REPL/on-chain error-string table are an ON-DEMAND, sectioned reference: [pact-traps.instructions.md](pact-traps.instructions.md). It is NOT auto-loaded — open it and read ONLY the section your task touches (it has a Section index at the top). Do not work from memory for error strings.**
+**Full canonical traps + the dual REPL/on-chain error-string table are an ON-DEMAND, sectioned reference: [pact-traps.md](pact-traps.md). It is NOT auto-loaded — open it and read ONLY the section your task touches (it has a Section index at the top). Do not work from memory for error strings.**
 
 Pull the matching `pact-traps` section when your task touches:
 - capabilities/events → `Capabilities` · numbers/decimals → `Arithmetic` · tx input (`read-*`) → `Message Data — read-*` · tables → `Database`
@@ -62,7 +62,7 @@ Defpact-specific source-backed rules:
 - In `.repl` tests, `expect-failure` substring matching uses REPL `Pretty` rendering (`renderCompactText` over `PactError`) via `coreExpectFailure` in `pact-repl/Pact/Core/IR/Eval/Direct/ReplBuiltin.hs`.
 - On-chain/devnet error text comes from `pactErrorToOnChainError` and bounded text renderers (`pactErrorToBoundedText` / `*ToBoundedText`) in `pact/Pact/Core/Errors.hs`.
 - These renderer paths can produce different strings; choose failure substrings from the surface you are actually asserting.
-- For canonical substrings, use `pact-traps.instructions.md` as the single source.
+- For canonical substrings, use `pact-traps.md` as the single source.
 
 ## Testing Conventions (.repl)
 - Use `env-data` and `env-sigs` before each transaction
