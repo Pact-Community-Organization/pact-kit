@@ -2,7 +2,7 @@
 # install.sh — install the Pact Community package into ~/.claude/
 #
 # Usage (one command from anywhere):
-#   bash <(curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/github-marketplace/main/scripts/install.sh)
+#   bash <(curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/pact-kit/main/scripts/install.sh)
 #
 # Or after cloning:
 #   bash scripts/install.sh
@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/Pact-Community-Organization/github-marketplace.git"
+REPO_URL="https://github.com/Pact-Community-Organization/pact-kit.git"
 CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
 TMP_DIR=""
 

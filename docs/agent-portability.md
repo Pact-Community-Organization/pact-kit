@@ -1,6 +1,6 @@
 # Tool Support
 
-Pact Agent Marketplace is designed to work with Claude Code, Codex, and Gemini CLI.
+Pact Kit is designed to work with Claude Code, Codex, and Gemini CLI.
 The core content (`skills/`, `instructions/`, `commands/`, `agents/`) is shared across all hosts;
 host-specific files are thin adapters that make it accessible in each tool.
 
@@ -8,8 +8,8 @@ host-specific files are thin adapters that make it accessible in each tool.
 
 | Host | Install method | What you get |
 |---|---|---|
-| Claude Code | `claude plugins add Pact-Community-Organization/github-marketplace` | Full install: 24 skills, 20 commands, 16 instructions, `pact-auditor` agent, CI scripts |
-| Codex | `codex plugins add Pact-Community-Organization/github-marketplace` | 24 skills, 20 commands, 16 instructions, `pact-auditor` agent |
+| Claude Code | `claude plugins add Pact-Community-Organization/pact-kit` | Full install: 24 skills, 20 commands, 16 instructions, `pact-auditor` agent, CI scripts |
+| Codex | `codex plugins add Pact-Community-Organization/pact-kit` | 24 skills, 20 commands, 16 instructions, `pact-auditor` agent |
 | Gemini CLI | `gemini extension install https://github.com/...` | `AGENTS.md` always-on context injected into every session |
 | Any host | `bash <(curl -fsSL .../scripts/install.sh)` | Full install into `~/.claude/` |
 
@@ -70,6 +70,6 @@ Antigravity, CodeWhale, Swival, VS Code + Codex extension, and Kiro (as a steeri
 Copy it into any Pact project root to get the non-negotiables without installing the full package:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/github-marketplace/main/AGENTS.md \
+curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/pact-kit/main/AGENTS.md \
   > /path/to/your-project/AGENTS.md
 ```

@@ -1,11 +1,11 @@
-# Pact Agent Marketplace
+# Pact Kit
 
 Domain knowledge and workflow automation for Pact 5 / KDA-CE smart contract development —
 packaged for Claude Code, Codex, and Gemini CLI.
 
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](LICENSE)
-[![npm](https://img.shields.io/npm/v/@pact-community/pact-agents?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@pact-community/pact-agents)
-[![Release](https://img.shields.io/github/v/release/Pact-Community-Organization/github-marketplace?style=flat-square)](https://github.com/Pact-Community-Organization/github-marketplace/releases)
+[![npm](https://img.shields.io/npm/v/@pact-community/pact-kit?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@pact-community/pact-kit)
+[![Release](https://img.shields.io/github/v/release/Pact-Community-Organization/pact-kit?style=flat-square)](https://github.com/Pact-Community-Organization/pact-kit/releases)
 
 ---
 
@@ -21,22 +21,22 @@ packaged for Claude Code, Codex, and Gemini CLI.
 
 **Claude Code**
 ```bash
-claude plugins add Pact-Community-Organization/github-marketplace
+claude plugins add Pact-Community-Organization/pact-kit
 ```
 
 **Codex**
 ```bash
-codex plugins add Pact-Community-Organization/github-marketplace
+codex plugins add Pact-Community-Organization/pact-kit
 ```
 
 **Gemini CLI**
 ```bash
-gemini extension install https://github.com/Pact-Community-Organization/github-marketplace
+gemini extension install https://github.com/Pact-Community-Organization/pact-kit
 ```
 
 **Any host — installs directly into `~/.claude/`**
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/github-marketplace/main/scripts/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/Pact-Community-Organization/pact-kit/main/scripts/install.sh)
 ```
 
 The installer merges into `~/.claude/` and never removes existing files. Safe to run again after updates.

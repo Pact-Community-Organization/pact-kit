@@ -1,13 +1,12 @@
 {
-  "name": "@pact-community/pact-agents",
+  "name": "@pact-community/pact-kit",
   "version": "0.1.0",
-  "description": "Pact 5 / KDA-CE agent skills, instructions, and prompts for Kadena smart contract developers.",
+  "description": "Domain knowledge and workflow automation for Pact 5 / KDA-CE smart contract development.",
   "keywords": [
     "pact",
     "kadena",
     "kda-ce",
     "smart-contracts",
-    "ai-agents",
     "skills",
     "claude",
     "codex",
@@ -18,13 +17,13 @@
     "name": "Pact Community Organization",
     "url": "https://github.com/Pact-Community-Organization"
   },
-  "homepage": "https://github.com/Pact-Community-Organization/github-marketplace",
+  "homepage": "https://github.com/Pact-Community-Organization/pact-kit",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pact-Community-Organization/github-marketplace.git"
+    "url": "git+https://github.com/Pact-Community-Organization/pact-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/Pact-Community-Organization/github-marketplace/issues"
+    "url": "https://github.com/Pact-Community-Organization/pact-kit/issues"
   },
   "files": [
     "AGENTS.md",

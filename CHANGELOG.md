@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Pact Agent Marketplace are documented here.
+All notable changes to Pact Kit are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -18,7 +18,7 @@ Initial release as a Claude Code native package.
 - `.claude-plugin/` — Claude Code marketplace listing and plugin definition
 - `.codex-plugin/` — Codex plugin definition
 - `gemini-extension.json` — Gemini CLI extension manifest pointing `contextFileName` at `AGENTS.md`
-- `package.json` — npm package at `@pact-community/pact-agents` for discoverability
+- `package.json` — npm package at `@pact-community/pact-kit` for discoverability
 - `scripts/install.sh` — curl-pipe installer; copies the full package into `~/.claude/`
 - `docs/agent-portability.md` — per-host install guide
 
@@ -34,4 +34,4 @@ Initial release as a Claude Code native package.
 - `project-templates/CLAUDE.md.project` — per-project configuration template
 - `project-templates/STATUS.md.template` — sprint status template
 
-[0.1.0]: https://github.com/Pact-Community-Organization/github-marketplace/releases/tag/v0.1.0
+[0.1.0]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.1.0
