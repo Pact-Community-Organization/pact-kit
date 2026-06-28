@@ -1,0 +1,48 @@
+{
+  "name": "@pact-community/pact-agents",
+  "version": "0.1.0",
+  "description": "Pact 5 / KDA-CE agent skills, instructions, and prompts for Kadena smart contract developers.",
+  "keywords": [
+    "pact",
+    "kadena",
+    "kda-ce",
+    "smart-contracts",
+    "ai-agents",
+    "skills",
+    "claude",
+    "codex",
+    "gemini"
+  ],
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Pact Community Organization",
+    "url": "https://github.com/Pact-Community-Organization"
+  },
+  "homepage": "https://github.com/Pact-Community-Organization/github-marketplace",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pact-Community-Organization/github-marketplace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pact-Community-Organization/github-marketplace/issues"
+  },
+  "files": [
+    "AGENTS.md",
+    "agents/",
+    "skills/",
+    "instructions/",
+    "prompts/",
+    "hooks/",
+    ".claude-plugin/",
+    ".codex-plugin/",
+    "gemini-extension.json",
+    "copilot-instructions.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "exit 0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
