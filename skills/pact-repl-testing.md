@@ -42,3 +42,8 @@ description: "Pact REPL test scaffolding, expect/expect-failure patterns, env-da
 4. Comment with requirement source: `; Tests: ADR-NNN`
 5. Test both authorized AND unauthorized paths
 6. `expect-failure` does NOT rollback prior DB writes — clean state before each test
+7. **NO cross-chain in the REPL — ever.** SPV is unsupported in the bare REPL, so a
+   cross-chain step (`yield` to a target chain, cross-chain `continue-pact`, SPV/continuation
+   proofs) CANNOT be tested here — it will fail `SPVVerificationFailure` / not resolve.
+   REPL-test only the same-chain scope; push all cross-chain verification to a multi-chain
+   devnet. See [testing-rules](../instructions/testing-rules.md) HARD RULE.

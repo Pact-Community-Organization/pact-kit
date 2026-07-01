@@ -158,6 +158,15 @@ continuation lineage.
 - **Orphaned-transfer DoS**: if step 1 is never submitted, funds sit in limbo (debited on source, never credited on target). Mitigate with a gas-station relayer that submits the `cont` step (see [gas-station-design](../skills/gas-station-design.md)) and/or a rollback/refund path with a deadline — **rollback refunds are same-chain only** (cross-chain steps cannot roll back).
 
 ## REPL Testing
+> **HARD RULE — the REPL can test SAME-CHAIN defpact flow ONLY. Cross-chain is
+> DEVNET-ONLY.** SPV is unsupported in the bare REPL (`noSPVSupport` →
+> `SPVVerificationFailure` / "Cross-chain continuations not supported"), so there is NO
+> way to exercise a cross-chain step here. The example below keeps `chain-id` fixed on
+> purpose. To locally verify anything cross-chain (yield to a *different* target chain,
+> cross-chain `continue-pact`, the SPV `proof` path), deploy to a **multi-chain devnet**,
+> run step 0 on the source chain, fetch the proof from `/spv`, and continue on the target
+> chain. Never fake it with `env-chain-data` — a "passing" cross-chain `.repl` is a false
+> positive. See [testing-rules](../instructions/testing-rules.md).
 - `(continue-pact step rollback pact-id)` advances a pact; `rollback` is a bool; `pact-id` is optional **but required across a `commit-tx`** boundary.
 - `(pact-state)` inspects current pact execution state; `(pact-state true)` resets it.
 - defpacts are called **module-qualified**: `(free.my-module.my-flow ...)`.

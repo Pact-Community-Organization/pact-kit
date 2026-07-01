@@ -43,6 +43,14 @@ Defpact-specific source-backed rules:
 - Parser legacy `step` entity forms may parse in compatibility paths, but Pact
   5 desugaring/eval reject entity usage in defpacts
   (`EntityNotAllowedInDefPact`).
+- **🔴 CROSS-CHAIN IS DEVNET-ONLY LOCALLY — NEVER testable in the bare REPL.** SPV is
+  unsupported in the REPL (`noSPVSupport` → `SPVVerificationFailure` / "Cross-chain
+  continuations not supported"), and SPV is the cross-chain continuation transport, so a
+  `.repl` **cannot** exercise a cross-chain step — any "passing" cross-chain `.repl` is a
+  FALSE POSITIVE. REPL = same-chain scope only. To test cross-chain locally you MUST use a
+  multi-chain devnet (deploy ≥2 chains → step 0 on source → fetch `/spv` proof → `cont` on
+  target). No devnet available → STOP and say so; do not fake it with `env-chain-data`. Full
+  procedure: [testing-rules](testing-rules.md) HARD RULE.
 
 ## Capability Security Pattern
 ```pact
