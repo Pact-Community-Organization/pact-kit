@@ -32,3 +32,17 @@ description: "Cross-chain design patterns for KDA-CE 20-chain architecture. Defp
 - Each step = exactly ONE expression
 - Failure in step 2 requires manual recovery
 - Consider timeout/rollback mechanisms
+
+## Local Testing — DEVNET-ONLY (HARD RULE)
+**You cannot test cross-chain in the bare REPL. Full stop.** SPV is unsupported there
+(`noSPVSupport` → `SPVVerificationFailure`), and SPV is how a cross-chain continuation
+is transported — so a `.repl` file physically cannot exercise a cross-chain step. Any
+`.repl` that appears to "pass" a cross-chain test is a false positive.
+- **To test cross-chain locally → multi-chain devnet ONLY:**
+  1. Deploy the module to ≥2 chains (e.g. source `0`, target `1`).
+  2. Submit step 0 (`exec`) on the source chain; wait for confirmation depth.
+  3. Fetch the SPV proof from the `/spv` endpoint for the target chain.
+  4. Submit the `cont` (step 1) with that proof on the target chain; verify credit.
+- The REPL is limited to same-chain defpact scope (step decomposition, same-chain
+  yield/resume, rollback shape). See [testing-rules](../instructions/testing-rules.md)
+  and [pact-defpact](pact-defpact.md).
