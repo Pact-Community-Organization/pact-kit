@@ -40,8 +40,11 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 - **No DML (insert/update/write) inside `enforce`'s boolean argument or inside
   `try` — reads ARE allowed.** Only writes fail, with
   `Operation disallowed in read-only or sys-only mode` (on-chain: `Operation is not allowed in read-only or system-only mode.`)
-- Binding reads to a `let` first is a **style/gas preference, not a correctness
-  requirement** — reads inside `enforce`/`try` work.
+- Binding reads to a `let` first is **NO LONGER NEEDED for correctness** — reads
+  inside `enforce`/`try` work directly. It was historically required only because
+  reads *were* disallowed in `enforce`/`try` until Pact 5.3 made those bodies
+  read-only (reads permitted). Today a `let` binding is justified only for code
+  readability, not correctness or gas. *(auditor: Pascal Kda)*
 
 ```pact
 ; OK — read inside enforce
@@ -119,7 +122,9 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
   any-mix-with-decimal→decimal; `+` also concatenates string⊕string and list⊕list.
   `(+ 1 2 3)` → `Attempted to apply a closure to too many arguments`; use
   `(+ a (+ b c))`.
-- **Mixed int/decimal promotes to decimal**: `(+ 1 2.0)` = `3.0`.
+- **Mixed int/decimal promotes to decimal**: `(+ 1 2.0)` = `3.0`. **AVOID relying on
+  implicit promotion — promote explicitly with `(dec i)`** (e.g. `(+ (dec 1) 2.0)`) so the
+  types are unambiguous at the call site and no silent int→decimal happens. *(auditor: Pascal Kda)*
 - **Decimals are EXACT** arbitrary-precision (`Data.Decimal`), never IEEE-754 — so
   `+ - * /` on decimals are exact. Only the **transcendentals** (`exp`, `ln`, `sqrt`,
   `log`, decimal `^`) go through MPFR and can fail `FloatingPointError` on NaN/∞.
@@ -155,8 +160,16 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 > payload on-chain). The body is a top-level object; if it is not an object, every
 > `read-*` fails.
 
-- **`(read-msg key)`** returns the raw value at `key` with **no type coercion**;
-  **`(read-msg)`** (no arg) returns the **entire** data body. Always validate before use.
+- **`(read-msg key)`** returns the stored value at `key` **as-is** — `coreReadMsg` just
+  `M.lookup`s the key in `eeMsgBody` and returns the `PactValue` unchanged (no coercion *at
+  the `read-msg` call site*). **BUT the value it returns was already type-coerced when the
+  JSON tx payload was decoded into `eeMsgBody`** per Pact's JSON→PactValue rules (a JSON
+  number becomes `PInteger`/`PDecimal`, an object becomes `PObject`, etc.). So `read-msg`
+  does not "add" coercion, yet you are NOT guaranteed a raw/verbatim JSON shape — you get a
+  decoded `PactValue` whose type is whatever the decoder chose. `(read-msg)` (no arg) returns
+  the **entire** decoded data body. Always validate type/range before use. *(auditor: Pascal
+  Kda flagged the old "no type coercion" wording; corrected against `coreReadMsg` in
+  `pact/Pact/Core/IR/Eval/CEK/CoreBuiltin.hs`.)*
 - **`(read-string key)`** accepts **only** a string value — no coercion. A number/object
   at that key is a recoverable read failure.
 - **`(read-integer key)` COERCES** — it accepts an integer (as-is), a **decimal (which it
@@ -257,9 +270,13 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 > Pascal's mainnet `free.util-time`.
 
 - **There is NO current-time / `now` native.** On-chain "now" is `(at 'block-time (chain-data))`
-  — the block's **deterministic consensus time**, NOT wall-clock real time. `chain-data` is the
-  only source; never assume sub-block-time precision or real-time behaviour. (`free.util-time`
-  wraps this as `(now)` via `free.util-chain-data.block-time`.)
+  — but this is the **timestamp of the PARENT (previous) block, NOT the current block** (the
+  current block's time is not known during execution). It is a **deterministic consensus value**,
+  NOT wall-clock real time, and it **lags real time by roughly one block**. `chain-data` is the
+  only source; never assume sub-block-time precision, real-time behaviour, or that "now" equals
+  the current block's time. (`free.util-time` wraps this as `(now)` via
+  `free.util-chain-data.block-time`.) *(auditor: Pascal Kda — value is populated by chainweb-node,
+  not pact-5.)*
 - **`(time s)` accepts ONLY the fixed ISO8601 UTC literal `%Y-%m-%dT%H:%M:%SZ`** (trailing `Z`,
   no timezone offsets). Any other shape → native execution error `time default format parse failure`.
   For other layouts use `(parse-time fmt s)` (strftime codes, e.g. `%F`, `%T`, `%Y-%b-%d`); a
@@ -328,9 +345,13 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
   `(at 'sender (chain-data))` as an authorization identity — it is the account paying gas, fully
   attacker-controllable in the tx envelope. Authorize with keysets / `enforce-guard`, never `sender`.
 - **`block-time` / `block-height` are DETERMINISTIC consensus values, not wall-clock/live height.**
-  `block-time` is the block's timestamp (microseconds since UNIX epoch internally); it is the only
-  on-chain "now" (there is no `now` native). Both are identical for every tx in the same block — do
-  not assume intra-block ordering or sub-block-time granularity.
+  **`block-time` is the timestamp of the PARENT (previous) block, NOT the current block**
+  (microseconds since UNIX epoch internally); the current block's time is not available during
+  execution, so on-chain "now" (there is no `now` native) actually lags real time by ~one block.
+  Both `block-time` and `block-height` are identical for every tx in the same block — do not assume
+  intra-block ordering or sub-block-time granularity, and do not treat `block-time` as the exact
+  current instant for tight deadlines. *(auditor: Pascal Kda — `block-time` is supplied by
+  chainweb-node in `PublicData`, not by pact-5; `pact/Pact/Core/ChainData.hs` only defines the field.)*
 - **In bare REPL every field is a zero/empty DEFAULT** (`chain-id ""`, `block-height 0`,
   `block-time 1970-01-01T00:00:00Z`, `sender ""`, `gas-limit 0`, `gas-price 0.0`). Set them in tests
   with `(env-chain-data { ... })` — a REPL-only native; forgetting it gives false time/height results.
@@ -436,9 +457,10 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
   object `{ 'x: int, 'y: int }`; a G2 point is `{ 'x: [int int], 'y: [int int] }`**; the point at
   infinity is `{'x:0,'y:0}` (G1). Any point off the curve → fatal `PointNotOnCurve` (not
   `try`-recoverable); for `pairing-check` the G2 points are additionally subgroup-checked (post-Pact 5.4).
-- **All ZK + poseidon + keccak natives require crypto compiled in.** A `WITHOUT_CRYPTO` build / bare
-  REPL without crypto throws `crypto disabled`. `hash-keccak256` / `hash-poseidon` also do not resolve
-  under the `DisablePact51` flag (they are Pact 5.1+).
+- **ZK + poseidon + keccak natives are gated by the `DisablePact51` flag** — `hash-keccak256` /
+  `hash-poseidon` and the ZK natives do not resolve when that flag is set (they are Pact 5.1+).
+  On KDA-CE assume crypto is always compiled in — `WITHOUT_CRYPTO` builds are not relevant here,
+  so do not design around a `crypto disabled` path. *(auditor: Pascal Kda)*
 - **`enforce-verifier`** `(enforce-verifier 'name)` checks that a chainweb verifier plugin granted its
   capability (gas 10,000); **`verify-spv`** is the SPV continuation/proof native (gas 100,000) — see
   the cross-chain section for `SPVVerificationFailure`.
