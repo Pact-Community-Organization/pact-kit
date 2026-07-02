@@ -1,0 +1,31 @@
+name: release
+
+# Publishes to npm via OIDC Trusted Publishing when a GitHub release is
+# published. No npm token: npmjs.com is configured to trust this repo +
+# workflow file (release.yml), and provenance attestations are generated
+# automatically. package.json's version must be new on the registry or
+# the publish fails loudly.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  npm-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Update npm (OIDC trusted publishing needs a recent CLI)
+        run: npm install -g npm@latest
+      - name: Publish
+        run: npm publish

@@ -27,6 +27,7 @@
   },
   "files": [
     "AGENTS.md",
+    "CHANGELOG.md",
     "CLAUDE.md.template",
     "agents/",
     "skills/",
@@ -34,6 +35,8 @@
     "commands/",
     "scripts/",
     "project-templates/",
+    "docs/",
+    "examples/",
     ".claude-plugin/",
     ".codex-plugin/",
     "gemini-extension.json",
