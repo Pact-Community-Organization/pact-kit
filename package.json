@@ -1,6 +1,6 @@
 {
   "name": "@pact-community/pact-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Domain knowledge and workflow automation for Pact 5 / KDA-CE smart contract development.",
   "keywords": [
     "pact",

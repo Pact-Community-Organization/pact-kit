@@ -38,16 +38,21 @@ mkdir -p \
   "$CLAUDE_DIR/instructions" \
   "$CLAUDE_DIR/commands" \
   "$CLAUDE_DIR/agents" \
-  "$CLAUDE_DIR/scripts"
+  "$CLAUDE_DIR/scripts" \
+  "$CLAUDE_DIR/project-templates"
 
 cp "$SRC/skills/"*.md        "$CLAUDE_DIR/skills/"
+mkdir -p "$CLAUDE_DIR/skills/pact"
+cp "$SRC/skills/pact/SKILL.md" "$CLAUDE_DIR/skills/pact/"
 cp "$SRC/instructions/"*.md  "$CLAUDE_DIR/instructions/"
 cp "$SRC/commands/"*.md      "$CLAUDE_DIR/commands/"
 cp "$SRC/agents/pact-auditor.md" "$CLAUDE_DIR/agents/"
 cp "$SRC/scripts/pact-static-check.sh" "$CLAUDE_DIR/scripts/"
+cp "$SRC/scripts/pact-check-hook.sh" "$CLAUDE_DIR/scripts/"
 cp "$SRC/scripts/session-end-secrets-scan.sh" "$CLAUDE_DIR/scripts/"
 chmod +x "$CLAUDE_DIR/scripts/"*.sh
 cp "$SRC/CLAUDE.md.template" "$CLAUDE_DIR/CLAUDE.md.template"
+cp "$SRC/project-templates/"* "$CLAUDE_DIR/project-templates/"
 
 echo "Installed:"
 printf "  %-20s %d files\n" "skills/"       "$(ls "$CLAUDE_DIR/skills/"*.md | wc -l | tr -d ' ')"
@@ -55,6 +60,7 @@ printf "  %-20s %d files\n" "instructions/" "$(ls "$CLAUDE_DIR/instructions/"*.m
 printf "  %-20s %d files\n" "commands/"     "$(ls "$CLAUDE_DIR/commands/"*.md | wc -l | tr -d ' ')"
 printf "  %-20s %s\n"       "agents/"       "pact-auditor.md"
 printf "  %-20s %d scripts\n" "scripts/"    "$(ls "$CLAUDE_DIR/scripts/"*.sh | wc -l | tr -d ' ')"
+printf "  %-20s %d files\n" "project-templates/" "$(ls "$CLAUDE_DIR/project-templates/" | wc -l | tr -d ' ')"
 echo ""
 echo "Next steps:"
 echo ""
@@ -65,6 +71,6 @@ echo "  2. Add the hooks snippet from CLAUDE.md.template to ~/.claude/settings.j
 echo "     to enable automatic static analysis on every .pact and .repl edit."
 echo ""
 echo "  3. For each Pact project, copy the per-project template:"
-echo "       cp '$SRC/project-templates/CLAUDE.md.project' /path/to/project/CLAUDE.md"
+echo "       cp '$CLAUDE_DIR/project-templates/CLAUDE.md.project' /path/to/project/CLAUDE.md"
 echo ""
 echo "  4. Before shipping any module, say 'security review' in Claude Code."

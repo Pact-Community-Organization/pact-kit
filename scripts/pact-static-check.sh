@@ -11,8 +11,10 @@ emit_warn() { printf 'WARN:      %s\n' "$1"; WARNINGS=$((WARNINGS + 1)); }
 notice() { printf 'NOTICE:    %s\n' "$1"; }
 
 is_missing_msg_data_error() {
+  # Errors that mean "this file needs its deploy/test environment (env-data,
+  # namespaces, keysets), not that the code is wrong" — bare load can't verify.
   printf '%s' "$1" | grep -qiE \
-    'read-(msg|keyset|string|integer|decimal)|no (env-)?data|not (present|found) in (the )?(message|environment|tx)|key .* not found|environment data'
+    'read-(msg|keyset|string|integer|decimal)|no (env-)?data|not (present|found) in (the )?(message|environment|tx)|key .* not found|environment data|namespace not found|cannot find keyset'
 }
 
 FILES=()
@@ -89,6 +91,9 @@ for f in "${FILES[@]}"; do
 
   scan_file "$f" '\(try\b.*\b(insert|update|write)\b' \
     violation 'DML (insert/update/write) inside try — try is read-only for DML'
+
+  scan_file "$f" '\(enforce[[:space:]][^)]*\((read|with-read|with-default-read|select|fold-db|keys)[[:space:]]' \
+    warn 'table read inside an enforce condition — passes in the REPL but FAILS on the KDA-CE node; let-bind the read before the enforce (same-line matches only; reads via helper fns are not detected)'
 
   scan_file "$f" '\(defcap[[:space:]]+[A-Z][A-Z0-9_-]*[[:space:]]*\([[:space:]]*\)[[:space:]]+true[[:space:]]*\)' \
     violation 'governance/defcap body is literally `true` — anyone can satisfy it'

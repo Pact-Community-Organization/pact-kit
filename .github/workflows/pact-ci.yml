@@ -6,12 +6,29 @@ on:
   pull_request:
 
 jobs:
-  repl-tests:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Placeholder check
+      - name: Shellcheck scripts
+        run: shellcheck --severity=warning scripts/*.sh
+      - name: Check markdown links
+        run: bash scripts/check-md-links.sh .
+
+  pact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Pact
         run: |
-          echo "This starter workflow is a template."
-          echo "Add Pact CLI install and test commands for your project."
+          wget -nv https://github.com/kadena-io/pact-5/releases/download/5.3/pact-5.3-linux-x64.tar.gz
+          mkdir -p .bin
+          tar -xz -C .bin -f pact-5.3-linux-x64.tar.gz ./pact
+          chmod +x .bin/pact
+          echo "$PWD/.bin" >> "$GITHUB_PATH"
+      - name: Example REPL suite
+        run: pact examples/example-token.repl
+      - name: Static analysis gate on examples
+        run: scripts/pact-static-check.sh examples/example-token.pact examples/example-token.repl

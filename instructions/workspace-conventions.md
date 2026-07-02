@@ -9,7 +9,7 @@ description: "Workspace conventions, file organization, naming patterns, and pro
 
 - `~/.claude/CLAUDE.md` — global rules (always loaded).
 - `../agents/` — sub-agents (`*.md`, e.g. `pact-auditor.md`).
-- `` — reference instructions (read on demand).
+- `instructions/` — reference instructions (read on demand).
 - `../skills/` — domain skill references (read on demand).
 - `../commands/` — slash commands (`<name>.md` → `/name`).
 
@@ -54,7 +54,7 @@ description: "Workspace conventions, file organization, naming patterns, and pro
 | Process/runbook | `docs/processes/PROC-NNN-name.md` |
 | Architecture/API doc | `docs/` |
 | Claude Code skill | `../skills/<name>.md` |
-| Claude Code instruction | `<name>.md` |
+| Claude Code instruction | `instructions/<name>.md` |
 | Claude Code command | `../commands/<name>.md` |
 | Claude Code agent | `../agents/<name>.md` |
 

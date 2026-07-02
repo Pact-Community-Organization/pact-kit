@@ -120,6 +120,18 @@ Deployment, testing, gas, and refactoring rules activate for their respective co
 analysis, capability audit, Pact 5.4ce trap check, security checklist, and STRIDE per public
 function — and returns a structured finding table.
 
+### Examples
+
+`examples/example-token.pact` + `examples/example-token.repl` — a runnable, CI-verified
+reference module demonstrating the conventions the kit enforces (capability layering,
+managed caps, principal discipline, trust-boundary validation, node-safe enforce patterns).
+
+### Reference Repositories
+
+[docs/reference-repos.md](docs/reference-repos.md) — the vetted primary sources (language
+repo, official docs, pact-util-lib, production contracts) and the idioms they agree on.
+When in doubt, primary sources beat web search results and model memory.
+
 ### CI Scripts
 
 `pact-static-check.sh` is a two-tier static analysis gate (Pact CLI + semantic greps).

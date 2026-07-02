@@ -16,7 +16,9 @@ Pull the matching `pact-traps` section when your task touches:
 
 Most-violated corrections (read the canonical file for the full list + error strings):
 
-- **`enforce` / `try`**: no DML inside the boolean arg / block — **reads ARE allowed**. Binding reads to a `let` is style/gas, not correctness.
+- **`enforce` / `try`**: no DML inside the boolean arg / block. **Table reads inside an
+  `enforce` condition pass in the REPL but FAIL on the KDA-CE node** — always bind the read
+  to a `let` BEFORE the `enforce` (on-chain correctness, not style; REPL green proves nothing here).
 - **`with-default-read`**: the default object must contain every field you **BIND**, not every schema field.
 - **Native name shadowing** (`exp`, `abs`, `log`, `mod`, `round`, `ln`, `sqrt`, `floor`, `ceiling`, …): **load-time rejected** in Pact 5.1+ — `Variable X shadows native with the same name` (`pact/Pact/Core/Errors.hs :: instance Pretty DesugarError :: InvalidNativeShadowing`).
 - **`pact-id`**: `(pact-id)` **throws outside a defpact** and proves nothing about identity inside one — gate with composed capabilities bound to identity.

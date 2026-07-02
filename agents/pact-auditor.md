@@ -31,6 +31,7 @@ For every `defcap` in each module:
 ### 3. Pact 5 Trap Check
 Check every file against the critical traps from `../instructions/pact-traps.md`:
 - Read-only context: DML inside `try`, inside `enforce` args, inside module-level expressions
+- Table reads inside an `enforce` condition: REPL-invisible, FAILS on the KDA-CE node — every table-reading expression must be `let`-bound before the `enforce` (flag even if the `.repl` suite passes)
 - `with-default-read`: defaults must be safe (not exploitable by absent rows)
 - Native shadowing: function/variable names that collide with Pact built-ins (mod, round, floor, abs, exp, log, ln, sqrt, etc.)
 - `pact-id` used as identity proof (it throws outside a defpact and proves nothing inside one)
