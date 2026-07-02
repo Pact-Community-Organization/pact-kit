@@ -1,6 +1,6 @@
 {
   "name": "pact-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "24 domain skills, 20 slash commands, 16 behavioral instructions, and a security auditor for Pact 5 / KDA-CE smart contract development.",
   "contextFileName": "AGENTS.md"
 }

@@ -7,6 +7,52 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.0] — 2026-07-01
+
+Research-driven hardening pass: every change grounded in the kda-community/pact-5
+source (v5.4 / 368-file REPL test suite), the official Pact 4→5 migration guide, and
+the community contract corpus (CryptoPascal31, brothers-DAO, daplcor, kda-community).
+
+### Corrected
+
+- **pact-traps / pact-rules / pact-auditor**: table reads inside an `enforce` condition
+  pass in the Pact 5.3+ REPL but FAIL on the KDA-CE chainweb-node (devnet-verified
+  2026-07-01) — the prior "let-binding no longer needed for correctness" guidance was
+  REPL-only. Rule restored: always let-bind table reads before `enforce`.
+- `workspace-conventions.md`: restored two `instructions/` paths lost in the kit-extraction sed.
+
+### Added
+
+- **pact-traps**: "Pact 4→5 migration traps" section (dependency-inclusive module hashes,
+  no implicit module admin, strict `install-capability`, `{int: N}` codec, strict
+  `(coin.GAS)` signing, removed natives, parser strictness, `static-redeploy`); verified
+  `acquire-module-admin` semantics (rest-of-tx persistence, REPL auto-grant divergence);
+  modref read-only reentrancy guard citation (upstream `reentrancy.repl`).
+- **examples/** — runnable `example-token.pact` + `.repl` suite (green on pact 5.3, passes
+  the static gate) demonstrating the kit's conventions; doubles as the CI fixture.
+- **skills/pact/SKILL.md** — native Claude Code skill router: auto-discovered orientation
+  + task index into the 24 skills / 16 instructions (the flat files are not natively
+  discovered by Claude Code).
+- **docs/reference-repos.md** — vetted primary sources and the idioms they agree on.
+- **scripts/pact-check-hook.sh** — PostToolUse adapter: runs the static gate only on the
+  edited `.pact`/`.repl` file (the raw checker full-scanned on every edit); exit 2 feeds
+  violations back to the agent.
+- **scripts/check-md-links.sh** — relative-markdown-link checker (CI).
+- **pact-repl-testing**: community idioms — `enforce-pact-version` header, `typecheck`
+  after load, module-hash print, managed-cap install-before-body test semantics,
+  `expect-that` + composed predicates, stub modules, `kadena_repl_sandbox`.
+
+### Changed
+
+- **CI** is real now: shellcheck, markdown link check, pact 5.3 binary download, example
+  REPL suite, static gate against the examples.
+- **pact-static-check.sh**: new WARN grep for table reads inside `enforce` conditions;
+  namespace/keyset environment errors on bare loads classified as harness-needed WARNs.
+- **install.sh**: installs `project-templates/`, the hook adapter, and the skill router;
+  curl-install next-steps no longer point into the deleted temp clone.
+
+[0.2.0]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.2.0
+
 ## [0.1.0] — 2026-06-28
 
 Initial release as a Claude Code native package.

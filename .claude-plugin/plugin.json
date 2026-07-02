@@ -1,6 +1,6 @@
 {
   "name": "pact-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "24 Pact/KDA-CE skills, 16 instructions, 20 slash commands, 1 security agent, and CI scripts for Kadena smart contract development.",
   "author": {
     "name": "Pact Community Organization",
