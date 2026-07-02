@@ -33,6 +33,7 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 | keysets, guards, principal prefixes | Guards |
 | cross-module refs / circular deps | Modules |
 | writing `.repl` tests | REPL testing artifacts · Pact 5 version notes |
+| migrating / reviewing Pact 4-era code or tutorials | Pact 4→5 migration traps |
 | asserting error substrings (REPL Pretty vs on-chain BoundedText) | Reusable error strings: REPL vs. on-chain rendering |
 
 ## Read-only context (`enforce`, `try`)
@@ -555,6 +556,46 @@ Verified in `pact/Pact/Core/IR/Eval/CEK/Evaluator.hs`,
 - **`expect` does NOT stop on failure** — it records the failure and continues.
 - **`test-capability` DOES run the defcap body** (acquires it for the test).
 - Use specific error substrings in `expect-failure`, never `""`.
+
+## Pact 4→5 migration traps (upgrading pre-2025 code)
+
+> Source: official migration guide (kadena-docs `smart-contracts/install/migrate-pact5.md`).
+> Mainnet switched to Pact 5 on 2025-02-10. Anything older — most tutorials, blog posts,
+> and forum answers — is Pact 4 material and can mislead on the points below.
+
+- **Module hashes now include dependency hashes (transitive).** Same module source ≠ same
+  hash once any dependency changed (Pact 4 hashed only your source). Consequence: `bless`
+  lists and cross-chain yield-provenance planning must account for hash changes caused by
+  DEPENDENCY upgrades, not just your own edits.
+- **No implicit module-admin acquisition** (except during module upgrade itself). Pact 4
+  auto-granted admin when outside code wrote a module's table or acquired its caps; Pact 5
+  requires explicit `(acquire-module-admin m)` — semantics in the Modules section.
+- **`install-capability` is strict**: duplicate installs and non-`@managed` targets are hard
+  errors (Pact 4 silently allowed both; duplicates kept the lexicographically smallest
+  managed param). Fix: delete manual `install-capability` calls for signed-for caps —
+  a matching signature installs a managed cap implicitly. Error strings: Capabilities
+  section + the error-string table.
+- **Integer JSON codec is strict**: command results always encode integers as `{"int": N}`;
+  a raw JSON number is a DOUBLE. Pact 4 silently converted integers to doubles in results —
+  TypeScript written against Pact 4 output can mis-parse Pact 5 results.
+- **Gas-cap signing is strict**: sign `(coin.GAS)` with NO arguments. Pact 4 accepted
+  `(coin.GAS "")` / `(coin.GAS 1)`; Pact 5 rejects extra args at signature scoping.
+- **Removed natives**: `list` (write `[1 2 3]`), `txlog`, `decrypt-cc20p1305`,
+  `validate-keypair`. **`constantly` now takes exactly 2 args.** `pact-version` /
+  `enforce-pact-version` survive as REPL-ONLY builtins (the migration guide says removed,
+  but they exist in 5.4 source as repl natives — never call them from module code).
+- **Parser is strict** — Pact 4 parser bugs let all of these deploy; Pact 5 rejects at load:
+  - one expression per `let` binding — `(let ((x 1 (f))) …)` no longer parses;
+  - object types are `object{schema}` — `object:{schema}` is invalid;
+  - binding lists need commas: `{ "a" := a, "b" := b }`;
+  - schema names are not values — the classic `(read <schema-name> k)` table/schema mixup
+    is now a load-time error (`Invalid definition in term variable position`).
+- **`static-redeploy` is the free storage upgrade**: `(static-redeploy "ns.mod")` re-stores
+  a legacy module in the Pact 5 CBOR format — cheaper loads, hash unchanged, governance
+  unchanged, and UNPRIVILEGED (anyone can call it on any module).
+- The other two big 4→5 breaks have their own sections: **native shadowing ban**
+  (`Native/built-in name shadowing`) and **no `verify` native / no FV system**
+  (`Pact 5 version notes`).
 
 ## Pact 5 version notes
 
