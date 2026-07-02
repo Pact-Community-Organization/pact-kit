@@ -46,6 +46,7 @@ cp "$SRC/instructions/"*.md  "$CLAUDE_DIR/instructions/"
 cp "$SRC/commands/"*.md      "$CLAUDE_DIR/commands/"
 cp "$SRC/agents/pact-auditor.md" "$CLAUDE_DIR/agents/"
 cp "$SRC/scripts/pact-static-check.sh" "$CLAUDE_DIR/scripts/"
+cp "$SRC/scripts/pact-check-hook.sh" "$CLAUDE_DIR/scripts/"
 cp "$SRC/scripts/session-end-secrets-scan.sh" "$CLAUDE_DIR/scripts/"
 chmod +x "$CLAUDE_DIR/scripts/"*.sh
 cp "$SRC/CLAUDE.md.template" "$CLAUDE_DIR/CLAUDE.md.template"

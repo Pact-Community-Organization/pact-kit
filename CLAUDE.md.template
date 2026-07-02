@@ -101,12 +101,15 @@ Trigger: "security review", "ready to ship", or explicit pre-deploy request.
 - No other persistent state. No task lists in docs. No status dashboards.
 
 ## Hooks (configure in ~/.claude/settings.json or .claude/settings.json)
+`pact-check-hook.sh` reads the edited file path from the hook payload and runs the
+static gate only for `.pact`/`.repl` files (and only on the edited file) — wiring
+`pact-static-check.sh` directly would full-scan the project on every edit of any file.
 ```json
 {
   "hooks": {
     "PostToolUse": [{
       "matcher": "Edit|Write|MultiEdit",
-      "hooks": [{"type": "command", "command": "~/.claude/scripts/pact-static-check.sh"}]
+      "hooks": [{"type": "command", "command": "~/.claude/scripts/pact-check-hook.sh"}]
     }],
     "Stop": [{
       "hooks": [{"type": "command", "command": "~/.claude/scripts/session-end-secrets-scan.sh"}]
