@@ -90,6 +90,9 @@ for f in "${FILES[@]}"; do
   scan_file "$f" '\(try\b.*\b(insert|update|write)\b' \
     violation 'DML (insert/update/write) inside try — try is read-only for DML'
 
+  scan_file "$f" '\(enforce[[:space:]][^)]*\((read|with-read|with-default-read|select|fold-db|keys)[[:space:]]' \
+    warn 'table read inside an enforce condition — passes in the REPL but FAILS on the KDA-CE node; let-bind the read before the enforce (same-line matches only; reads via helper fns are not detected)'
+
   scan_file "$f" '\(defcap[[:space:]]+[A-Z][A-Z0-9_-]*[[:space:]]*\([[:space:]]*\)[[:space:]]+true[[:space:]]*\)' \
     violation 'governance/defcap body is literally `true` — anyone can satisfy it'
 
