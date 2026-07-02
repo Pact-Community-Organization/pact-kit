@@ -546,6 +546,21 @@ Verified in `pact/Pact/Core/IR/Eval/CEK/Evaluator.hs`,
 
 - **No circular module dependencies** — cross-module references resolve at load
   time.
+- **`acquire-module-admin` is the ONLY on-chain path to module admin outside an
+  upgrade** (Pact 5 removed the implicit grants Pact 4 performed). `(acquire-module-admin m)`
+  runs the module's governance (keyset or gov-cap body); on success it returns
+  `"Module admin for module <m> acquired"` and **admin persists for the REST OF THE
+  TRANSACTION** — no re-acquire needed even if `tx-hash`-dependent governance would now
+  fail (verified: `pact-tests/pact-tests/gov.repl`). Audit implication: one successful
+  acquisition anywhere in a tx privileges every later operation in that tx.
+- **REPL divergence:** at the REPL top level, directly touching a module table
+  auto-ATTEMPTS the module-admin grant (so `(read votes "bob")` can silently run
+  governance). On-chain module code gets no such implicit attempt — a `.repl` that relies
+  on it is testing behavior the chain does not have.
+- **Modref calls are reentrancy-guarded read-only (5.3+)** — a modref callee re-entering
+  the originating module cannot perform DML even on a `require-capability`-satisfied path
+  (verified: `pact-tests/pact-tests/reentrancy.repl`). Details + the let-first cap pattern:
+  [cross-module-rules.md](cross-module-rules.md).
 
 ## REPL testing artifacts
 

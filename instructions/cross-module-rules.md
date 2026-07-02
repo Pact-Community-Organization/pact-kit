@@ -73,7 +73,10 @@ caller function and observe/abuse partial state. Mitigations, in order:
 3. **Pact 5.3+ read-only-by-default modref reentrancy** — when a modref re-enters
    the **originating** module, that re-entry is forced **read-only** (DML blocked:
    `Operation disallowed in read-only or sys-only mode`). Present in Pact 5.4ce (KDA-CE).
-   **Do not treat it as the sole defense** — keep mitigations (1) and (2).
+   Upstream-verified in `pact-tests/pact-tests/reentrancy.repl`: the block holds even
+   when the re-entered function's `require-capability` is satisfied — reads succeed,
+   any `update`/`write` aborts. **Do not treat it as the sole defense** — keep
+   mitigations (1) and (2).
 
 ### Late binding — modrefs resolve to the LATEST target
 A modref resolves at call time to the **currently deployed (latest upgraded)**
