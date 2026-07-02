@@ -1,0 +1,219 @@
+; example-token.repl — REPL test suite for examples/example-token.pact.
+;
+; Demonstrates the kit's .repl conventions:
+;   - enforce-pact-version header, one concern per begin-tx/commit-tx block
+;   - env-data/env-sigs before each transaction; scoped capability signatures
+;   - typecheck after load; module hash printed for release notes
+;   - expect-failure with SPECIFIC REPL (Pretty) error substrings, never ""
+;   - expect-that with composed predicates; env-events assertions
+;   - gas measurement against the 150k KDA-CE ceiling
+;
+; Accounts are principals of throwaway 64-hex keysets:
+;   alice = k:aaaa…a  (key "a" x64)     bob = k:bbbb…b  (key "b" x64)
+
+(enforce-pact-version "5.3")
+
+;; ============================================================
+;; Setup: namespace, admin keyset, module load
+;; ============================================================
+(begin-tx "setup")
+(env-data { "ns-admin":      { "keys": ["adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadad"], "pred": "keys-all" }
+          , "example-admin": { "keys": ["adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadad"], "pred": "keys-all" }
+          , "alice-ks":      { "keys": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], "pred": "keys-all" }
+          , "bob-ks":        { "keys": ["bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"], "pred": "keys-all" }
+          })
+(env-sigs [{ "key": "adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadad", "caps": [] }])
+(define-namespace "free" (read-keyset "ns-admin") (read-keyset "ns-admin"))
+(namespace "free")
+(define-keyset "free.example-admin" (read-keyset "example-admin"))
+(load "example-token.pact")
+(commit-tx)
+
+(typecheck "free.example-token")
+(print (format "example-token hash: {}" [(at 'hash (describe-module "free.example-token"))]))
+
+;; ============================================================
+;; Tests: account creation (principal discipline)
+;; ============================================================
+(begin-tx "create accounts")
+(env-data { "alice-ks": { "keys": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], "pred": "keys-all" }
+          , "bob-ks":   { "keys": ["bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"], "pred": "keys-all" }
+          })
+(expect "alice account is the principal of her keyset"
+  "Account k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa created"
+  (free.example-token.create-account
+    (create-principal (read-keyset "alice-ks")) (read-keyset "alice-ks")))
+(expect "bob account created"
+  "Account k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb created"
+  (free.example-token.create-account
+    (create-principal (read-keyset "bob-ks")) (read-keyset "bob-ks")))
+(commit-tx)
+
+(begin-tx "reject non-principal and mismatched accounts")
+(env-data { "alice-ks": { "keys": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], "pred": "keys-all" }
+          , "bob-ks":   { "keys": ["bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"], "pred": "keys-all" }
+          })
+(expect-failure "non-principal account name rejected"
+  "Only principal accounts"
+  (free.example-token.create-account "just-a-name" (read-keyset "alice-ks")))
+(expect-failure "account string not derived from the supplied guard rejected"
+  "Reserved principal violation"
+  (free.example-token.create-account
+    (create-principal (read-keyset "alice-ks")) (read-keyset "bob-ks")))
+(expect-failure "too-short account rejected"
+  "Account length out of range"
+  (free.example-token.create-account "ab" (read-keyset "alice-ks")))
+(commit-tx)
+
+;; ============================================================
+;; Tests: mint (GOVERNANCE-gated)
+;; ============================================================
+(begin-tx "mint without admin signature fails")
+(env-sigs [])
+(expect-failure "mint requires the admin keyset"
+  "Keyset failure"
+  (free.example-token.mint "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" 100.0))
+(commit-tx)
+
+(begin-tx "mint with admin signature")
+(env-sigs [{ "key": "adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadad", "caps": [] }])
+(free.example-token.mint "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" 100.0)
+(expect "alice balance is 100 after mint"
+  100.0
+  (free.example-token.get-balance "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+; MINT is @event — assert emission, then clear the event log
+(expect "MINT event emitted with receiver + amount"
+  [{ "name": "free.example-token.MINT"
+   , "params": ["k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" 100.0]
+   , "module-hash": (at 'hash (describe-module "free.example-token"))
+   }]
+  (env-events true))
+(commit-tx)
+
+;; ============================================================
+;; Tests: transfer (managed cap, scoped signature)
+;; ============================================================
+(begin-tx "transfer without any signature fails")
+; Pact 5 checks the managed-cap INSTALL before evaluating the cap body:
+; with no TRANSFER-scoped signature the failure is the install, not the keyset.
+(env-sigs [])
+(expect-failure "unsigned transfer fails at managed-cap install"
+  "Managed capability not installed"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    5.0))
+(commit-tx)
+
+(begin-tx "transfer with a TRANSFER-scoped signature; allowance is linear")
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        5.0)] }])
+(free.example-token.transfer
+  "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  3.0)
+(expect "bob received 3.0" 3.0
+  (free.example-token.get-balance "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"))
+(expect "conservation: alice + bob still 100.0" 100.0
+  (+ (free.example-token.get-balance "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+     (free.example-token.get-balance "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")))
+; second spend exceeds the remaining managed allowance (5.0 - 3.0 = 2.0)
+(expect-failure "allowance is linear: 3.0 then 3.0 exceeds the signed 5.0"
+  "TRANSFER exceeded"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    3.0))
+; @managed TRANSFER auto-emitted exactly one event for the successful spend
+(expect-that "exactly one TRANSFER event for the successful spend"
+  (compose (length) (= 1))
+  (env-events true))
+(commit-tx)
+
+;; ============================================================
+;; Tests: input validation at the trust boundary
+;; The cap body (where validation lives) only runs AFTER a successful
+;; managed-cap install, so each case signs for its own TRANSFER shape.
+;; Separate txs: re-installing the same (sender, receiver) token in one
+;; tx would fail "Capability already installed".
+;; ============================================================
+(begin-tx "self-transfer rejected")
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        1.0)] }])
+(expect-failure "self-transfer rejected"
+  "Sender and receiver must differ"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    1.0))
+(commit-tx)
+
+(begin-tx "negative amount rejected")
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        -1.0)] }])
+(expect-failure "negative amount rejected"
+  "Amount must be positive"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    -1.0))
+(commit-tx)
+
+(begin-tx "over-precise amount rejected")
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        0.0000000000001)] }])
+(expect-failure "over-precise amount rejected (13 decimal places, precision 12)"
+  "violates precision"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    0.0000000000001))
+(commit-tx)
+
+(begin-tx "insufficient funds rejected")
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        9999.0)] }])
+(expect-failure "insufficient funds rejected (balance is let-bound, then enforced)"
+  "Insufficient funds"
+  (free.example-token.transfer
+    "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    9999.0))
+(commit-tx)
+
+;; ============================================================
+;; Gas: transfer must stay under the 150k KDA-CE ceiling
+;; ============================================================
+(begin-tx "gas measurement")
+; a MANAGED cap needs a scoped signature (or install-capability) — caps: [] is not enough
+(env-sigs [{ "key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+           , "caps": [(free.example-token.TRANSFER
+                        "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        1.0)] }])
+(env-gasmodel "table")
+(env-gaslimit 150000)
+(env-gas 0)
+(free.example-token.transfer
+  "k:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  "k:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  1.0)
+(let ((gas (env-gas)))
+  (print (format "transfer gas: {}" [gas]))
+  (expect "transfer stays under the 150k ceiling" true (< gas 150000)))
+(commit-tx)
