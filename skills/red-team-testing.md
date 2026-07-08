@@ -32,7 +32,7 @@ A front is never tested once — it is swept with **20 executed mutations**. Bug
 
 ## Engine B tooling
 
-- **Invariant properties** — assert after *every* operation of a long, randomized suite. The recurring five: supply conservation (Σ balances constant), exact solvency (the contract's O(1) aggregate `==` the naive O(n) sum), rounding sub-additivity (`Σ floor(owed_i) ≤ floor(Σ owed_i)` — splitting never wins), vesting monotonicity (`released(t)` non-decreasing and ≤ total), and `Σ votes ≤ circulating` with weight ≤ balance.
+- **Invariant properties** — assert after *every* operation of a long, randomized suite. The recurring five: supply conservation (Σ balances constant), exact solvency (the contract's O(1) aggregate `==` the naive O(n) sum), rounding sub-additivity (`Σ floor(owed_i) ≤ floor(Σ owed_i)` — splitting never wins; note this inequality is *always* true, so asserting it alone is tautological — the real bug is the contract paying `Σ floor` while owing `floor(Σ)`, which the negative control below forces into a strict `<`), vesting monotonicity (`released(t)` non-decreasing and ≤ total), and `Σ votes ≤ circulating` with weight ≤ balance.
 - **Differential testing** — write the naive O(n) reference (walk every account) and assert exact equality with the contract's materialized O(1) shortcut after each step. Aggregate-accounting drift is the most dangerous DeFi bug class; two independent engines computing the same number expose it.
 - **Negative control (anti-tautology)** — a differential oracle only catches bugs if both sides are *independent* computations. Before declaring HELD on "O1 == On always", run a control that deliberately amputates On (omit one account) and confirm it **diverges** from O1. If it does, the test would catch a real double-count; if it doesn't, the oracle is tautological and worthless. To stress floor sub-additivity for real, inject a micro-account whose owed falls **below 1e-12** (floor→0): then `Σ floor(owed_i) < floor(Σ owed_i)` strictly, proving splitting *loses* money.
 - **Boundary fuzzing** — sweep each parameter over {0, negative, 1e-12, MAX, MAX±1 quantum, threshold±1 quantum}. The boundary is where an `enforce` is wrong on one side.
@@ -43,7 +43,7 @@ Before declaring a break, rule out that it depends on a **REPL-only primitive**:
 - `test-capability` grants a cap bypassing guards → does not exist on-chain.
 - `coin.GAS` (the gas magic-cap) → only the miner puts it in scope during gas-buy, never the attacker.
 - **Single shared DB for 20 chains** → false partial-aggregate "passed" / release on chain≠0. On-chain: per-chain DB + unforgeable cross-chain SPV proof.
-- Node Pact version (4.x aborts DB reads inside `enforce`; 5.x does not).
+- REPL-vs-node divergence on DB reads inside `enforce` — the 5.3+ REPL permits the read, but the KDA-CE chainweb-node rejects it (devnet-verified; see `pact-traps`). A "break" that only lands because the REPL let a read-in-`enforce` through is an artifact, not a finding.
 
 If the break needs those crutches, it is an **artifact, not a finding**. Companion rule: when Pact blocks the obvious path (e.g. acquiring another module's cap needs module-admin), hunt the path the **runtime** grants (magic caps, defpact SPV resume, gas-buy) and check the caller's guard *there* — that is where a naïve gas station drains even though the obvious path bounces.
 
