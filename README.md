@@ -69,20 +69,20 @@ to enable automatic static analysis on every `.pact` and `.repl` edit.
 
 ### Skills
 
-24 domain skills covering the full Pact 5 / KDA-CE surface. Loaded on demand — your AI
+25 domain skills covering the full Pact 5 / KDA-CE surface. Loaded on demand — your AI
 assistant draws on precise, current knowledge for the task without carrying it in every session.
 
 | Area | What it covers |
 |---|---|
 | Core language | Capabilities, guards, schema design, module architecture, interfaces, defpacts, events, invariants |
 | Testing & validation | REPL test patterns, devnet workflows, 4-phase module validation, CLI tooling, debugging |
-| Security & correctness | Security review, capability audits, fungible-v2 / xchain-v1 compliance, formal verification |
+| Security & correctness | Security review, capability audits, fungible-v2 / xchain-v1 compliance, formal verification, offensive red-team testing |
 | Gas & cross-chain | Gas analysis against the 150k ceiling, gas station design, cross-chain transfer patterns |
 | Platform | KDA-CE network compliance, devnet lifecycle management |
 
 ### Slash Commands
 
-20 commands covering the full development lifecycle. Type `/command-name` in Claude Code.
+21 commands covering the full development lifecycle. Type `/command-name` in Claude Code.
 
 | Command | What it does |
 |---|---|
@@ -95,6 +95,7 @@ assistant draws on precise, current knowledge for the task without carrying it i
 | `/capability-audit` | Capability hierarchy map with bypass path analysis |
 | `/pact-security-audit` | Security-focused code review checklist |
 | `/full-security-audit` | 5-phase audit (in-session; use `pact-auditor` for pre-ship reviews) |
+| `/red-team` | Executable offensive pass: runs real `.repl` attacks and proves HELD/BROKEN |
 | `/security-assessment` | STRIDE per public function with attack simulation |
 | `/threat-model` | STRIDE threat model with attack trees and mitigations |
 | `/analyze-feature` | 7-step impact analysis before implementing a feature |
@@ -113,12 +114,19 @@ assistant draws on precise, current knowledge for the task without carrying it i
 `.pact` or `.repl` file activates Pact language rules, trap avoidance, and security checklists.
 Deployment, testing, gas, and refactoring rules activate for their respective contexts.
 
-### Security Auditor
+### Security Agents
 
-`pact-auditor` opens a fresh context with no implementation history. Invoke it by saying
-`security review` or `ready to ship` in Claude Code. It runs a 5-step protocol — static
-analysis, capability audit, Pact 5.4ce trap check, security checklist, and STRIDE per public
-function — and returns a structured finding table.
+Two fresh-context agents with no implementation history, one defensive and one offensive.
+
+`pact-auditor` **reviews**. Invoke it by saying `security review` or `ready to ship` in
+Claude Code. It runs a 5-step protocol — static analysis, capability audit, Pact 5.4ce trap
+check, security checklist, and STRIDE per public function — and returns a structured finding
+table.
+
+`red-team-attacker` **attacks**. Given one module and one front, it writes and executes real
+`.repl` attacks (20 mutations per front) with the `pact` CLI, applies the REPL-artifact
+filter, and reports HELD or BROKEN with reproducible proof — the offensive counterpart driven
+by the `/red-team` command.
 
 ### Examples
 

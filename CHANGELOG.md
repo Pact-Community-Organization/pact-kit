@@ -7,6 +7,31 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **skills/red-team-testing.md** — offensive red-team method: two engines (reverse-coverage
+  + invariant hunting), eight attack blocks, a 20-mutation-per-front depth standard,
+  differential-oracle testing with an anti-tautology negative control, and an L1 filter that
+  drops REPL-only artifacts (`test-capability`, `coin.GAS`, single-DB 20-chain sims) so a
+  "held" verdict stays credible.
+- **commands/red-team.md** — `/red-team`, a 5-phase protocol that *executes* real `.repl`
+  attacks with the `pact` CLI; the offensive counterpart to `/full-security-audit`.
+- **agents/red-team-attacker.md** — a fresh-context attacker sub-agent that sweeps one front
+  with 20 mutations and reports HELD or BROKEN with reproducible proof; complements
+  `pact-auditor` (which reviews).
+
+### Changed
+
+- Registered the three new files across the manifests and docs: skill count 24 → 25, command
+  count 20 → 21, agent count 1 → 2 in `.claude-plugin/plugin.json`,
+  `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, `gemini-extension.json`,
+  `README.md`, `AGENTS.md`, and `docs/agent-portability.md`.
+- **red-team-testing**: aligned the DB-read-in-`enforce` L1 note with the `pact-traps`
+  correction (REPL-vs-node divergence, not a 4.x-vs-5.x one) and flagged the always-true
+  floor sub-additivity inequality as tautological unless paired with its negative control.
+
 ## [0.2.0] — 2026-07-01
 
 Research-driven hardening pass: every change grounded in the kda-community/pact-5

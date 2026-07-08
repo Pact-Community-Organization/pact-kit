@@ -1,7 +1,7 @@
 {
   "name": "pact-kit",
   "version": "0.2.0",
-  "description": "24 Pact/KDA-CE skills, 16 instructions, 20 slash commands, 1 security agent, and CI scripts for Kadena smart contract development.",
+  "description": "25 Pact/KDA-CE skills, 16 instructions, 21 slash commands, 2 security agents, and CI scripts for Kadena smart contract development.",
   "author": {
     "name": "Pact Community Organization",
     "url": "https://github.com/Pact-Community-Organization"
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "Pact Kit",
     "shortDescription": "Pact 5 / KDA-CE smart contract development skills and workflow commands",
-    "longDescription": "24 domain skills, 20 slash commands, 16 behavioral instructions, and a security auditor for Pact 5 smart contract development on Kadena Community Edition.",
+    "longDescription": "25 domain skills, 21 slash commands, 16 behavioral instructions, and two security agents for Pact 5 smart contract development on Kadena Community Edition.",
     "developerName": "Pact Community Organization",
     "category": "Development",
     "capabilities": ["Skills", "Instructions", "Commands", "Agents"],

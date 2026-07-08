@@ -23,13 +23,17 @@ Pact 5.4ce (KDA-CE fork of kadena-io/pact-5). Key traps are in `~/.claude/instru
 `pact-cli-tooling`, `debug-pact`, `static-analysis`
 
 **Security & audit**: `pact-security-review`, `capability-analysis`, `compliance-verification`,
-`formal-verification`
+`formal-verification`, `red-team-testing`
 
 **Gas & cross-chain**: `pact-gas-analysis`, `gas-station-design`, `cross-chain-design`
 
 **Platform**: `kda-ce-compliance`, `devnet-management`
 
-## Agent
+## Agents
 
 `pact-auditor` (`~/.claude/agents/pact-auditor.md`) — independent security reviewer. Invoke with
 "security review" or "ready to ship". Reads code cold; returns a structured finding table.
+
+`red-team-attacker` (`~/.claude/agents/red-team-attacker.md`) — offensive counterpart. Given one
+module and one front, it writes and executes real `.repl` attacks (20 mutations), applies the
+REPL-artifact filter, and reports HELD or BROKEN with reproducible proof. Driven by `/red-team`.
