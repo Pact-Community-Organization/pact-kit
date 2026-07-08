@@ -7,7 +7,9 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [Unreleased]
+## [0.3.0] — 2026-07-08
+
+Adds an executable offensive red-team layer that complements the static `pact-auditor`.
 
 ### Added
 
@@ -31,6 +33,8 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **red-team-testing**: aligned the DB-read-in-`enforce` L1 note with the `pact-traps`
   correction (REPL-vs-node divergence, not a 4.x-vs-5.x one) and flagged the always-true
   floor sub-additivity inequality as tautological unless paired with its negative control.
+
+[0.3.0]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.3.0
 
 ## [0.2.0] — 2026-07-01
 
