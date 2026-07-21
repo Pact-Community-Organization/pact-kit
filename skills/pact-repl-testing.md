@@ -47,9 +47,9 @@ description: "Pact REPL test scaffolding, expect/expect-failure patterns, env-da
    proofs) CANNOT be tested here — it will fail `SPVVerificationFailure` / not resolve.
    REPL-test only the same-chain scope; push all cross-chain verification to a multi-chain
    devnet. See [testing-rules](../instructions/testing-rules.md) HARD RULE.
-8. **A REPL pass is NOT evidence for the reads-inside-enforce class** — the KDA-CE node
-   rejects table reads in `enforce` conditions that the REPL accepts. Devnet only.
-   See [pact-traps](../instructions/pact-traps.md) "Read-only context".
+8. **A REPL pass is NOT evidence for the reads-inside-enforce class** — upstream-lineage
+   nodes reject table reads in `enforce` conditions that the REPL accepts (KDA-CE 3.1+
+   allows them). Devnet only. See [pact-traps](../instructions/pact-traps.md) "Read-only context".
 
 ## File Header Conventions (community standard — pact-util-lib style)
 ```pact

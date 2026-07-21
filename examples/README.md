@@ -17,7 +17,7 @@ demonstrating in ~150 lines:
 | `@event` cap (`MINT`) and `@managed` auto-emission | `MINT`, event tests |
 | Principal-account discipline (`validate-principal`) | `create-account` |
 | Trust-boundary validation (sign, precision, charset, length) | `enforce-valid-*` |
-| Table reads let-bound BEFORE `enforce` (KDA-CE node rule) | `debit` |
+| Table reads let-bound BEFORE `enforce` (portability rule — see pact-traps) | `debit` |
 | Scoped-signature tests, managed-install-first semantics | `example-token.repl` |
 | `expect-failure` with specific REPL error substrings | throughout the suite |
 | `typecheck` after load, module-hash print, gas ceiling check | suite header / footer |
