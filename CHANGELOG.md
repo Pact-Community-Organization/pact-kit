@@ -7,6 +7,30 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.1] — 2026-07-21
+
+Doctrine correction: the reads-inside-`enforce` trap is node-regime-dependent, not universal.
+
+### Fixed
+
+- **instructions/pact-traps.md §Read-only context** (canonical) — table reads inside an
+  `enforce` condition were documented as failing on the KDA-CE node. Re-verified on-node with
+  real mined transactions on both regimes: **KDA-CE chainweb-node 3.1+ ALLOWS them** (pact
+  ≥5.3 read-only relaxation active on-node), while **upstream-lineage nodes** (kadena-io
+  chainweb-node, 2.29 devnet) reject them with
+  `Operation is not allowed in read-only or system-only mode`. The REPL accepts every shape,
+  so a REPL pass remains non-evidence for the failing regime. `enforce-one` conditions allow
+  table reads on BOTH regimes (upgraded from UNVERIFIED).
+- **skills/pact-security-review.md** — removed the over-confident "DB reads are allowed …
+  let-binding is style/gas only" checklist line, which was unsafe advice for anyone targeting
+  upstream-lineage nodes (kadena mainnet01/testnet04); it now states the regime split and
+  defers to pact-traps.
+- **skills/pact/SKILL.md** (non-negotiable #4), **instructions/pact-rules.md**,
+  **agents/pact-auditor.md**, **skills/pact-repl-testing.md**, **scripts/pact-static-check.sh**
+  (WARN wording), **examples/README.md** — same correction propagated. The defensive default is
+  unchanged everywhere: let-bind the read before the `enforce` — mandatory for portable/public
+  code, style-only on pinned KDA-CE 3.1+ targets.
+
 ## [0.3.0] — 2026-07-08
 
 Adds an executable offensive red-team layer that complements the static `pact-auditor`.
