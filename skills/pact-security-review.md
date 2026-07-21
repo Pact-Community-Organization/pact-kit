@@ -29,7 +29,11 @@ description: "Developer-level security review for Pact 5: capability audit, guar
 - [ ] Defpact steps have exactly one expression each
 
 ### Edge Cases
-- [ ] Zero amount transfers handled
+- [ ] Amount guards classified by callee: calling coin-v5 (or a source-verified token) a
+      caller-side (> amount 0.0) is REDUNDANT (coin enforces at transfer/transfer-create/debit/
+      credit — flag as INFO/error-message-only); calling a fungible-v2 MODREF, or when local
+      state effects precede the transfer, the caller-side guard is REQUIRED (interface @model
+      is advisory; no verify native in 5.4ce)
 - [ ] Self-transfers handled
 - [ ] Account doesn't exist yet (first credit) handled
 - [ ] Maximum values tested (near integer/decimal limits)

@@ -7,6 +7,33 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.2] — 2026-07-21
+
+Review-doctrine upgrade: classify checks by the callee's trust class instead of flagging by pattern.
+
+### Changed
+
+- **skills/pact-security-review.md** (Edge Cases) — the blanket "Zero amount transfers handled"
+  item replaced with a callee-classified amount-guard rule: a caller-side `(> amount 0.0)`
+  against coin-v5 (or a source-verified token) is REDUNDANT — coin enforces strict positivity at
+  four layers (`transfer:351`, `transfer-create:379`, `debit:461`, `credit:487`) — so flag it
+  INFO/error-message-only; against a `fungible-v2` MODREF, or when local state effects precede
+  the transfer, the caller-side guard is REQUIRED (interface `@model` is advisory; no `verify`
+  native in 5.4ce).
+- **instructions/security-rules.md** (Common Vulnerability Patterns) — new pattern #7,
+  governance-gated inputs: inputs under a real GOV/ADMIN signature sit inside the trust
+  boundary, so their non-validation is INFO/policy, not a finding — UNLESS a bad value silently
+  corrupts an invariant instead of throwing (a crash/div-by-zero self-aborts safely; a sign-flip
+  that quietly builds a wrong schedule does not). Validate config whose sign or range changes an
+  invariant's direction. Explicitly cross-referenced against pattern #1 (a MISSING gate remains
+  a finding — #7 is about validation behind a PRESENT gate).
+
+Both changes originate from a primary-source investigation of a community review of production
+locker code (coin-v5 source diff, chainweb-node consensus + transaction executor,
+kda-community/pact-5 internals, executed REPL probes).
+
+[0.3.2]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.3.2
+
 ## [0.3.1] — 2026-07-21
 
 Doctrine correction: the reads-inside-`enforce` trap is node-regime-dependent, not universal.

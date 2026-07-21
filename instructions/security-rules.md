@@ -55,6 +55,12 @@ Full audit rule + grep heuristic: ../skills/capability-analysis.md
 4. **Front-running** — time-dependent operations vulnerable on public mempool
 5. **Gas griefing** — operations that scale gas with attacker-controlled input
 6. **Phantom reads** — `with-default-read` returning zeros that bypass validation
+7. **Governance-gated inputs — validate the exception, not the rule** — inputs under a real
+   GOV/ADMIN signature sit inside the trust boundary; their non-validation is INFO/policy, NOT a
+   finding — UNLESS a bad value silently corrupts an invariant instead of throwing (crash/
+   div-by-zero = safe; a sign-flip that quietly builds a wrong schedule = finding). Validate config
+   whose *sign or range* changes an invariant's direction; a self-aborting bad input needs no
+   guard. (This is about inputs behind a gate that IS present; a missing gate is #1.)
 
 ### Formal Verification
 - Use `@model` annotations where possible
