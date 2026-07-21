@@ -35,9 +35,11 @@ result codec, removed natives (`list`, `txlog`, …).
    (`env-gasmodel "table"`, `env-gas`), confirm on devnet.
 3. **Cross-chain is devnet-only.** SPV is unsupported in the bare REPL; a
    "passing" cross-chain `.repl` is a false positive.
-4. **Table reads inside an `enforce` condition fail on the KDA-CE node** even
-   though the REPL accepts them — always `let`-bind the read first. A REPL pass
-   is not evidence for this class.
+4. **Table reads inside an `enforce` condition are node-regime-dependent** —
+   allowed on KDA-CE 3.1+, but they FAIL on upstream-lineage nodes and the REPL
+   accepts them everywhere (REPL-invisible). Defensive default: always
+   `let`-bind the read first — mandatory for portable/public code. Precise
+   rule: pact-traps §Read-only context.
 5. Business state lives on-chain by default; no architecture change without an ADR.
 
 ## Always-true language rules

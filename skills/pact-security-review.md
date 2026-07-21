@@ -23,7 +23,7 @@ description: "Developer-level security review for Pact 5: capability audit, guar
 
 ### Logic Safety
 - [ ] No DML inside `try` blocks
-- [ ] No DML (insert/update/write) inside `enforce` args or `try` — DB **reads are allowed** (binding a read to a `let` is style/gas only, NOT a correctness requirement)
+- [ ] No DML (insert/update/write) inside `enforce` args or `try`; table reads inside an `enforce` condition pass on KDA-CE 3.1+ but FAIL on upstream-lineage nodes (REPL-invisible) — `let`-bind reads first (mandatory for portable code; style-only on pinned KDA-CE 3.1+). Rule: pact-traps §Read-only context
 - [ ] `+` operator used as binary only
 - [ ] No built-in name shadowing (exp, abs, log, etc.)
 - [ ] Defpact steps have exactly one expression each

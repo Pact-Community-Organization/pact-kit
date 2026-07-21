@@ -41,22 +41,29 @@ description: "On-demand canonical traps reference for Pact 5 / KDA-CE. REPL/on-c
 - **No DML (insert/update/write) inside `enforce`'s boolean argument or inside
   `try`.** Writes fail with
   `Operation disallowed in read-only or sys-only mode` (on-chain: `Operation is not allowed in read-only or system-only mode.`)
-- **⚠️ REPL vs ON-CHAIN DIVERGENCE — table READS inside an `enforce` condition work in the
-  REPL but FAIL on the KDA-CE chainweb-node** with
-  `Error during database operation: Operation is not allowed in read-only or system-only mode.`
-  Empirical, devnet-verified 2026-07-01: a full `.repl` suite passed green while the first
-  on-node transaction hitting an `(enforce (<table-reading-expr>) …)` aborted. The Pact 5.3
-  REPL change ("enforce runs read-only — reads permitted") is TRUE FOR THE REPL ONLY; the
-  deployed node still rejects the read. **Rule: ALWAYS bind any table-reading expression to a
-  `let` BEFORE the `enforce` — on-chain this is a CORRECTNESS requirement. A REPL pass is not
-  evidence for this class; only devnet is.**
+- **⚠️ Table READS inside an `enforce` CONDITION are NODE-REGIME-DEPENDENT** (devnet-verified
+  on both regimes 2026-07-21: inline, defun-indirected, and real incident shapes):
+  - **KDA-CE chainweb-node 3.1+** (pact ≥5.3 read-only relaxation active): reads **ALLOWED** —
+    all shapes pass; let-binding is style here, not correctness.
+  - **Upstream-lineage nodes** (kadena-io chainweb-node, 2.29 devnet): reads **FAIL** with
+    `Error during database operation: Operation is not allowed in read-only or system-only mode.`
+  - The REPL (pact 5.4) accepts reads in every shape → a REPL pass is not evidence for the
+    failing regime; only devnet is. (The original 2026-07-01 incident — full `.repl` suite
+    green, first on-node tx aborted — ran on an upstream image and was misattributed to the
+    KDA-CE node until the 2026-07-21 both-regime re-verification.)
+  - **Rule (defensive default): still `let`-bind any table-reading expression BEFORE the
+    `enforce`.** MANDATORY for portable/public code — anything that may run on upstream-lineage
+    nodes (kadena mainnet01/testnet04 fork-height behavior [UNCERTAIN]; treat as failing). On
+    pinned KDA-CE 3.1+ targets it is style-only.
 - Reads in the **argument position of `enforce-guard`** (e.g. `(enforce-guard (account-guard s))`
   inside a defcap body) are safe on-chain — the argument evaluates before the guard enforcement
-  (devnet-proven via DEBIT/VOTE-style caps). [UNVERIFIED on-chain: whether a keyset lookup inside
-  an `enforce-one` condition trips the same node check — hoist/bind to be safe.]
+  (devnet-proven via DEBIT/VOTE-style caps).
+- **`enforce-one` CONDITIONS allow table reads on BOTH regimes** (devnet-verified 2026-07-21 on
+  KDA-CE 3.1 AND upstream 2.29 — `enforce-one`'s condition env is laxer than `enforce`'s on
+  2.29); keyset-ref-guard lookups in that position also devnet-proven safe (KDA-CE 3.1).
 
 ```pact
-; REPL-only OK — FAILS on the KDA-CE node (read inside the enforce condition)
+; OK on KDA-CE 3.1+ — FAILS on upstream-lineage nodes (read inside the enforce condition)
 (enforce (>= (at 'balance (read accounts acct)) amount) "insufficient")
 ; CORRECT everywhere — bind first
 (let ((bal (at 'balance (read accounts acct))))
