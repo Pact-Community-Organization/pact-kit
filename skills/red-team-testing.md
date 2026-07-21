@@ -43,7 +43,7 @@ Before declaring a break, rule out that it depends on a **REPL-only primitive**:
 - `test-capability` grants a cap bypassing guards → does not exist on-chain.
 - `coin.GAS` (the gas magic-cap) → only the miner puts it in scope during gas-buy, never the attacker.
 - **Single shared DB for 20 chains** → false partial-aggregate "passed" / release on chain≠0. On-chain: per-chain DB + unforgeable cross-chain SPV proof.
-- REPL-vs-node divergence on DB reads inside `enforce` — the 5.3+ REPL permits the read, but the KDA-CE chainweb-node rejects it (devnet-verified; see `pact-traps`). A "break" that only lands because the REPL let a read-in-`enforce` through is an artifact, not a finding.
+- DB reads inside `enforce` — node-regime-dependent (devnet-verified both regimes; see `pact-traps` §Read-only context): upstream-lineage nodes reject the read that the 5.3+ REPL permits, while KDA-CE 3.1+ permits it on-node too. For upstream-lineage targets, a "break" that only lands because the REPL let a read-in-`enforce` through is an artifact, not a finding; on pinned KDA-CE 3.1+ targets the read is real on-node behavior.
 
 If the break needs those crutches, it is an **artifact, not a finding**. Companion rule: when Pact blocks the obvious path (e.g. acquiring another module's cap needs module-admin), hunt the path the **runtime** grants (magic caps, defpact SPV resume, gas-buy) and check the caller's guard *there* — that is where a naïve gas station drains even though the obvious path bounces.
 

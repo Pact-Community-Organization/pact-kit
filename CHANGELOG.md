@@ -30,6 +30,10 @@ Doctrine correction: the reads-inside-`enforce` trap is node-regime-dependent, n
   (WARN wording), **examples/README.md** — same correction propagated. The defensive default is
   unchanged everywhere: let-bind the read before the `enforce` — mandatory for portable/public
   code, style-only on pinned KDA-CE 3.1+ targets.
+- **skills/red-team-testing.md** — the L1 artifact filter for read-in-`enforce` "breaks" is now
+  regime-aware: artifact for upstream-lineage targets, real on-node behavior on KDA-CE 3.1+.
+
+[0.3.1]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.3.1
 
 ## [0.3.0] — 2026-07-08
 
