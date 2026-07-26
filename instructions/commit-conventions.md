@@ -1,5 +1,6 @@
 ---
 description: "Use when writing commit messages, PR titles, branch names, or any version control operations. Conventional commits format with agent tag prefix."
+---
 # Commit & Branch Conventions
 
 ## Commit Messages
@@ -23,7 +24,7 @@ Refs: #issue-number
 
 ### Scopes
 - `my-token`, `my-governance`, or your module names
-- `ledger-core`, `ledger-cli`, `ledger-web`
+- `pact`, `ts-client`, `docs` — non-module repo areas
 - `devnet`, `testnet`, `mainnet`
 - `coordination`, `agent-config`
 

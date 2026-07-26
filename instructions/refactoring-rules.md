@@ -1,6 +1,7 @@
 ---
 description: "Use when refactoring Pact modules, restructuring code, renaming functions, or performing any code transformation that should preserve behavior."
 applyTo: ["**/*.pact"]
+---
 # Refactoring Rules
 
 ## Core Principle

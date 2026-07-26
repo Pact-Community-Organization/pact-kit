@@ -1,5 +1,6 @@
 ---
 description: "False-positive prevention and test-failure protocol for Tester/Security. Covers patterns and the mandatory STOP-ANALYZE-CLASSIFY-PROPOSE flow."
+---
 # Diagnostic Integrity Rules — HIGHEST PRIORITY
 
 These rules override ALL other behavioral guidance for Tester and Security agents.

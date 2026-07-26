@@ -13,7 +13,7 @@ packaged for Claude Code, Codex, and Gemini CLI.
 
 - **Claude Code**, **Codex**, or **Gemini CLI** — see [Tool Support](docs/agent-portability.md) for per-host details
 - **git** and **bash** — only needed for the curl-pipe installer
-- **Pact 5.4ce** — the [KDA-CE](https://github.com/kadena-community/kadena-ce) fork of kadena-io/pact-5
+- **Pact 5.4ce** — the [KDA-CE](https://github.com/kda-community/pact-5) fork of kadena-io/pact-5
 
 ---
 

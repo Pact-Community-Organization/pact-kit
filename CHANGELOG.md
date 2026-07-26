@@ -7,6 +7,52 @@ Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.3] — 2026-07-26
+
+Docs: de-internalize examples — use public `coin` / `example-token` / util-lib references so the
+toolkit is self-explanatory to external users. Every illustration now points at an anchor the
+reader can actually inspect: the native `coin` contract, the kit's own `examples/example-token.*`,
+`pact-util-lib`, or a neutral placeholder. Rules, traps, and checklist items are unchanged in
+substance — only the illustrations and their provenance moved.
+
+### Changed
+
+- **instructions/cross-module-rules.md** — the frontmatter `description:` now states the topic it
+  triggers on (write-path tracing across module boundaries, module-reference trust and reentrancy,
+  late binding) rather than citing a pull request in a repository the reader has no access to; the
+  "Root Cause" heading is reframed as the common integration gap. The config-field example is now
+  a generic `min-holders` threshold against a `holders` column instead of a schema name from
+  another codebase. Every rule, including the modref cap-in-scope guidance, is unchanged.
+- **instructions/workspace-conventions.md** — the naming-convention table's module and REPL rows
+  now name the kit's own shipped `examples/example-token.pact` / `example-token.repl`.
+- **skills/pact-invariants.md** — the dividend invariant is headed by its pattern name
+  ("Dividend / reward-per-share accumulator") instead of an ADR number the reader does not have.
+- **skills/compliance-verification.md** — the note that a cross-chain token implements both
+  `fungible-v2` and `fungible-xchain-v1` now cites `coin` (coin-v5) as the reference implementation
+  of both, plus `brothers-DAO/bro-token` as a public community example.
+- **instructions/commit-conventions.md** — example commit scopes are now repo areas any Pact
+  project has (`pact`, `ts-client`, `docs`).
+- **README.md** — the KDA-CE requirement link pointed at a repository that returns 404; it now
+  points at `kda-community/pact-5`.
+
+### Fixed
+
+- **instructions/ frontmatter** — 8 of 16 instruction files opened a YAML block with `---` and a
+  `description:` but never closed it, so the description never parsed and could not drive host
+  relevance/trigger matching: `architecture-rules`, `commit-conventions`, `cross-module-rules`,
+  `deployment-rules`, `diagnostic-integrity-rules`, `refactoring-rules`, `self-audit-checklist`,
+  `testing-rules`. All now terminate correctly — every shipped `instructions/`, `skills/`,
+  `commands/`, and `agents/` file parses to a mapping carrying a `description` key.
+- **instructions/deployment-rules.md**, **instructions/testing-rules.md** — `applyTo` globs
+  referenced a `pact-examples/` directory that exists in no repository, so they matched nothing.
+  They now match the project layout documented in `workspace-conventions.md`
+  (`**/pact/deploy/**`, `**/ts/scripts/**`, `**/pact/tests/**`).
+
+No Pact source or REPL file was touched. Validation: `check-md-links.sh` clean, `shellcheck`
+clean, static gate on the examples PASS (0 VIOLATIONs), `examples/example-token.repl` exits 0.
+
+[0.3.3]: https://github.com/Pact-Community-Organization/pact-kit/releases/tag/v0.3.3
+
 ## [0.3.2] — 2026-07-21
 
 Review-doctrine upgrade: classify checks by the callee's trust class instead of flagging by pattern.

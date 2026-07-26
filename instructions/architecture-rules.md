@@ -1,5 +1,6 @@
 ---
 description: "Architecture decision framework for Pact 5 / KDA-CE. Review-question gate, ADR checklist, and gas/cross-chain/dependency design principles."
+---
 # Architecture Rules
 
 ## Seven-Question Framework
