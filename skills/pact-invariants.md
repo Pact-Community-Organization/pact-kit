@@ -87,7 +87,7 @@ Every state mutation traces back to an enforced guard.
 - Single-use VOTE cap (bare `@managed`) makes replay impossible — assert the vote
   row transitions `unvoted → voted` once.
 
-### Dividend (ADR-002)
+### Dividend / reward-per-share accumulator
 - `owed = balance * (pps - last_points) + correction`.
 - `last_points` is **monotonically non-decreasing** per account (no double-claim).
 - Claiming flips a redeemed flag `false → true` only.

@@ -31,7 +31,9 @@ if it loads.
 ## fungible-xchain-v1 — the FULL required surface
 
 **This is a SEPARATE interface from fungible-v2** (source: `pact/coin-contract/v4/fungible-xchain-v1.pact`).
-SPT implements BOTH `fungible-v2` AND `fungible-xchain-v1`. coin-v5 is the reference implementation of both.
+A token that moves across chains implements BOTH — two separate `implements` clauses. `coin` (coin-v5) is
+the reference implementation of both; [`brothers-DAO/bro-token`](https://github.com/brothers-DAO/bro-token)
+is a public community example.
 
 - [ ] `TRANSFER_XCHAIN:bool (sender:string receiver:string amount:decimal target-chain:string)` — `@managed amount TRANSFER_XCHAIN-mgr`
 - [ ] `TRANSFER_XCHAIN-mgr:decimal (managed:decimal requested:decimal)` — **ONE-SHOT: always returns `0.0`** (not the remainder)

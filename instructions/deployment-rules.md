@@ -1,6 +1,7 @@
 ---
 description: "Use when deploying Pact modules to devnet, testnet, or mainnet. Covers deploy order, gas budgets, signer requirements, and infrastructure rules."
-applyTo: ["pact-examples/pact/deploy/**", "pact-examples/ts/scripts/**"]
+applyTo: ["**/pact/deploy/**", "**/ts/scripts/**"]
+---
 # Deployment Rules
 
 ## Deploy Order (CRITICAL)

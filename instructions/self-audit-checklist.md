@@ -1,5 +1,6 @@
 ---
 description: "Use before submitting any test report, security audit, or QA verdict. Mandatory self-audit checklist to prevent false positives and ensure integrity."
+---
 # Self-Audit Checklist
 
 Complete this checklist before submitting ANY report or verdict.

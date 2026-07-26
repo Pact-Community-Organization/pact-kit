@@ -1,8 +1,9 @@
 ---
-description: "Use when reviewing cross-module interactions, adding state, or modifying Pact module interfaces. Prevents integration gaps found in PR #47."
+description: "Use when reviewing cross-module interactions, adding per-account state, or modifying Pact module interfaces. Covers write-path tracing across module boundaries, module-reference (modref) trust and reentrancy, and late-binding risk."
+---
 # Cross-Module Integration Rules
 
-## Root Cause (Lesson from PR #47)
+## Root Cause — the common integration gap
 Modules reviewed in isolation = silent bugs. Cross-module write path gaps cause phantom exploits and dead config.
 
 ## Mandatory Checks
@@ -18,7 +19,8 @@ Modules reviewed in isolation = silent bugs. Cross-module write path gaps cause 
 
 ### When Adding Config Fields
 - Config fields referencing aggregated data → tracking schema MUST have matching field
-- Example: `quorum_voter_count` config → `voter_count` must exist in chain-tally-schema
+- Example: a `min-holders` config threshold is dead config unless the tracking schema carries a
+  matching `holders` column that every balance-changing path maintains
 
 ### Integration Test Requirement
 - Cross-module integration tests MANDATORY when modules share state

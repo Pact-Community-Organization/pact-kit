@@ -70,8 +70,8 @@ description: "Workspace conventions, file organization, naming patterns, and pro
 
 | Artifact | Pattern | Example |
 |---|---|---|
-| Pact module | `kebab-name.pact` | `spt-token.pact` |
-| Pact REPL test | `kebab-name.repl` | `spt-token.repl` |
+| Pact module | `kebab-name.pact` | `example-token.pact` |
+| Pact REPL test | `kebab-name.repl` | `example-token.repl` |
 | TypeScript test | `kebab-scope-description.test.ts` | `dividend-conservation.test.ts` |
 | ADR | `ADR-NNN-kebab-name.md` | `ADR-001-token-standard.md` |
 | Process runbook | `PROC-NNN-kebab-name.md` | `PROC-001-devnet-deploy.md` |
