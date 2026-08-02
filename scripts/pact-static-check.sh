@@ -12,14 +12,51 @@ notice() { printf 'NOTICE:    %s\n' "$1"; }
 
 is_missing_msg_data_error() {
   # Errors that mean "this file needs its deploy/test environment (env-data,
-  # namespaces, keysets), not that the code is wrong" — bare load can't verify.
+  # namespaces, keysets, or upstream module dependencies), not that the code is
+  # wrong" — a bare `pact <file>` load can't verify these; the full .repl
+  # harness (which loads deps + env) is authoritative.
+  #
+  # Includes MISSING-DEPENDENCY errors, but ONLY for known pre-deployed upstream
+  # modules (coin, ns, fungible-*, marmalade, kip.*, util.*). A module that calls
+  # e.g. `coin` fails a bare load because the standalone CLI has only a stub of it
+  # ("Module coin has no such member: get-balance") or none at all ("Cannot find
+  # module: coin"). That is an environment gap, not a code defect — the .repl
+  # harness loads the real dependency and passes.
+  #
+  # This is deliberately scoped to that allowlist so that a TYPO against the
+  # module's OWN members (e.g. "Module my-mod has no such member: my-typo") still
+  # surfaces as a VIOLATION — downgrading those would let real bugs through.
+  local deps='(coin|ns|fungible-v2|fungible-xchain-v1|fungible-util|gas-payer-v1|marmalade[-.v0-9]*|kip[-.][a-z0-9-]+|util[-.][a-z0-9-]+|nft-asset-v1|nft-market-v1|nft-xchain-v1)'
+  # An allowlisted upstream module may be referenced through a NAMESPACE — e.g.
+  # `n_e82dd10f….nft-asset-v1` for an interface deployed under a principal namespace.
+  # `ns` below permits that optional prefix. It does NOT widen the allowlist: the name
+  # after the prefix must still be one of `deps`, so a typo against a project's own
+  # member (`n_abc.my-typo`) still surfaces as a VIOLATION.
+  local ns='([a-z0-9_][a-z0-9_.-]*\.)?'
   printf '%s' "$1" | grep -qiE \
-    'read-(msg|keyset|string|integer|decimal)|no (env-)?data|not (present|found) in (the )?(message|environment|tx)|key .* not found|environment data|namespace not found|cannot find keyset'
+    'read-(msg|keyset|string|integer|decimal)|no (env-)?data|not (present|found) in (the )?(message|environment|tx)|key .* not found|environment data|namespace not found|cannot find keyset' \
+  || printf '%s' "$1" | grep -qiE \
+    "cannot find module: *${ns}${deps}\b|module ${ns}${deps} has no such member"
 }
 
+# Tier 1 (pact parse / --check-shadowing) needs the `pact` binary. If it is not
+# available the gate CANNOT verify the file, and a gate that cannot run must
+# fail — a green that was never earned is worse than no gate, because it is
+# believed. Pass --allow-no-pact (or set PACT_STATIC_ALLOW_NO_PACT=1) to accept
+# Tier-2-only coverage deliberately.
+ALLOW_NO_PACT="${PACT_STATIC_ALLOW_NO_PACT:-0}"
+
 FILES=()
-if [ "$#" -gt 0 ]; then
-  for arg in "$@"; do
+ARGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --allow-no-pact) ALLOW_NO_PACT=1 ;;
+    *) ARGS+=("$arg") ;;
+  esac
+done
+
+if [ "${#ARGS[@]}" -gt 0 ]; then
+  for arg in "${ARGS[@]}"; do
     if [ -f "$arg" ]; then
       FILES+=("$arg")
     else
@@ -30,17 +67,22 @@ else
   while IFS= read -r f; do
     FILES+=("$f")
   done < <(find . \
-    \( -path '*/node_modules/*' -o -path '*/.git/*' -o -path '*/dist/*' \) -prune -o \
+    \( -path '*/node_modules/*' -o -path '*/.git/*' -o -path '*/dist/*' \
+       -o -path '*/_archive/*' \) -prune -o \
     \( -name '*.pact' -o -name '*.repl' \) -type f -print | sort)
 fi
 
 if [ "${#FILES[@]}" -eq 0 ]; then
-  notice "no .pact / .repl files to check"
-  exit 0
+  # A check that inspected ZERO items must FAIL, never PASS: reporting "clean"
+  # for a set you never looked at is the same defect as skipping the check.
+  printf 'VIOLATION: no .pact / .repl files were inspected — nothing was verified\n'
+  printf 'RESULT: FAIL (inspected 0 files; wrong directory, or the arguments matched nothing)\n'
+  exit 1
 fi
 
 printf '== pact-static-check :: %d file(s) ==\n' "${#FILES[@]}"
 
+TIER1_UNAVAILABLE=0
 if command -v pact >/dev/null 2>&1; then
   printf -- '-- Tier 1: pact <file> / --check-shadowing --\n'
   for f in "${FILES[@]}"; do
@@ -58,9 +100,13 @@ if command -v pact >/dev/null 2>&1; then
       printf '%s\n' "$out" | sed 's/^/           /'
     fi
   done
+elif [ "$ALLOW_NO_PACT" = "1" ]; then
+  notice "pact binary not on PATH — Tier 1 (parse/shadowing/type) SKIPPED by explicit"
+  notice "--allow-no-pact. Coverage is Tier-2 greps ONLY; this is NOT a parse check."
+  TIER1_UNAVAILABLE=1
 else
-  notice "pact binary not on PATH — Tier 1 (parse/shadowing/type) SKIPPED."
-  notice "Install or point to a Pact 5.3 binary for full coverage."
+  TIER1_UNAVAILABLE=1
+  emit_violation "pact binary not on PATH — Tier 1 (parse/--check-shadowing) CANNOT RUN, so this file was never parsed. Install Pact 5.4 or pass --allow-no-pact to accept Tier-2-only coverage deliberately."
 fi
 
 printf -- '-- Tier 2: semantic greps --\n'
@@ -86,6 +132,9 @@ for f in "${FILES[@]}"; do
   scan_file "$f" 'expect-failure[[:space:]]+""([[:space:]]|\))' \
     violation 'empty expect-failure "" — empty substring matches any error (false pass)'
 
+  scan_file "$f" 'expect-failure[[:space:]]+"[^"]+"[[:space:]]+""([[:space:]]|\)|$)' \
+    violation 'empty expect-failure substring after doc string — matches any error (false pass)'
+
   scan_file "$f" '\(\+[[:space:]]+[^()[:space:]]+[[:space:]]+[^()[:space:]]+[[:space:]]+[^()[:space:]]+' \
     violation '3+ argument (+ ...) on one line — + is binary; nest as (+ a (+ b c))'
 
@@ -93,13 +142,84 @@ for f in "${FILES[@]}"; do
     violation 'DML (insert/update/write) inside try — try is read-only for DML'
 
   scan_file "$f" '\(enforce[[:space:]][^)]*\((read|with-read|with-default-read|select|fold-db|keys)[[:space:]]' \
-    warn 'table read inside an enforce condition — passes in the REPL and on KDA-CE 3.1+ but FAILS on upstream-lineage nodes; defensive default: let-bind the read before the enforce (same-line matches only; reads via helper fns are not detected)'
+    warn 'table read inside an enforce condition — passes in the REPL and on KDA-CE 3.1+ but FAILS on upstream-lineage nodes; house default: let-bind the read before the enforce (same-line matches only; reads via helper fns are not detected)'
 
   scan_file "$f" '\(defcap[[:space:]]+[A-Z][A-Z0-9_-]*[[:space:]]*\([[:space:]]*\)[[:space:]]+true[[:space:]]*\)' \
     violation 'governance/defcap body is literally `true` — anyone can satisfy it'
 
-  scan_file "$f" 'create-(module|pact)-guard' \
+  # Tier-2: weak (`true`-bodied) NON-@event defcaps WITH args — the compose-capability
+  # escape surface (pact-traps §Capabilities). Any such cap gating a DML/value/state
+  # path is forgeable by a foreign module via compose-capability. WARN (not VIOLATION):
+  # weak caps are a legitimate pattern, but each MUST be proven safe with a foreign-
+  # compose test, or it is a finding. @event-only caps gate nothing → skipped.
+  while IFS='|' read -r wln wname; do
+    [ -n "$wln" ] && emit_warn "$f:$wln weak \`true\`-bodied cap $wname — if it gates value/state it is FORGEABLE via foreign compose-capability on pre-Chainweb32 nodes (fixed in Pact 5.4.1 at/after that fork), and ALWAYS if this module's governance is weak; prove safe with a foreign-compose negative test (pact-traps §Capabilities)"
+  done < <(awk '
+    # state machine: track the open defcap (name/startln), whether it is @event,
+    # and whether its body is bare `true`. Flag weak NON-@event caps.
+    #
+    # COMMENT POLLUTION — fixed 2026-08-02, found by the CW32-8 session.
+    # Comments must feed NEITHER signal. Previously a `;;` comment mentioning
+    # @event, sitting between a cap and the next def, set isevent=1 and SILENTLY
+    # DROPPED the warning — a FALSE NEGATIVE, the dangerous direction: the gate
+    # would clear a module carrying a forgeable weak cap. Symmetrically, a comment
+    # containing `true` could force a false POSITIVE, and a commented-out
+    # `;; (defcap ...)` could open a phantom cap.
+    #
+    # `code()` returns only the REAL CODE of a line: comments dropped, and the
+    # CONTENTS of string literals blanked. Blanking strings is required, not
+    # cosmetic — a @doc containing the word @event (or "true", or a ";") is just as
+    # poisonous as a comment, and docstrings routinely discuss both. `instr` is
+    # deliberately GLOBAL so quote state carries across lines: Pact docstrings span
+    # lines via backslash continuation, and a per-line parity reset would treat the
+    # continuation lines as code — the exact failure that produced a false clean
+    # result in a separate scanner the same day.
+    function code(l,   i, c, out) {
+      out = ""
+      for (i = 1; i <= length(l); i++) {
+        c = substr(l, i, 1)
+        if (c == "\\") { i++; continue }          # escape: skip the escaped char
+        if (c == "\"") { instr = !instr; continue }
+        if (instr) continue                        # inside a string: contribute nothing
+        if (c == ";") break                        # comment to end of line
+        out = out c
+      }
+      return out
+    }
+    function flush() { if (inc && weak && !isevent) print startln"|"name }
+    { line = code($0) }
+    line ~ /\(defcap[[:space:]]/ {
+      flush()
+      inc=1; isevent=0; weak=0; startln=NR
+      name=line; sub(/.*\(defcap[[:space:]]+/,"",name); sub(/[[:space:](:].*/,"",name)
+      if (line ~ /@event/) isevent=1
+      if (line ~ /(^|[[:space:](])true\)*[[:space:]]*$/) weak=1
+      next
+    }
+    inc==1 {
+      # a new top-level def ends the current defcap
+      if (line ~ /^[[:space:]]*\(def(un|pact|schema|const|table)[[:space:]]/) { flush(); inc=0; next }
+      if (line ~ /@event/) isevent=1
+      if (line ~ /(^|[[:space:](])true\)*[[:space:]]*$/) weak=1
+    }
+    END { flush() }
+  ' "$f" 2>/dev/null | sort -u)
+
+  scan_file "$f" 'create-pact-guard' \
     violation 'deprecated guard constructor — use keyset / capability / user guards'
+
+  # create-module-guard is DEPRECATED (will be removed) but is the ONLY primitive
+  # that makes a PERMISSIONLESS escrow account unforgeable against the
+  # compose-capability escape (Pattern E; capability guards are forgeable via that
+  # bug). Downgraded to WARN so the security-justified stopgap can pass the gate.
+  # Every use MUST carry an inline justification and an ADR disposition. The platform
+  # fix (compose applies guardForModuleCall) SHIPPED in Pact 5.4.1 / chainweb-node 3.2
+  # but is fork-gated behind Chainweb32 — so Pattern E is still needed pre-fork, on
+  # non-upgraded nodes, and permanently where the owning module's admin is forgeable.
+  # create-module-guard is still PRESENT in 5.4.1 (no removal schedule). See pact-traps
+  # §Capabilities and business/reports/COMPOSE-CAP-ESCAPE/.
+  scan_file "$f" 'create-module-guard' \
+    warn 'DEPRECATED create-module-guard — allowed ONLY as the Pattern-E escrow stopgap against the compose-capability escape; require an inline justification + ADR; revert only once the Chainweb32 fix is ACTIVE on your target network (pact-traps §Capabilities)'
 
   scan_file "$f" '(\(!=[[:space:]]+""[[:space:]]+\(pact-id\)|\(enforce\b[^)]*\(pact-id\))' \
     violation 'pact-id used as an auth guard — gate access on a composed capability instead'
@@ -120,5 +240,7 @@ if [ "$VIOLATIONS" -gt 0 ]; then
   printf 'RESULT: FAIL (fix all VIOLATIONs before the edit/deploy is complete)\n'
   exit 1
 fi
-printf 'RESULT: PASS%s\n' "$( [ "$WARNINGS" -gt 0 ] && printf ' (with %d WARN — review)' "$WARNINGS" )"
+printf 'RESULT: PASS%s%s\n' \
+  "$( [ "$TIER1_UNAVAILABLE" = "1" ] && printf ' — TIER 2 ONLY, NOT PARSED' )" \
+  "$( [ "$WARNINGS" -gt 0 ] && printf ' (with %d WARN — review)' "$WARNINGS" )"
 exit 0
